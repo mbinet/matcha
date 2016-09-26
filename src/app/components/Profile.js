@@ -1,11 +1,30 @@
 import React from "react";
 import Request from "superagent";
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card';
+import FontAwesome from 'react-fontawesome';
+import _ from 'lodash';
+import {MyChip} from "./user/MyChip"
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
+const styles = {
+    chip: {
+        margin: 4,
+    },
+    wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+};
 
 export class Profile extends React.Component {
 
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            user: {}
+        };
     }
 
     componentWillMount() {
@@ -14,23 +33,106 @@ export class Profile extends React.Component {
         Request.get(url).then((response) => {
             this.setState({
                 user: response.body.user
-            });
-            // console.log(this.state.user);
+            })
         });
     }
 
-    render() {
-        console.log(this.state.user);
-        var test = this.state.user;
-        setTimeout(function() { console.log(test.age) }, 4000);
-        // console.log(test.age);
+    getLove() {
+        var maps = <FontAwesome className='fa fa-map-marker' name='' alt='mars' title='mars'/>;
+        var text = "Paris | interested in";
+        var mars = <FontAwesome className='fa fa-mars' name='' alt='mars' title='men'/>;
+        var venus = <FontAwesome className='fa fa-venus' name='' alt='venus' title='women'/>;
+        var trans = <FontAwesome className='fa fa-transgender' name='' alt='transgender' title='trans'/>;
+        var res = <div>{maps} {text} {mars} {venus} {trans}</div>;
+        return res;
+    }
 
+    render() {
+        var name = this.state.user.name;
+        var age = this.state.user.age;
+        var style = {color: 'red'};
+        var like = <FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>;
+        var mail = <FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>;
+        var icon = <FontAwesome className='fa fa-mars' name=''/>;
+        var text = <div>From Paris | interested in <FontAwesome className='fa fa-mars' name=''/></div>;
+        var icontext = [text, icon];
+        console.log(typeof icon);
+        console.log("PUTE");
         return (
-            <div>
-                <h3>The Profile Page</h3>
-                {/*a{test}a*/}
-                {/*{this.state.user.name}*/}
-                <p>User ID: {this.props.params.id}</p>
+            <div className="">
+                <div className="row">
+                    <div className="col-xs-6 col-md-4">
+                        {/*<img src="http://placekitten.com/200/200" alt={name} className="img-circle img-responsive"/>*/}
+                    </div>
+                    <div className="col-xs-6 col-md-4">
+                        <h3 className="text-center text-uppercase">
+                            {name} <small className="text-capitalize">{age}</small> <small><FontAwesome className="fa fa-mars" name=""/></small>
+                        </h3>
+                        <hr />
+                        <p className="text-center"><small> ID: {this.props.params.id}</small></p>
+                    </div>
+                </div>
+                <div className="row">
+                    <Card>
+                        <CardHeader
+                            subtitle={this.getLove()}
+                        />
+                        <CardMedia>
+                            <img src="http://placekitten.com/800/250" alt=""/>
+                        </CardMedia>
+                        <CardActions style={{textAlign: 'center'}}>
+                            <FlatButton label={like} />
+                            <FlatButton label={<FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>} />
+                        </CardActions>
+                    </Card>
+                </div>
+                <br/>
+                <div className="row">
+                    <Card>
+                        <CardText>
+                            <h4>A few words</h4>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+                            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+                            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+                        </CardText>
+                    </Card>
+                </div>
+                <br />
+                <div className="row">
+                    <div className="">
+                        <Card>
+                            <CardText>
+                                <MyChip/>
+                            </CardText>
+                        </Card>
+                    </div>
+                </div>
+                <br/>
+                <div className="row">
+                    <div className="">
+                        <Card>
+                            <CardText>
+                                <Table>
+                                    <TableBody displayRowCheckbox={false}>
+                                        <TableRow>
+                                            <TableRowColumn>Height</TableRowColumn>
+                                            <TableRowColumn>180 cm</TableRowColumn>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableRowColumn>Weight</TableRowColumn>
+                                            <TableRowColumn>79 kg</TableRowColumn>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableRowColumn>Eyes</TableRowColumn>
+                                            <TableRowColumn>Blue</TableRowColumn>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </CardText>
+                        </Card>
+                    </div>
+                </div>
             </div>
         )
     };

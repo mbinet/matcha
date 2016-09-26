@@ -19,11 +19,15 @@
   },
   "homepage": "https://github.com/mbinet/matcha#readme",
   "dependencies": {
+    "font-awesome": "^4.6.3",
     "lodash": "^4.16.1",
+    "material-ui": "^0.15.4",
     "nodemon": "^1.10.2",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-fontawesome": "^1.2.0",
     "react-router": "^2.8.1",
+    "react-tap-event-plugin": "^1.0.0",
     "superagent": "^2.3.0"
   },
   "devDependencies": {
