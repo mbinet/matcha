@@ -26,12 +26,20 @@ export class SignUp extends React.Component {
 
     state = {
         stepIndex: 0,
+        mail: "",
+        passwd: "",
     };
 
     handleNext = () => {
         const {stepIndex} = this.state;
+        const {mail} = this.state;
         if (stepIndex < 2) {
             this.setState({stepIndex: stepIndex + 1});
+            console.log(this.state.mail);
+            console.log(this.state.passwd);
+        }
+        else {
+            console.log(mail);
         }
     };
 
@@ -65,6 +73,20 @@ export class SignUp extends React.Component {
         );
     }
 
+    _handleTextFieldChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    _handleKeyDown(event) {
+        if (event.which === 13) {
+            this.handleNext();
+            console.log('TAMERE');
+        }
+        console.log(event.which);
+    }
+
     render() {
         const {stepIndex} = this.state;
 
@@ -83,10 +105,18 @@ export class SignUp extends React.Component {
                             <TextField
                                 hintText="john@doe.com"
                                 floatingLabelText="Email"
+                                name="mail"
+                                value={this.state.mail}
+                                onChange={this._handleTextFieldChange.bind(this)}
                             />
                             <TextField
-                                hintText="qwerty"
+                                type="password"
+                                hintText="••••••••"
                                 floatingLabelText="Password"
+                                name="passwd"
+                                value={this.state.passwd}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                                onKeyDown={this._handleKeyDown.bind(this)}
                             />
                             {this.renderStepActions(0)}
                         </StepContent>
