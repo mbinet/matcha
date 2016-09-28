@@ -9,25 +9,18 @@
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import FontAwesome from 'react-fontawesome';
+import Checkbox from 'material-ui/Checkbox'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
-
-// export class SignUp extends React.Component {
-//
-//     render() {
-//         return (
-//             <div>
-//                 <h3>SIGNUP</h3>
-//             </div>
-//         );
-//     }
-// }
 export class SignUp extends React.Component {
 
-
     state = {
-        stepIndex: 0,
+        stepIndex: 2,
         mail: "",
         passwd: "",
+        sex: "",
+        bio: "",
     };
 
     handleNext = () => {
@@ -38,8 +31,24 @@ export class SignUp extends React.Component {
             console.log(this.state.mail);
             console.log(this.state.passwd);
         }
-        else {
-            console.log(mail);
+        switch (stepIndex) {
+            case 0 : {
+                console.log(this.state.mail);
+                console.log(this.state.passwd);
+                break;
+            }
+            case 1 : {
+                console.log('step 1');
+                console.log(this.state.sex);
+                break;
+            }
+            case 2 : {
+                console.log('FINISH');
+                break;
+            }
+            default: {
+                this.setState({stepIndex: stepIndex + 1});
+            }
         }
     };
 
@@ -82,14 +91,32 @@ export class SignUp extends React.Component {
     _handleKeyDown(event) {
         if (event.which === 13) {
             this.handleNext();
-            console.log('TAMERE');
         }
-        console.log(event.which);
+    }
+
+    handleButtons(type) {
+        this.state.sex = type;
+        console.log(type);
+        this.handleNext();
     }
 
     render() {
+        const styles = {
+            button: {
+                margin: 12,
+            },
+            exampleImageInput: {
+                cursor: 'pointer',
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                right: 0,
+                left: 0,
+                width: '100%',
+                opacity: 0,
+            },
+        };
         const {stepIndex} = this.state;
-
         return (
             <div style={{maxWidth: 380, maxHeight: 400, margin: 'auto'}}>
                 <Stepper
@@ -123,24 +150,46 @@ export class SignUp extends React.Component {
                     </Step>
                     <Step>
                         <StepButton onTouchTap={() => this.setState({stepIndex: 1})}>
-                            Create an ad group
+                            You are
                         </StepButton>
                         <StepContent>
-                            <p>An ad group contains one or more ads which target a shared set of keywords.</p>
-                            {this.renderStepActions(1)}
+                            <RaisedButton
+                                primary ={true}
+                                icon={<FontAwesome className='fa fa-mars' name=''/>}
+                                //style={{marginLeft: '12px'}}
+                                label={'boy'}
+                                style={{margin: '12px'}}
+                                onTouchTap={this.handleButtons.bind(this, 'boys')}
+                            />
+                            <RaisedButton
+                                secondary ={true}
+                                icon={<FontAwesome className='fa fa-mars' name=''/>}
+                                //style={{marginLeft: '12px'}}
+                                label={'girl'}
+                                style={{margin: '12px'}}
+                                onTouchTap={this.handleButtons.bind(this, 'girls')}
+                            />
+                            <RaisedButton
+                                default ={true}
+                                icon={<FontAwesome className='fa fa-mars' name=''/>}
+                                //style={{marginLeft: '12px'}}
+                                label={'trans'}
+                                style={{margin: '12px'}}
+                                onTouchTap={this.handleButtons.bind(this, 'trans')}
+                            />
                         </StepContent>
                     </Step>
                     <Step>
                         <StepButton onTouchTap={() => this.setState({stepIndex: 2})}>
-                            Create an ad
+                            A few words
                         </StepButton>
                         <StepContent>
-                            <p>
-                                Try out different ad text to see what brings in the most customers,
-                                and learn how to enhance your ads using features like ad extensions.
-                                If you run into any problems with your ads, find out how to tell if
-                                they're running and how to resolve approval issues.
-                            </p>
+                            <TextField
+                                hintText="Hi, I like stamps and cactus..."
+                                floatingLabelText="Tell us about you"
+                                multiLine={true}
+                                rows={2}
+                            />
                             {this.renderStepActions(2)}
                         </StepContent>
                     </Step>

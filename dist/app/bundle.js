@@ -64559,7 +64559,13 @@
 	
 	var _TextField2 = _interopRequireDefault(_TextField);
 	
+	var _IconButton = __webpack_require__(/*! material-ui/IconButton */ 459);
+	
+	var _IconButton2 = _interopRequireDefault(_IconButton);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -64592,12 +64598,19 @@
 	        }
 	
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-	            stepIndex: 0
+	            stepIndex: 1,
+	            mail: "",
+	            passwd: ""
 	        }, _this.handleNext = function () {
 	            var stepIndex = _this.state.stepIndex;
+	            var mail = _this.state.mail;
 	
 	            if (stepIndex < 2) {
 	                _this.setState({ stepIndex: stepIndex + 1 });
+	                console.log(_this.state.mail);
+	                console.log(_this.state.passwd);
+	            } else {
+	                console.log(mail);
 	            }
 	        }, _this.handlePrev = function () {
 	            var stepIndex = _this.state.stepIndex;
@@ -64631,12 +64644,23 @@
 	            );
 	        }
 	    }, {
+	        key: '_handleTextFieldChange',
+	        value: function _handleTextFieldChange(e) {
+	            this.setState(_defineProperty({}, e.target.name, e.target.value));
+	        }
+	    }, {
+	        key: '_handleKeyDown',
+	        value: function _handleKeyDown(event) {
+	            if (event.which === 13) {
+	                this.handleNext();
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
 	
 	            var stepIndex = this.state.stepIndex;
-	
 	
 	            return _react2.default.createElement(
 	                'div',
@@ -64663,11 +64687,19 @@
 	                            null,
 	                            _react2.default.createElement(_TextField2.default, {
 	                                hintText: 'john@doe.com',
-	                                floatingLabelText: 'Email'
+	                                floatingLabelText: 'Email',
+	                                name: 'mail',
+	                                value: this.state.mail,
+	                                onChange: this._handleTextFieldChange.bind(this)
 	                            }),
 	                            _react2.default.createElement(_TextField2.default, {
-	                                hintText: 'qwerty',
-	                                floatingLabelText: 'Password'
+	                                type: 'password',
+	                                hintText: '••••••••',
+	                                floatingLabelText: 'Password',
+	                                name: 'passwd',
+	                                value: this.state.passwd,
+	                                onChange: this._handleTextFieldChange.bind(this),
+	                                onKeyDown: this._handleKeyDown.bind(this)
 	                            }),
 	                            this.renderStepActions(0)
 	                        )
@@ -64680,16 +64712,16 @@
 	                            { onTouchTap: function onTouchTap() {
 	                                    return _this2.setState({ stepIndex: 1 });
 	                                } },
-	                            'Create an ad group'
+	                            'About you'
 	                        ),
 	                        _react2.default.createElement(
 	                            _Stepper.StepContent,
 	                            null,
-	                            _react2.default.createElement(
-	                                'p',
-	                                null,
-	                                'An ad group contains one or more ads which target a shared set of keywords.'
-	                            ),
+	                            'Your type',
+	                            _react2.default.createElement(_IconButton2.default, {
+	                                iconClassName: 'muidocs-icon-custom-github', tooltip: 'jdec',
+	                                tooltipPosition: 'bottom-center'
+	                            }),
 	                            this.renderStepActions(1)
 	                        )
 	                    ),
