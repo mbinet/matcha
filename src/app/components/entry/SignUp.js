@@ -1,27 +1,43 @@
-
-    import React from 'react';
-    import {
-    Step,
-    Stepper,
-    StepButton,
-    StepContent,
-} from 'material-ui/Stepper';
+import React from 'react';
+import {Step, Stepper, StepButton, StepContent} from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import FontAwesome from 'react-fontawesome';
 import Checkbox from 'material-ui/Checkbox'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import Request from "superagent";
+import { browserHistory } from "react-router";
 
 export class SignUp extends React.Component {
 
     state = {
-        stepIndex: 2,
+        stepIndex: 0,
+        name: "",
+        age: "",
         mail: "",
         passwd: "",
         sex: "",
         bio: "",
     };
+
+    handleEnd(state) {
+        var url = "http://46.101.198.52:3000/api/users/";
+        console.log(state);
+        Request.post(url)
+            .set('Content-Type', 'application/json')
+            .send({ name: this.state.name })
+            .send({ age: this.state.age })
+            .send({ mail: this.state.mail })
+            .send({ passwd: this.state.passwd })
+            .send({ sex: this.state.sex })
+            .send({ bio: this.state.bio })
+            .end((response) => {
+                console.log('inserted');
+                console.log(response);
+                browserHistory.push("/home", "jdec");
+            });
+    }
 
     handleNext = () => {
         const {stepIndex} = this.state;
@@ -43,7 +59,8 @@ export class SignUp extends React.Component {
                 break;
             }
             case 2 : {
-                console.log('FINISH');
+                console.log(this.state.bio);
+                this.handleEnd(this.state);
                 break;
             }
             default: {
@@ -51,6 +68,8 @@ export class SignUp extends React.Component {
             }
         }
     };
+
+
 
     handlePrev = () => {
         const {stepIndex} = this.state;
@@ -130,6 +149,20 @@ export class SignUp extends React.Component {
                         </StepButton>
                         <StepContent>
                             <TextField
+                                hintText="John"
+                                floatingLabelText="Name"
+                                name="name"
+                                value={this.state.name}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                            />
+                            <TextField
+                                hintText="18"
+                                floatingLabelText="Age"
+                                name="age"
+                                value={this.state.age}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                            />
+                            <TextField
                                 hintText="john@doe.com"
                                 floatingLabelText="Email"
                                 name="mail"
@@ -189,6 +222,10 @@ export class SignUp extends React.Component {
                                 floatingLabelText="Tell us about you"
                                 multiLine={true}
                                 rows={2}
+                                name="bio"
+                                value={this.state.bio}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                                onKeyDown={this._handleKeyDown.bind(this)}
                             />
                             {this.renderStepActions(2)}
                         </StepContent>
