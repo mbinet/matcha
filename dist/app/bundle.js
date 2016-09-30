@@ -71,7 +71,7 @@
 	
 	var _Home = __webpack_require__(/*! ./components/Home */ 406);
 	
-	var _User = __webpack_require__(/*! ./components/User */ 432);
+	var _Users = __webpack_require__(/*! ./components/Users */ 432);
 	
 	var _Profile = __webpack_require__(/*! ./components/Profile */ 439);
 	
@@ -113,7 +113,7 @@
 	                        _reactRouter.Route,
 	                        { path: "/", component: _Root.Root },
 	                        _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home.Home }),
-	                        _react2.default.createElement(_reactRouter.Route, { path: "user/:id", component: _User.User }),
+	                        _react2.default.createElement(_reactRouter.Route, { path: "user/:id", component: _Users.User }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "home", component: _Home.Home }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/:id", component: _Profile.Profile }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/update", component: _ProfileUpdate.ProfileUpdate }),
@@ -38848,9 +38848,9 @@
 
 /***/ },
 /* 432 */
-/*!************************************!*\
+/*!*************************************!*\
   !*** ./src/app/components/User.js ***!
-  \************************************/
+  \*************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64569,6 +64569,12 @@
 	
 	var _RadioButton = __webpack_require__(/*! material-ui/RadioButton */ 509);
 	
+	var _superagent = __webpack_require__(/*! superagent */ 433);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 172);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -64594,7 +64600,9 @@
 	        }
 	
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-	            stepIndex: 2,
+	            stepIndex: 0,
+	            name: "",
+	            age: "",
 	            mail: "",
 	            passwd: "",
 	            sex: "",
@@ -64623,7 +64631,8 @@
 	                    }
 	                case 2:
 	                    {
-	                        console.log('FINISH');
+	                        console.log(_this.state.bio);
+	                        _this.handleEnd(_this.state);
 	                        break;
 	                    }
 	                default:
@@ -64641,6 +64650,17 @@
 	    }
 	
 	    _createClass(SignUp, [{
+	        key: 'handleEnd',
+	        value: function handleEnd(state) {
+	            var url = "http://46.101.198.52:3000/api/users/";
+	            console.log(state);
+	            _superagent2.default.post(url).set('Content-Type', 'application/json').send({ name: this.state.name }).send({ age: this.state.age }).send({ mail: this.state.mail }).send({ passwd: this.state.passwd }).send({ sex: this.state.sex }).send({ bio: this.state.bio }).end(function (response) {
+	                console.log('inserted');
+	                console.log(response);
+	                _reactRouter.browserHistory.push("/home", "jdec");
+	            });
+	        }
+	    }, {
 	        key: 'renderStepActions',
 	        value: function renderStepActions(step) {
 	            return _react2.default.createElement(
@@ -64727,6 +64747,20 @@
 	                            _Stepper.StepContent,
 	                            null,
 	                            _react2.default.createElement(_TextField2.default, {
+	                                hintText: 'John',
+	                                floatingLabelText: 'Name',
+	                                name: 'name',
+	                                value: this.state.name,
+	                                onChange: this._handleTextFieldChange.bind(this)
+	                            }),
+	                            _react2.default.createElement(_TextField2.default, {
+	                                hintText: '18',
+	                                floatingLabelText: 'Age',
+	                                name: 'age',
+	                                value: this.state.age,
+	                                onChange: this._handleTextFieldChange.bind(this)
+	                            }),
+	                            _react2.default.createElement(_TextField2.default, {
 	                                hintText: 'john@doe.com',
 	                                floatingLabelText: 'Email',
 	                                name: 'mail',
@@ -64801,7 +64835,11 @@
 	                                hintText: 'Hi, I like stamps and cactus...',
 	                                floatingLabelText: 'Tell us about you',
 	                                multiLine: true,
-	                                rows: 2
+	                                rows: 2,
+	                                name: 'bio',
+	                                value: this.state.bio,
+	                                onChange: this._handleTextFieldChange.bind(this),
+	                                onKeyDown: this._handleKeyDown.bind(this)
 	                            }),
 	                            this.renderStepActions(2)
 	                        )

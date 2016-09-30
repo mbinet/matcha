@@ -2,6 +2,7 @@ import React from "react";
 import { browserHistory } from "react-router";
 import Request from "superagent";
 import _ from "lodash";
+import {Link} from "react-router";
 
 export class User extends React.Component {
 
@@ -29,7 +30,7 @@ export class User extends React.Component {
 
     render() {
         var users = _.map(this.state.users, (user) => {
-            return <li key={user._id}>{user.name}</li>;
+            return <li key={user._id}><Link to={"/profile/" + user._id} activeStyle={{color: "red"}}>{user.name}</Link></li>;
         });
         return (
             <div>

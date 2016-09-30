@@ -60,11 +60,8 @@ export class Profile extends React.Component {
         console.log("PUTE");
         return (
             <div className="">
-                <div className="row">
-                    <div className="col-xs-6 col-md-4">
-                        {/*<img src="http://placekitten.com/200/200" alt={name} className="img-circle img-responsive"/>*/}
-                    </div>
-                    <div className="col-xs-6 col-md-4">
+                <div className="row text-center center-block">
+                    <div className="col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered">
                         <h3 className="text-center text-uppercase">
                             {name} <small className="text-capitalize">{age}</small> <small><FontAwesome className="fa fa-mars" name=""/></small>
                         </h3>

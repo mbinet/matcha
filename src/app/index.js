@@ -21,7 +21,7 @@ class App extends React.Component {
                 <Router history={browserHistory}>
                     <Route path={"/"} component={Root}>
                         <IndexRoute component={Home} />
-                        <Route path={"user/:id"} component={User} />
+                        <Route path={"user"} component={User} />
                         <Route path={"home"} component={Home} />
                         <Route path={"profile/:id"} component={Profile} />
                         <Route path={"profile/update"} component={ProfileUpdate} />
