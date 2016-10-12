@@ -71,7 +71,7 @@
 	
 	var _Home = __webpack_require__(/*! ./components/Home */ 406);
 	
-	var _Users = __webpack_require__(/*! ./components/Users */ 432);
+	var _User = __webpack_require__(/*! ./components/User */ 432);
 	
 	var _Profile = __webpack_require__(/*! ./components/Profile */ 439);
 	
@@ -113,7 +113,7 @@
 	                        _reactRouter.Route,
 	                        { path: "/", component: _Root.Root },
 	                        _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home.Home }),
-	                        _react2.default.createElement(_reactRouter.Route, { path: "user/:id", component: _Users.User }),
+	                        _react2.default.createElement(_reactRouter.Route, { path: "user", component: _User.User }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "home", component: _Home.Home }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/:id", component: _Profile.Profile }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/update", component: _ProfileUpdate.ProfileUpdate }),
@@ -35817,7 +35817,7 @@
 	                        null,
 	                        _react2.default.createElement(
 	                            _reactRouter.Link,
-	                            { to: "/user/3", activeClassName: "active" },
+	                            { to: "/user", activeClassName: "active" },
 	                            "User"
 	                        )
 	                    ),
@@ -38848,9 +38848,9 @@
 
 /***/ },
 /* 432 */
-/*!*************************************!*\
+/*!************************************!*\
   !*** ./src/app/components/User.js ***!
-  \*************************************/
+  \************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38924,7 +38924,11 @@
 	                return _react2.default.createElement(
 	                    "li",
 	                    { key: user._id },
-	                    user.name
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: "/profile/" + user._id, activeStyle: { color: "red" } },
+	                        user.name
+	                    )
 	                );
 	            });
 	            return _react2.default.createElement(
@@ -57603,11 +57607,10 @@
 	                { className: "" },
 	                _react2.default.createElement(
 	                    "div",
-	                    { className: "row" },
-	                    _react2.default.createElement("div", { className: "col-xs-6 col-md-4" }),
+	                    { className: "row text-center center-block" },
 	                    _react2.default.createElement(
 	                        "div",
-	                        { className: "col-xs-6 col-md-4" },
+	                        { className: "col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered" },
 	                        _react2.default.createElement(
 	                            "h3",
 	                            { className: "text-center text-uppercase" },
