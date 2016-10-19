@@ -57585,8 +57585,26 @@
 	            return res;
 	        }
 	    }, {
+	        key: "getSex",
+	        value: function getSex(sex) {
+	            var res;
+	            switch (sex) {
+	                case "boy":
+	                    res = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "", alt: "mars", title: "men" });
+	                    break;
+	                case "girl":
+	                    res = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-venus", name: "", alt: "venus", title: "women" });
+	                    break;
+	                case "trans":
+	                    res = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-transgender", name: "", alt: "transgender", title: "trans" });
+	                    break;
+	            }
+	            return res;
+	        }
+	    }, {
 	        key: "render",
 	        value: function render() {
+	            var sex = this.getSex(this.state.user.sex);
 	            var name = this.state.user.name;
 	            var age = this.state.user.age;
 	            var style = { color: 'red' };
@@ -57601,7 +57619,6 @@
 	            );
 	            var icontext = [text, icon];
 	            console.log(typeof icon === "undefined" ? "undefined" : _typeof(icon));
-	            console.log("PUTE");
 	            return _react2.default.createElement(
 	                "div",
 	                { className: "" },
@@ -57614,6 +57631,19 @@
 	                        _react2.default.createElement(
 	                            "h3",
 	                            { className: "text-center text-uppercase" },
+	                            name,
+	                            " ",
+	                            _react2.default.createElement(
+	                                "small",
+	                                { className: "text-capitalize" },
+	                                age
+	                            ),
+	                            " ",
+	                            _react2.default.createElement(
+	                                "small",
+	                                null,
+	                                _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" })
+	                            ),
 	                            name,
 	                            " ",
 	                            _react2.default.createElement(
@@ -64801,7 +64831,7 @@
 	                                //style={{marginLeft: '12px'}}
 	                                , label: 'boy',
 	                                style: { margin: '12px' },
-	                                onTouchTap: this.handleButtons.bind(this, 'boys')
+	                                onTouchTap: this.handleButtons.bind(this, 'boy')
 	                            }),
 	                            _react2.default.createElement(_RaisedButton2.default, {
 	                                secondary: true,
@@ -64809,7 +64839,7 @@
 	                                //style={{marginLeft: '12px'}}
 	                                , label: 'girl',
 	                                style: { margin: '12px' },
-	                                onTouchTap: this.handleButtons.bind(this, 'girls')
+	                                onTouchTap: this.handleButtons.bind(this, 'girl')
 	                            }),
 	                            _react2.default.createElement(_RaisedButton2.default, {
 	                                'default': true,

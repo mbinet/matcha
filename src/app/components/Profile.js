@@ -47,9 +47,27 @@ export class Profile extends React.Component {
         return res;
     }
 
+    getSex(sex) {
+        var res;
+        switch (sex) {
+            case "boy":
+                res = <FontAwesome className='fa fa-mars' name='' alt='mars' title='men'/>
+                break;
+            case "girl":
+                res = <FontAwesome className='fa fa-venus' name='' alt='venus' title='women'/>
+                break;
+            case "trans":
+                res = <FontAwesome className='fa fa-transgender' name='' alt='transgender' title='trans'/>
+                break;
+        }
+        return res
+    }
+
     render() {
+        var sex = this.getSex(this.state.user.sex);
         var name = this.state.user.name;
         var age = this.state.user.age;
+        var bio = this.state.user.bio;
         var style = {color: 'red'};
         var like = <FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>;
         var mail = <FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>;
@@ -57,13 +75,12 @@ export class Profile extends React.Component {
         var text = <div>From Paris | interested in <FontAwesome className='fa fa-mars' name=''/></div>;
         var icontext = [text, icon];
         console.log(typeof icon);
-        console.log("PUTE");
         return (
             <div className="">
                 <div className="row text-center center-block">
                     <div className="col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered">
                         <h3 className="text-center text-uppercase">
-                            {name} <small className="text-capitalize">{age}</small> <small><FontAwesome className="fa fa-mars" name=""/></small>
+                            {name} <small className="text-capitalize">{age}</small> <small>{sex}</small>
                         </h3>
                         <hr />
                         <p className="text-center"><small> ID: {this.props.params.id}</small></p>
@@ -88,10 +105,7 @@ export class Profile extends React.Component {
                     <Card>
                         <CardText>
                             <h4>A few words</h4>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+                            {bio}
                         </CardText>
                     </Card>
                 </div>

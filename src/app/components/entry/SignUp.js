@@ -192,7 +192,7 @@ export class SignUp extends React.Component {
                                 //style={{marginLeft: '12px'}}
                                 label={'boy'}
                                 style={{margin: '12px'}}
-                                onTouchTap={this.handleButtons.bind(this, 'boys')}
+                                onTouchTap={this.handleButtons.bind(this, 'boy')}
                             />
                             <RaisedButton
                                 secondary ={true}
@@ -200,7 +200,7 @@ export class SignUp extends React.Component {
                                 //style={{marginLeft: '12px'}}
                                 label={'girl'}
                                 style={{margin: '12px'}}
-                                onTouchTap={this.handleButtons.bind(this, 'girls')}
+                                onTouchTap={this.handleButtons.bind(this, 'girl')}
                             />
                             <RaisedButton
                                 default ={true}
