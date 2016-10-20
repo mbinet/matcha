@@ -30,7 +30,12 @@ export class User extends React.Component {
 
     render() {
         var users = _.map(this.state.users, (user) => {
-            return <li key={user._id}><Link to={"/profile/" + user._id} activeStyle={{color: "red"}}>{user.name}</Link></li>;
+            return (
+                <li key={user._id}>
+                    <Link to={"/profile/" + user._id} activeStyle={{color: "red"}}>{user.name}</Link>
+                    <span> | </span>
+                    <Link to={"/profile/update/" + user._id} activeStyle={{color: "red"}}>Edit</Link>
+                </li>)
         });
         return (
             <div>

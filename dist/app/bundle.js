@@ -57607,6 +57607,7 @@
 	            var sex = this.getSex(this.state.user.sex);
 	            var name = this.state.user.name;
 	            var age = this.state.user.age;
+	            var bio = this.state.user.bio;
 	            var style = { color: 'red' };
 	            var like = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-heartbeat", name: "", style: { color: 'red' } });
 	            var mail = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-envelope-o", name: "", style: { color: 'red' } });
@@ -57642,20 +57643,7 @@
 	                            _react2.default.createElement(
 	                                "small",
 	                                null,
-	                                _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" })
-	                            ),
-	                            name,
-	                            " ",
-	                            _react2.default.createElement(
-	                                "small",
-	                                { className: "text-capitalize" },
-	                                age
-	                            ),
-	                            " ",
-	                            _react2.default.createElement(
-	                                "small",
-	                                null,
-	                                _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" })
+	                                sex
 	                            )
 	                        ),
 	                        _react2.default.createElement("hr", null),
@@ -57708,7 +57696,7 @@
 	                                null,
 	                                "A few words"
 	                            ),
-	                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi. Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque. Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio."
+	                            bio
 	                        )
 	                    )
 	                ),
