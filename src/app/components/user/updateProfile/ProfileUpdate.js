@@ -8,13 +8,18 @@ import _ from 'lodash';
 // import {MyChip} from "./user/MyChip"
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
+import update from 'react-addons-update';
+import {orange500, blue500} from 'material-ui/styles/colors';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 export class ProfileUpdate extends React.Component {
 
     constructor() {
         super();
+        // this.setState({canSave: 'true'});
         this.state = {
-            user: {}
+            user: {},
+            canSave: true
         };
     }
 
@@ -28,9 +33,27 @@ export class ProfileUpdate extends React.Component {
         });
     }
 
+    handleEnd() {
+        var url = "http://46.101.198.52:3000/api/users/" + this.props.params.id;
+        console.log(this.state);
+        console.log(url);
+        Request.put(url)
+            .set('Content-Type', 'application/json')
+            .send({ name: this.state.user.name })
+            .send({ age: this.state.user.age })
+            .send({ mail: this.state.user.mail })
+            .send({ bio: this.state.user.bio })
+            .end((response) => {
+                console.log('inserted');
+                console.log(response);
+                // browserHistory.push("/home", "jdec");
+            });
+    }
+
     _handleTextFieldChange(e) {
         this.setState({
-            [e.target.user.name]: e.target.value
+            user: update(this.state.user, {[e.target.name]: {$set: e.target.value}}),
+            canSave: false
         });
     }
 
@@ -45,20 +68,63 @@ export class ProfileUpdate extends React.Component {
         var text = <div>From Paris | interested in <FontAwesome className='fa fa-mars' name=''/></div>;
         var icontext = [text, icon];
         console.log(typeof icon);
+        const styles = {
+            errorStyle: {
+                textAlign: "left",
+            },
+            underlineStyle: {
+                borderColor: orange500,
+            },
+            floatingLabelStyle: {
+                color: orange500,
+            },
+            floatingLabelFocusStyle: {
+                color: blue500,
+            },
+        };
         return (
             <div className="">
-                <div className="row text-center center-block">
-                    <div className="col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered">
-                        <h3 className="text-center text-uppercase">
+                <div className="">
+                    <div className="">
                             <TextField
                                 floatingLabelText="Name"
                                 name="name"
                                 value={this.state.user.name}
                                 onChange={this._handleTextFieldChange.bind(this)}
                             />
-                            {name}
-                            <small className="text-capitalize">{age}</small> <small></small>
-                        </h3>
+                            <TextField
+                                floatingLabelText="Age"
+                                name="age"
+                                value={this.state.user.age}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                            />
+                            <TextField
+                                floatingLabelText="Mail"
+                                name="mail"
+                                value={this.state.user.mail}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                            />
+                        <br/>
+                        <TextField
+                            hintText="Hi, I like stamps and cactus..."
+                            floatingLabelText="Tell us about you"
+                            multiLine={true}
+                            rows={2}
+                            name="bio"
+                            value={this.state.user.bio}
+                            onChange={this._handleTextFieldChange.bind(this)}
+                        />
+                        <br/>
+                        <RaisedButton
+                            label="Save"
+                            primary={true}
+                            disabled={this.state.canSave}
+                            id="mdrlol"
+                            onTouchTap={() => this.handleEnd()}
+                        />
+
+
+
                         <hr />
                         <p className="text-center"><small> ID: {this.props.params.id}</small></p>
                     </div>
@@ -81,7 +147,7 @@ export class ProfileUpdate extends React.Component {
                     <Card>
                         <CardText>
                             <h4>A few words</h4>
-                            {bio}
+
                         </CardText>
                     </Card>
                 </div>
