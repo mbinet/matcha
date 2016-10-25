@@ -83,9 +83,13 @@ export class ProfileUpdate extends React.Component {
             },
         };
         return (
-            <div className="">
-                <div className="">
-                    <div className="">
+            <div>
+                <div className="row">
+                    <Card>
+                        <CardHeader
+                            subtitle="lol"
+                        />
+                        <CardText>
                             <TextField
                                 floatingLabelText="Name"
                                 name="name"
@@ -104,86 +108,29 @@ export class ProfileUpdate extends React.Component {
                                 value={this.state.user.mail}
                                 onChange={this._handleTextFieldChange.bind(this)}
                             />
+                            <br/>
+                            <TextField
+                                hintText="Hi, I like stamps and cactus..."
+                                floatingLabelText="Tell us about you"
+                                multiLine={true}
+                                rows={2}
+                                name="bio"
+                                value={this.state.user.bio}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                            />
+                        </CardText>
                         <br/>
-                        <TextField
-                            hintText="Hi, I like stamps and cactus..."
-                            floatingLabelText="Tell us about you"
-                            multiLine={true}
-                            rows={2}
-                            name="bio"
-                            value={this.state.user.bio}
-                            onChange={this._handleTextFieldChange.bind(this)}
-                        />
-                        <br/>
-                        <RaisedButton
+
+                        <CardActions style={{textAlign: 'center'}}>
+                            <FlatButton label={like} /><RaisedButton
                             label="Save"
                             primary={true}
                             disabled={this.state.canSave}
                             id="mdrlol"
                             onTouchTap={() => this.handleEnd()}
                         />
-
-
-
-                        <hr />
-                        <p className="text-center"><small> ID: {this.props.params.id}</small></p>
-                    </div>
-                </div>
-                <div className="row">
-                    <Card>
-                        <CardHeader
-                        />
-                        <CardMedia>
-                            <img src="http://placekitten.com/800/250" alt=""/>
-                        </CardMedia>
-                        <CardActions style={{textAlign: 'center'}}>
-                            <FlatButton label={like} />
-                            <FlatButton label={<FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>} />
                         </CardActions>
                     </Card>
-                </div>
-                <br/>
-                <div className="row">
-                    <Card>
-                        <CardText>
-                            <h4>A few words</h4>
-
-                        </CardText>
-                    </Card>
-                </div>
-                <br />
-                <div className="row">
-                    <div className="">
-                        <Card>
-                            <CardText>
-                            </CardText>
-                        </Card>
-                    </div>
-                </div>
-                <br/>
-                <div className="row">
-                    <div className="">
-                        <Card>
-                            <CardText>
-                                <Table>
-                                    <TableBody displayRowCheckbox={false}>
-                                        <TableRow>
-                                            <TableRowColumn>Height</TableRowColumn>
-                                            <TableRowColumn>180 cm</TableRowColumn>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableRowColumn>Weight</TableRowColumn>
-                                            <TableRowColumn>79 kg</TableRowColumn>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableRowColumn>Eyes</TableRowColumn>
-                                            <TableRowColumn>Blue</TableRowColumn>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </CardText>
-                        </Card>
-                    </div>
                 </div>
             </div>
         )
