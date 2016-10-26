@@ -23,7 +23,12 @@ export class Profile extends React.Component {
     constructor() {
         super();
         this.state = {
-            user: {}
+            user: {
+                name: "",
+                age: "",
+                mail: "",
+                bio: ""
+            }
         };
     }
 

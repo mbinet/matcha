@@ -64694,180 +64694,62 @@
 	            };
 	            return _react2.default.createElement(
 	                "div",
-	                { className: "" },
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "" },
-	                        _react2.default.createElement(_TextField2.default, {
-	                            floatingLabelText: "Name",
-	                            name: "name",
-	                            value: this.state.user.name,
-	                            onChange: this._handleTextFieldChange.bind(this)
-	                        }),
-	                        _react2.default.createElement(_TextField2.default, {
-	                            floatingLabelText: "Age",
-	                            name: "age",
-	                            value: this.state.user.age,
-	                            onChange: this._handleTextFieldChange.bind(this)
-	                        }),
-	                        _react2.default.createElement(_TextField2.default, {
-	                            floatingLabelText: "Mail",
-	                            name: "mail",
-	                            value: this.state.user.mail,
-	                            onChange: this._handleTextFieldChange.bind(this)
-	                        }),
-	                        _react2.default.createElement("br", null),
-	                        _react2.default.createElement(_TextField2.default, {
-	                            hintText: "Hi, I like stamps and cactus...",
-	                            floatingLabelText: "Tell us about you",
-	                            multiLine: true,
-	                            rows: 2,
-	                            name: "bio",
-	                            value: this.state.user.bio,
-	                            onChange: this._handleTextFieldChange.bind(this)
-	                        }),
-	                        _react2.default.createElement("br", null),
-	                        _react2.default.createElement(_RaisedButton2.default, {
-	                            label: "Save",
-	                            primary: true,
-	                            disabled: this.state.canSave,
-	                            id: "mdrlol",
-	                            onTouchTap: function onTouchTap() {
-	                                return _this3.handleEnd();
-	                            }
-	                        }),
-	                        _react2.default.createElement("hr", null),
-	                        _react2.default.createElement(
-	                            "p",
-	                            { className: "text-center" },
-	                            _react2.default.createElement(
-	                                "small",
-	                                null,
-	                                " ID: ",
-	                                this.props.params.id
-	                            )
-	                        )
-	                    )
-	                ),
+	                null,
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "row" },
 	                    _react2.default.createElement(
 	                        _Card.Card,
 	                        null,
-	                        _react2.default.createElement(_Card.CardHeader, null),
+	                        _react2.default.createElement(_Card.CardHeader, {
+	                            subtitle: "lol"
+	                        }),
 	                        _react2.default.createElement(
-	                            _Card.CardMedia,
+	                            _Card.CardText,
 	                            null,
-	                            _react2.default.createElement("img", { src: "http://placekitten.com/800/250", alt: "" })
+	                            _react2.default.createElement(_TextField2.default, {
+	                                floatingLabelText: "Name",
+	                                name: "name",
+	                                value: this.state.user.name,
+	                                onChange: this._handleTextFieldChange.bind(this)
+	                            }),
+	                            _react2.default.createElement(_TextField2.default, {
+	                                floatingLabelText: "Age",
+	                                name: "age",
+	                                value: this.state.user.age,
+	                                onChange: this._handleTextFieldChange.bind(this)
+	                            }),
+	                            _react2.default.createElement(_TextField2.default, {
+	                                floatingLabelText: "Mail",
+	                                name: "mail",
+	                                value: this.state.user.mail,
+	                                onChange: this._handleTextFieldChange.bind(this)
+	                            }),
+	                            _react2.default.createElement("br", null),
+	                            _react2.default.createElement(_TextField2.default, {
+	                                hintText: "Hi, I like stamps and cactus...",
+	                                floatingLabelText: "Tell us about you",
+	                                multiLine: true,
+	                                rows: 2,
+	                                name: "bio",
+	                                value: this.state.user.bio,
+	                                onChange: this._handleTextFieldChange.bind(this)
+	                            })
 	                        ),
+	                        _react2.default.createElement("br", null),
 	                        _react2.default.createElement(
 	                            _Card.CardActions,
 	                            { style: { textAlign: 'center' } },
 	                            _react2.default.createElement(_FlatButton2.default, { label: like }),
-	                            _react2.default.createElement(_FlatButton2.default, { label: _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-envelope-o", name: "", style: { color: 'red' } }) })
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement("br", null),
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "row" },
-	                    _react2.default.createElement(
-	                        _Card.Card,
-	                        null,
-	                        _react2.default.createElement(
-	                            _Card.CardText,
-	                            null,
-	                            _react2.default.createElement(
-	                                "h4",
-	                                null,
-	                                "A few words"
-	                            )
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement("br", null),
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "row" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "" },
-	                        _react2.default.createElement(
-	                            _Card.Card,
-	                            null,
-	                            _react2.default.createElement(_Card.CardText, null)
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement("br", null),
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "row" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "" },
-	                        _react2.default.createElement(
-	                            _Card.Card,
-	                            null,
-	                            _react2.default.createElement(
-	                                _Card.CardText,
-	                                null,
-	                                _react2.default.createElement(
-	                                    _Table.Table,
-	                                    null,
-	                                    _react2.default.createElement(
-	                                        _Table.TableBody,
-	                                        { displayRowCheckbox: false },
-	                                        _react2.default.createElement(
-	                                            _Table.TableRow,
-	                                            null,
-	                                            _react2.default.createElement(
-	                                                _Table.TableRowColumn,
-	                                                null,
-	                                                "Height"
-	                                            ),
-	                                            _react2.default.createElement(
-	                                                _Table.TableRowColumn,
-	                                                null,
-	                                                "180 cm"
-	                                            )
-	                                        ),
-	                                        _react2.default.createElement(
-	                                            _Table.TableRow,
-	                                            null,
-	                                            _react2.default.createElement(
-	                                                _Table.TableRowColumn,
-	                                                null,
-	                                                "Weight"
-	                                            ),
-	                                            _react2.default.createElement(
-	                                                _Table.TableRowColumn,
-	                                                null,
-	                                                "79 kg"
-	                                            )
-	                                        ),
-	                                        _react2.default.createElement(
-	                                            _Table.TableRow,
-	                                            null,
-	                                            _react2.default.createElement(
-	                                                _Table.TableRowColumn,
-	                                                null,
-	                                                "Eyes"
-	                                            ),
-	                                            _react2.default.createElement(
-	                                                _Table.TableRowColumn,
-	                                                null,
-	                                                "Blue"
-	                                            )
-	                                        )
-	                                    )
-	                                )
-	                            )
+	                            _react2.default.createElement(_RaisedButton2.default, {
+	                                label: "Save",
+	                                primary: true,
+	                                disabled: this.state.canSave,
+	                                id: "mdrlol",
+	                                onTouchTap: function onTouchTap() {
+	                                    return _this3.handleEnd();
+	                                }
+	                            })
 	                        )
 	                    )
 	                )

@@ -2,7 +2,7 @@ import React from "react";
 import Request from "superagent";
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import FontAwesome from 'react-fontawesome';
 import _ from 'lodash';
 // import {MyChip} from "./user/MyChip"
@@ -11,6 +11,7 @@ import TextField from 'material-ui/TextField';
 import update from 'react-addons-update';
 import {orange500, blue500} from 'material-ui/styles/colors';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import {Router, Route, browserHistory, IndexRoute} from "react-router";
 
 export class ProfileUpdate extends React.Component {
 
@@ -18,25 +19,28 @@ export class ProfileUpdate extends React.Component {
         super();
         // this.setState({canSave: 'true'});
         this.state = {
-            user: {},
+            user: {
+                name: "",
+                age: "",
+                mail: "",
+                bio: ""
+            },
             canSave: true
         };
     }
 
     componentWillMount() {
         var url = "http://46.101.198.52:3000/api/users/" + this.props.params.id;
-        console.log(url);
         Request.get(url).then((response) => {
             this.setState({
-                user: response.body.user
+                user: response.body.user,
+                canSave: true
             })
         });
     }
 
     handleEnd() {
         var url = "http://46.101.198.52:3000/api/users/" + this.props.params.id;
-        console.log(this.state);
-        console.log(url);
         Request.put(url)
             .set('Content-Type', 'application/json')
             .send({ name: this.state.user.name })
@@ -44,8 +48,7 @@ export class ProfileUpdate extends React.Component {
             .send({ mail: this.state.user.mail })
             .send({ bio: this.state.user.bio })
             .end((response) => {
-                console.log('inserted');
-                console.log(response);
+                console.log('modified');
                 // browserHistory.push("/home", "jdec");
             });
     }
@@ -67,7 +70,6 @@ export class ProfileUpdate extends React.Component {
         var icon = <FontAwesome className='fa fa-mars' name=''/>;
         var text = <div>From Paris | interested in <FontAwesome className='fa fa-mars' name=''/></div>;
         var icontext = [text, icon];
-        console.log(typeof icon);
         const styles = {
             errorStyle: {
                 textAlign: "left",
@@ -86,49 +88,55 @@ export class ProfileUpdate extends React.Component {
             <div>
                 <div className="row">
                     <Card>
-                        <CardHeader
-                            subtitle="lol"
-                        />
-                        <CardText>
-                            <TextField
-                                floatingLabelText="Name"
-                                name="name"
-                                value={this.state.user.name}
-                                onChange={this._handleTextFieldChange.bind(this)}
-                            />
-                            <TextField
-                                floatingLabelText="Age"
-                                name="age"
-                                value={this.state.user.age}
-                                onChange={this._handleTextFieldChange.bind(this)}
-                            />
-                            <TextField
-                                floatingLabelText="Mail"
-                                name="mail"
-                                value={this.state.user.mail}
-                                onChange={this._handleTextFieldChange.bind(this)}
-                            />
-                            <br/>
-                            <TextField
-                                hintText="Hi, I like stamps and cactus..."
-                                floatingLabelText="Tell us about you"
-                                multiLine={true}
-                                rows={2}
-                                name="bio"
-                                value={this.state.user.bio}
-                                onChange={this._handleTextFieldChange.bind(this)}
-                            />
-                        </CardText>
-                        <br/>
+                        <CardTitle title="Update your Profile" />
+                        <div className="text-center">
+                            <CardText>
+                                <TextField
+                                    floatingLabelText="Name"
+                                    name="name"
+                                    value={this.state.user.name}
+                                    onChange={this._handleTextFieldChange.bind(this)}
+                                />
+                                <br />
+                                <TextField
+                                    floatingLabelText="Age"
+                                    name="age"
+                                    value={this.state.user.age}
+                                    onChange={this._handleTextFieldChange.bind(this)}
+                                />
+                                <br />
+                                <TextField
+                                    floatingLabelText="Mail"
+                                    name="mail"
+                                    value={this.state.user.mail}
+                                    onChange={this._handleTextFieldChange.bind(this)}
+                                />
+                                <br/>
+                                <TextField
+                                    hintText="Hi, I like stamps and cactus..."
+                                    floatingLabelText="Tell us about you"
+                                    multiLine={true}
+                                    rows={2}
+                                    name="bio"
+                                    value={this.state.user.bio}
+                                    onChange={this._handleTextFieldChange.bind(this)}
+                                    style={{textAlign: "left"}} // so the FloatingLabelText doesn't stay centered
+                                />
+                            </CardText>
+                        </div>
 
                         <CardActions style={{textAlign: 'center'}}>
-                            <FlatButton label={like} /><RaisedButton
-                            label="Save"
-                            primary={true}
-                            disabled={this.state.canSave}
-                            id="mdrlol"
-                            onTouchTap={() => this.handleEnd()}
-                        />
+                            <RaisedButton
+                                label="Cancel"
+                                onTouchTap={() => this.componentWillMount()} // gets data from server again
+                            />
+                            <RaisedButton
+                                label="Save"
+                                primary={true}
+                                disabled={this.state.canSave}
+                                id="mdrlol"
+                                onTouchTap={() => this.handleEnd()}
+                            />
                         </CardActions>
                     </Card>
                 </div>
