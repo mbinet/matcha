@@ -38902,7 +38902,7 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            var url = "http://46.101.198.52:3000/api/users";
+	            var url = "http://54.93.182.167:3000/api/users";
 	            _superagent2.default.get(url).then(function (response) {
 	                _this2.setState({
 	                    users: response.body.users
@@ -57553,7 +57553,12 @@
 	        var _this = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this));
 	
 	        _this.state = {
-	            user: {}
+	            user: {
+	                name: "",
+	                age: "",
+	                mail: "",
+	                bio: ""
+	            }
 	        };
 	        return _this;
 	    }
@@ -57563,7 +57568,7 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            var url = "http://46.101.198.52:3000/api/users/" + this.props.params.id;
+	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            console.log(url);
 	            _superagent2.default.get(url).then(function (response) {
 	                _this2.setState({
@@ -64551,8 +64556,6 @@
 	});
 	exports.ProfileUpdate = undefined;
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(/*! react */ 1);
@@ -64597,6 +64600,8 @@
 	
 	var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
 	
+	var _reactRouter = __webpack_require__(/*! react-router */ 172);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -64619,7 +64624,12 @@
 	        var _this = _possibleConstructorReturn(this, (ProfileUpdate.__proto__ || Object.getPrototypeOf(ProfileUpdate)).call(this));
 	
 	        _this.state = {
-	            user: {},
+	            user: {
+	                name: "",
+	                age: "",
+	                mail: "",
+	                bio: ""
+	            },
 	            canSave: true
 	        };
 	        return _this;
@@ -64630,23 +64640,20 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            var url = "http://46.101.198.52:3000/api/users/" + this.props.params.id;
-	            console.log(url);
+	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            _superagent2.default.get(url).then(function (response) {
 	                _this2.setState({
-	                    user: response.body.user
+	                    user: response.body.user,
+	                    canSave: true
 	                });
 	            });
 	        }
 	    }, {
 	        key: "handleEnd",
 	        value: function handleEnd() {
-	            var url = "http://46.101.198.52:3000/api/users/" + this.props.params.id;
-	            console.log(this.state);
-	            console.log(url);
+	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            _superagent2.default.put(url).set('Content-Type', 'application/json').send({ name: this.state.user.name }).send({ age: this.state.user.age }).send({ mail: this.state.user.mail }).send({ bio: this.state.user.bio }).end(function (response) {
-	                console.log('inserted');
-	                console.log(response);
+	                console.log('modified');
 	                // browserHistory.push("/home", "jdec");
 	            });
 	        }
@@ -64677,7 +64684,6 @@
 	                _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" })
 	            );
 	            var icontext = [text, icon];
-	            console.log(typeof icon === "undefined" ? "undefined" : _typeof(icon));
 	            var styles = {
 	                errorStyle: {
 	                    textAlign: "left"
@@ -64701,46 +64707,55 @@
 	                    _react2.default.createElement(
 	                        _Card.Card,
 	                        null,
-	                        _react2.default.createElement(_Card.CardHeader, {
-	                            subtitle: "lol"
-	                        }),
+	                        _react2.default.createElement(_Card.CardTitle, { title: "Update your Profile" }),
 	                        _react2.default.createElement(
-	                            _Card.CardText,
-	                            null,
-	                            _react2.default.createElement(_TextField2.default, {
-	                                floatingLabelText: "Name",
-	                                name: "name",
-	                                value: this.state.user.name,
-	                                onChange: this._handleTextFieldChange.bind(this)
-	                            }),
-	                            _react2.default.createElement(_TextField2.default, {
-	                                floatingLabelText: "Age",
-	                                name: "age",
-	                                value: this.state.user.age,
-	                                onChange: this._handleTextFieldChange.bind(this)
-	                            }),
-	                            _react2.default.createElement(_TextField2.default, {
-	                                floatingLabelText: "Mail",
-	                                name: "mail",
-	                                value: this.state.user.mail,
-	                                onChange: this._handleTextFieldChange.bind(this)
-	                            }),
-	                            _react2.default.createElement("br", null),
-	                            _react2.default.createElement(_TextField2.default, {
-	                                hintText: "Hi, I like stamps and cactus...",
-	                                floatingLabelText: "Tell us about you",
-	                                multiLine: true,
-	                                rows: 2,
-	                                name: "bio",
-	                                value: this.state.user.bio,
-	                                onChange: this._handleTextFieldChange.bind(this)
-	                            })
+	                            "div",
+	                            { className: "text-center" },
+	                            _react2.default.createElement(
+	                                _Card.CardText,
+	                                null,
+	                                _react2.default.createElement(_TextField2.default, {
+	                                    floatingLabelText: "Name",
+	                                    name: "name",
+	                                    value: this.state.user.name,
+	                                    onChange: this._handleTextFieldChange.bind(this)
+	                                }),
+	                                _react2.default.createElement("br", null),
+	                                _react2.default.createElement(_TextField2.default, {
+	                                    floatingLabelText: "Age",
+	                                    name: "age",
+	                                    value: this.state.user.age,
+	                                    onChange: this._handleTextFieldChange.bind(this)
+	                                }),
+	                                _react2.default.createElement("br", null),
+	                                _react2.default.createElement(_TextField2.default, {
+	                                    floatingLabelText: "Mail",
+	                                    name: "mail",
+	                                    value: this.state.user.mail,
+	                                    onChange: this._handleTextFieldChange.bind(this)
+	                                }),
+	                                _react2.default.createElement("br", null),
+	                                _react2.default.createElement(_TextField2.default, {
+	                                    hintText: "Hi, I like stamps and cactus...",
+	                                    floatingLabelText: "Tell us about you",
+	                                    multiLine: true,
+	                                    rows: 2,
+	                                    name: "bio",
+	                                    value: this.state.user.bio,
+	                                    onChange: this._handleTextFieldChange.bind(this),
+	                                    style: { textAlign: "left" } // so the FloatingLabelText doesn't stay centered
+	                                })
+	                            )
 	                        ),
-	                        _react2.default.createElement("br", null),
 	                        _react2.default.createElement(
 	                            _Card.CardActions,
 	                            { style: { textAlign: 'center' } },
-	                            _react2.default.createElement(_FlatButton2.default, { label: like }),
+	                            _react2.default.createElement(_RaisedButton2.default, {
+	                                label: "Cancel",
+	                                onTouchTap: function onTouchTap() {
+	                                    return _this3.componentWillMount();
+	                                } // gets data from server again
+	                            }),
 	                            _react2.default.createElement(_RaisedButton2.default, {
 	                                label: "Save",
 	                                primary: true,
@@ -66575,7 +66590,7 @@
 	    _createClass(SignUp, [{
 	        key: 'handleEnd',
 	        value: function handleEnd(state) {
-	            var url = "http://46.101.198.52:3000/api/users/";
+	            var url = "http://54.93.182.167:3000/api/users/";
 	            console.log(state);
 	            _superagent2.default.post(url).set('Content-Type', 'application/json').send({ name: this.state.name }).send({ age: this.state.age }).send({ mail: this.state.mail }).send({ passwd: this.state.passwd }).send({ sex: this.state.sex }).send({ bio: this.state.bio }).end(function (response) {
 	                console.log('inserted');

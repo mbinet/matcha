@@ -33,7 +33,7 @@ export class Profile extends React.Component {
     }
 
     componentWillMount() {
-        var url = "http://46.101.198.52:3000/api/users/" + this.props.params.id;
+        var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
         console.log(url);
         Request.get(url).then((response) => {
             this.setState({

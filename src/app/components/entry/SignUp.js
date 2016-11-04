@@ -22,7 +22,7 @@ export class SignUp extends React.Component {
     };
 
     handleEnd(state) {
-        var url = "http://46.101.198.52:3000/api/users/";
+        var url = "http://54.93.182.167:3000/api/users/";
         console.log(state);
         Request.post(url)
             .set('Content-Type', 'application/json')

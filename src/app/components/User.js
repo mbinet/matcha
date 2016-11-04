@@ -13,7 +13,7 @@ export class User extends React.Component {
     }
 
     componentWillMount() {
-        var url = "http://46.101.198.52:3000/api/users";
+        var url = "http://54.93.182.167:3000/api/users";
         Request.get(url).then((response) => {
             this.setState({
                 users: response.body.users
