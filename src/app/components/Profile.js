@@ -7,6 +7,7 @@ import FontAwesome from 'react-fontawesome';
 import _ from 'lodash';
 import {MyChip} from "./user/MyChip"
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import update from 'react-addons-update';
 
 const styles = {
     chip: {
@@ -27,18 +28,22 @@ export class Profile extends React.Component {
                 name: "",
                 age: "",
                 mail: "",
+                photo: "",
                 bio: ""
             }
         };
     }
 
     componentWillMount() {
-        var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-        console.log(url);
-        Request.get(url).then((response) => {
+        var urld
+            = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
+            Request.get(url).then((response) => {
+                this.setState({
+                    user: response.body.user,
+                });
             this.setState({
-                user: response.body.user
-            })
+                user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
+            });
         });
     }
 
@@ -72,6 +77,7 @@ export class Profile extends React.Component {
         var sex = this.getSex(this.state.user.sex);
         var name = this.state.user.name;
         var age = this.state.user.age;
+        var photo = this.state.user.photo;
         var bio = this.state.user.bio;
         var style = {color: 'red'};
         var like = <FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>;
@@ -79,7 +85,6 @@ export class Profile extends React.Component {
         var icon = <FontAwesome className='fa fa-mars' name=''/>;
         var text = <div>From Paris | interested in <FontAwesome className='fa fa-mars' name=''/></div>;
         var icontext = [text, icon];
-        console.log(typeof icon);
         return (
             <div className="">
                 <div className="row text-center center-block">
@@ -97,7 +102,9 @@ export class Profile extends React.Component {
                             subtitle={this.getLove()}
                         />
                         <CardMedia>
-                            <img src="http://placekitten.com/800/250" alt=""/>
+                            {/*<img src="http://placekitten.com/800/250" alt=""/>*/}
+                            <img src={photo} alt=""/>
+
                         </CardMedia>
                         <CardActions style={{textAlign: 'center'}}>
                             <FlatButton label={like} />
