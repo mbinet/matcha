@@ -75,11 +75,11 @@
 	
 	var _Profile = __webpack_require__(/*! ./components/Profile */ 439);
 	
-	var _ProfileUpdate = __webpack_require__(/*! ./components/user/updateProfile/ProfileUpdate */ 491);
+	var _ProfileUpdate = __webpack_require__(/*! ./components/user/updateProfile/ProfileUpdate */ 493);
 	
-	var _SignUp = __webpack_require__(/*! ./components/entry/SignUp */ 508);
+	var _SignUp = __webpack_require__(/*! ./components/entry/SignUp */ 512);
 	
-	var _LogIn = __webpack_require__(/*! ./components/entry/LogIn */ 524);
+	var _LogIn = __webpack_require__(/*! ./components/entry/LogIn */ 528);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -57492,8 +57492,6 @@
 	});
 	exports.Profile = undefined;
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(/*! react */ 1);
@@ -57525,6 +57523,10 @@
 	var _MyChip = __webpack_require__(/*! ./user/MyChip */ 472);
 	
 	var _Table = __webpack_require__(/*! material-ui/Table */ 476);
+	
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
+	
+	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -57569,11 +57571,13 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-	            console.log(url);
+	            var urld = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            _superagent2.default.get(url).then(function (response) {
 	                _this2.setState({
 	                    user: response.body.user
+	                });
+	                _this2.setState({
+	                    user: (0, _reactAddonsUpdate2.default)(_this2.state.user, { photo: { $set: "https://matcha-bucket.s3.amazonaws.com/" + _this2.state.user.photo } })
 	                });
 	            });
 	        }
@@ -57623,7 +57627,7 @@
 	            var sex = this.getSex(this.state.user.sex);
 	            var name = this.state.user.name;
 	            var age = this.state.user.age;
-	            var photo = "https://s3.eu-central-1.amazonaws.com/matcha-bucket/Photos/" + this.state.user.photo;
+	            var photo = this.state.user.photo;
 	            var bio = this.state.user.bio;
 	            var style = { color: 'red' };
 	            var like = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-heartbeat", name: "", style: { color: 'red' } });
@@ -57636,7 +57640,6 @@
 	                _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" })
 	            );
 	            var icontext = [text, icon];
-	            console.log(typeof icon === "undefined" ? "undefined" : _typeof(icon));
 	            return _react2.default.createElement(
 	                "div",
 	                { className: "" },
@@ -64546,6 +64549,137 @@
 
 /***/ },
 /* 491 */
+/*!****************************************!*\
+  !*** ./~/react-addons-update/index.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(/*! react/lib/update */ 492);
+
+/***/ },
+/* 492 */
+/*!*******************************!*\
+  !*** ./~/react/lib/update.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule update
+	 */
+	
+	/* global hasOwnProperty:true */
+	
+	'use strict';
+	
+	var _prodInvariant = __webpack_require__(/*! ./reactProdInvariant */ 7),
+	    _assign = __webpack_require__(/*! object-assign */ 4);
+	
+	var keyOf = __webpack_require__(/*! fbjs/lib/keyOf */ 25);
+	var invariant = __webpack_require__(/*! fbjs/lib/invariant */ 8);
+	var hasOwnProperty = {}.hasOwnProperty;
+	
+	function shallowCopy(x) {
+	  if (Array.isArray(x)) {
+	    return x.concat();
+	  } else if (x && typeof x === 'object') {
+	    return _assign(new x.constructor(), x);
+	  } else {
+	    return x;
+	  }
+	}
+	
+	var COMMAND_PUSH = keyOf({ $push: null });
+	var COMMAND_UNSHIFT = keyOf({ $unshift: null });
+	var COMMAND_SPLICE = keyOf({ $splice: null });
+	var COMMAND_SET = keyOf({ $set: null });
+	var COMMAND_MERGE = keyOf({ $merge: null });
+	var COMMAND_APPLY = keyOf({ $apply: null });
+	
+	var ALL_COMMANDS_LIST = [COMMAND_PUSH, COMMAND_UNSHIFT, COMMAND_SPLICE, COMMAND_SET, COMMAND_MERGE, COMMAND_APPLY];
+	
+	var ALL_COMMANDS_SET = {};
+	
+	ALL_COMMANDS_LIST.forEach(function (command) {
+	  ALL_COMMANDS_SET[command] = true;
+	});
+	
+	function invariantArrayCase(value, spec, command) {
+	  !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected target of %s to be an array; got %s.', command, value) : _prodInvariant('1', command, value) : void 0;
+	  var specValue = spec[command];
+	  !Array.isArray(specValue) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array; got %s. Did you forget to wrap your parameter in an array?', command, specValue) : _prodInvariant('2', command, specValue) : void 0;
+	}
+	
+	/**
+	 * Returns a updated shallow copy of an object without mutating the original.
+	 * See https://facebook.github.io/react/docs/update.html for details.
+	 */
+	function update(value, spec) {
+	  !(typeof spec === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): You provided a key path to update() that did not contain one of %s. Did you forget to include {%s: ...}?', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : _prodInvariant('3', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : void 0;
+	
+	  if (hasOwnProperty.call(spec, COMMAND_SET)) {
+	    !(Object.keys(spec).length === 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Cannot have more than one key in an object with %s', COMMAND_SET) : _prodInvariant('4', COMMAND_SET) : void 0;
+	
+	    return spec[COMMAND_SET];
+	  }
+	
+	  var nextValue = shallowCopy(value);
+	
+	  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
+	    var mergeObj = spec[COMMAND_MERGE];
+	    !(mergeObj && typeof mergeObj === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a spec of type \'object\'; got %s', COMMAND_MERGE, mergeObj) : _prodInvariant('5', COMMAND_MERGE, mergeObj) : void 0;
+	    !(nextValue && typeof nextValue === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a target of type \'object\'; got %s', COMMAND_MERGE, nextValue) : _prodInvariant('6', COMMAND_MERGE, nextValue) : void 0;
+	    _assign(nextValue, spec[COMMAND_MERGE]);
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
+	    invariantArrayCase(value, spec, COMMAND_PUSH);
+	    spec[COMMAND_PUSH].forEach(function (item) {
+	      nextValue.push(item);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
+	    invariantArrayCase(value, spec, COMMAND_UNSHIFT);
+	    spec[COMMAND_UNSHIFT].forEach(function (item) {
+	      nextValue.unshift(item);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
+	    !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected %s target to be an array; got %s', COMMAND_SPLICE, value) : _prodInvariant('7', COMMAND_SPLICE, value) : void 0;
+	    !Array.isArray(spec[COMMAND_SPLICE]) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
+	    spec[COMMAND_SPLICE].forEach(function (args) {
+	      !Array.isArray(args) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
+	      nextValue.splice.apply(nextValue, args);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
+	    !(typeof spec[COMMAND_APPLY] === 'function') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be a function; got %s.', COMMAND_APPLY, spec[COMMAND_APPLY]) : _prodInvariant('9', COMMAND_APPLY, spec[COMMAND_APPLY]) : void 0;
+	    nextValue = spec[COMMAND_APPLY](nextValue);
+	  }
+	
+	  for (var k in spec) {
+	    if (!(ALL_COMMANDS_SET.hasOwnProperty(k) && ALL_COMMANDS_SET[k])) {
+	      nextValue[k] = update(value[k], spec[k]);
+	    }
+	  }
+	
+	  return nextValue;
+	}
+	
+	module.exports = update;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
+
+/***/ },
+/* 493 */
 /*!****************************************************************!*\
   !*** ./src/app/components/user/updateProfile/ProfileUpdate.js ***!
   \****************************************************************/
@@ -64590,27 +64724,31 @@
 	
 	var _Table = __webpack_require__(/*! material-ui/Table */ 476);
 	
-	var _TextField = __webpack_require__(/*! material-ui/TextField */ 492);
+	var _TextField = __webpack_require__(/*! material-ui/TextField */ 494);
 	
 	var _TextField2 = _interopRequireDefault(_TextField);
 	
-	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 498);
+	var _Snackbar = __webpack_require__(/*! material-ui/Snackbar */ 500);
 	
-	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	var _Snackbar2 = _interopRequireDefault(_Snackbar);
 	
 	var _colors = __webpack_require__(/*! material-ui/styles/colors */ 365);
 	
-	var _FloatingActionButton = __webpack_require__(/*! material-ui/FloatingActionButton */ 500);
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
+	
+	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	
+	var _FloatingActionButton = __webpack_require__(/*! material-ui/FloatingActionButton */ 504);
 	
 	var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 172);
 	
-	var _reactDropzoneS3Uploader = __webpack_require__(/*! react-dropzone-s3-uploader */ 502);
+	var _reactDropzoneS3Uploader = __webpack_require__(/*! react-dropzone-s3-uploader */ 506);
 	
 	var _reactDropzoneS3Uploader2 = _interopRequireDefault(_reactDropzoneS3Uploader);
 	
-	var _reactDropzone = __webpack_require__(/*! react-dropzone */ 507);
+	var _reactDropzone = __webpack_require__(/*! react-dropzone */ 511);
 	
 	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 	
@@ -64632,7 +64770,7 @@
 	    function ProfileUpdate() {
 	        _classCallCheck(this, ProfileUpdate);
 	
-	        // this.setState({canSave: 'true'});
+	        // this.setState({saveDisabled: 'true'});
 	        var _this = _possibleConstructorReturn(this, (ProfileUpdate.__proto__ || Object.getPrototypeOf(ProfileUpdate)).call(this));
 	
 	        _this.state = {
@@ -64643,7 +64781,9 @@
 	                photo: "",
 	                bio: ""
 	            },
-	            canSave: true
+	            saveDisabled: true,
+	            activeSnack: false,
+	            msgSnack: ""
 	        };
 	        return _this;
 	    }
@@ -64657,16 +64797,24 @@
 	            _superagent2.default.get(url).then(function (response) {
 	                _this2.setState({
 	                    user: response.body.user,
-	                    canSave: true
+	                    saveDisabled: true,
+	                    activeSnack: false
 	                });
 	            });
 	        }
 	    }, {
 	        key: "handleEnd",
 	        value: function handleEnd() {
+	            var _this3 = this;
+	
 	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            _superagent2.default.put(url).set('Content-Type', 'application/json').send({ name: this.state.user.name }).send({ age: this.state.user.age }).send({ mail: this.state.user.mail }).send({ photo: this.state.user.photo }).send({ bio: this.state.user.bio }).end(function (response) {
 	                console.log('modified');
+	                _this3.setState({
+	                    activeSnack: true,
+	                    msgSnack: "Profile updated",
+	                    saveDisabled: true
+	                });
 	                // browserHistory.push("/home", "jdec");
 	            });
 	        }
@@ -64675,7 +64823,9 @@
 	        value: function _handleTextFieldChange(e) {
 	            this.setState({
 	                user: (0, _reactAddonsUpdate2.default)(this.state.user, _defineProperty({}, e.target.name, { $set: e.target.value })),
-	                canSave: false
+	                saveDisabled: false,
+	                // don't know why but if not set to false, imgSnack comes everytime.
+	                activeSnack: false
 	            });
 	        }
 	
@@ -64687,30 +64837,20 @@
 	
 	    }, {
 	        key: "handleFinishedUpload",
-	        value: function handleFinishedUpload() {
-	            console.log('FINIIIIII');
-	        }
-	    }, {
-	        key: "jrigole",
-	        value: function jrigole() {
-	            console.log("AHBDJASHBDJASHDJASHB");
-	        }
-	    }, {
-	        key: "errorfunction",
-	        value: function errorfunction(err, ahah) {
-	            console.log(ahah);
+	        value: function handleFinishedUpload(res) {
+	            console.log(res.filename);
+	            this.setState({
+	                activeSnack: true,
+	                msgSnack: "Image uploaded",
+	                saveDisabled: false,
+	                user: (0, _reactAddonsUpdate2.default)(this.state.user, { photo: { $set: res.filename } })
+	            });
 	        }
 	    }, {
 	        key: "render",
 	        value: function render() {
-	            var _this3 = this;
+	            var _this4 = this;
 	
-	            var name = this.state.user.name;
-	            var age = this.state.user.age;
-	            var bio = this.state.user.bio;
-	            var style = { color: 'red' };
-	            var like = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-heartbeat", name: "", style: { color: 'red' } });
-	            var mail = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-envelope-o", name: "", style: { color: 'red' } });
 	            var icon = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" });
 	            var text = _react2.default.createElement(
 	                "div",
@@ -64718,8 +64858,7 @@
 	                "From Paris | interested in ",
 	                _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" })
 	            );
-	            var icontext = [text, icon];
-	            var style2 = {
+	            var uploaderStyle = {
 	                height: 200,
 	                border: 'dashed 2px #999',
 	                borderRadius: 5,
@@ -64728,10 +64867,10 @@
 	            };
 	
 	            var uploaderProps = {
-	                style2: style2,
+	                uploaderStyle: uploaderStyle,
 	                maxFileSize: 1024 * 1024 * 50,
-	                server: 'http://54.93.182.167:3000/api/users/photo',
-	                s3Url: 'https://matcha-bucket.s3.amazonaws.com/Photos/',
+	                server: 'http://54.93.182.167:3000',
+	                s3Url: 'https://matcha-bucket.s3.amazonaws.com',
 	                signingUrlQueryParams: { uploadType: 'avatar' },
 	                headers: { 'Access-Control-Allow-Origin': '*' }
 	            };
@@ -64755,21 +64894,6 @@
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "row" },
-	                    _react2.default.createElement(_reactDropzoneS3Uploader2.default, _extends({
-	                        onFinish: this.handleFinishedUpload,
-	                        onProgress: this.jrigole,
-	                        onError: this.errorfunction
-	                    }, uploaderProps)),
-	                    "dbsakjdnajksdlkan",
-	                    _react2.default.createElement(
-	                        _reactDropzone2.default,
-	                        { onDrop: this._onDrop, size: 150 },
-	                        _react2.default.createElement(
-	                            "div",
-	                            null,
-	                            "Drop some files here!"
-	                        )
-	                    ),
 	                    _react2.default.createElement(
 	                        _Card.Card,
 	                        null,
@@ -64780,6 +64904,13 @@
 	                            _react2.default.createElement(
 	                                _Card.CardText,
 	                                null,
+	                                _react2.default.createElement(_reactDropzoneS3Uploader2.default, _extends({
+	                                    onFinish: this.handleFinishedUpload.bind(this),
+	                                    onProgress: this.jrigole,
+	                                    onError: this.errorfunction,
+	                                    accept: "image/*",
+	                                    className: "col-centered"
+	                                }, uploaderProps)),
 	                                _react2.default.createElement(_TextField2.default, {
 	                                    floatingLabelText: "Name",
 	                                    name: "name",
@@ -64802,13 +64933,6 @@
 	                                }),
 	                                _react2.default.createElement("br", null),
 	                                _react2.default.createElement(_TextField2.default, {
-	                                    floatingLabelText: "Photo",
-	                                    name: "photo",
-	                                    value: this.state.user.photo,
-	                                    onChange: this._handleTextFieldChange.bind(this)
-	                                }),
-	                                _react2.default.createElement("br", null),
-	                                _react2.default.createElement(_TextField2.default, {
 	                                    hintText: "Hi, I like stamps and cactus...",
 	                                    floatingLabelText: "Tell us about you",
 	                                    multiLine: true,
@@ -64826,21 +64950,27 @@
 	                            _react2.default.createElement(_RaisedButton2.default, {
 	                                label: "Cancel",
 	                                onTouchTap: function onTouchTap() {
-	                                    return _this3.componentWillMount();
+	                                    return _this4.componentWillMount();
 	                                } // gets data from server again
 	                            }),
 	                            _react2.default.createElement(_RaisedButton2.default, {
 	                                label: "Save",
 	                                primary: true,
-	                                disabled: this.state.canSave,
+	                                disabled: this.state.saveDisabled,
 	                                id: "mdrlol",
 	                                onTouchTap: function onTouchTap() {
-	                                    return _this3.handleEnd();
+	                                    return _this4.handleEnd();
 	                                }
 	                            })
 	                        )
 	                    )
-	                )
+	                ),
+	                _react2.default.createElement(_Snackbar2.default, {
+	                    open: this.state.activeSnack,
+	                    message: this.state.msgSnack,
+	                    autoHideDuration: 4000,
+	                    className: "text-center"
+	                })
 	            );
 	        }
 	    }]);
@@ -64849,7 +64979,7 @@
 	}(_react2.default.Component);
 
 /***/ },
-/* 492 */
+/* 494 */
 /*!******************************************!*\
   !*** ./~/material-ui/TextField/index.js ***!
   \******************************************/
@@ -64862,7 +64992,7 @@
 	});
 	exports.default = undefined;
 	
-	var _TextField = __webpack_require__(/*! ./TextField */ 493);
+	var _TextField = __webpack_require__(/*! ./TextField */ 495);
 	
 	var _TextField2 = _interopRequireDefault(_TextField);
 	
@@ -64871,7 +65001,7 @@
 	exports.default = _TextField2.default;
 
 /***/ },
-/* 493 */
+/* 495 */
 /*!**********************************************!*\
   !*** ./~/material-ui/TextField/TextField.js ***!
   \**********************************************/
@@ -64917,19 +65047,19 @@
 	
 	var _deprecatedPropType2 = _interopRequireDefault(_deprecatedPropType);
 	
-	var _EnhancedTextarea = __webpack_require__(/*! ./EnhancedTextarea */ 494);
+	var _EnhancedTextarea = __webpack_require__(/*! ./EnhancedTextarea */ 496);
 	
 	var _EnhancedTextarea2 = _interopRequireDefault(_EnhancedTextarea);
 	
-	var _TextFieldHint = __webpack_require__(/*! ./TextFieldHint */ 495);
+	var _TextFieldHint = __webpack_require__(/*! ./TextFieldHint */ 497);
 	
 	var _TextFieldHint2 = _interopRequireDefault(_TextFieldHint);
 	
-	var _TextFieldLabel = __webpack_require__(/*! ./TextFieldLabel */ 496);
+	var _TextFieldLabel = __webpack_require__(/*! ./TextFieldLabel */ 498);
 	
 	var _TextFieldLabel2 = _interopRequireDefault(_TextFieldLabel);
 	
-	var _TextFieldUnderline = __webpack_require__(/*! ./TextFieldUnderline */ 497);
+	var _TextFieldUnderline = __webpack_require__(/*! ./TextFieldUnderline */ 499);
 	
 	var _TextFieldUnderline2 = _interopRequireDefault(_TextFieldUnderline);
 	
@@ -65448,7 +65578,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 494 */
+/* 496 */
 /*!*****************************************************!*\
   !*** ./~/material-ui/TextField/EnhancedTextarea.js ***!
   \*****************************************************/
@@ -65679,7 +65809,7 @@
 	exports.default = EnhancedTextarea;
 
 /***/ },
-/* 495 */
+/* 497 */
 /*!**************************************************!*\
   !*** ./~/material-ui/TextField/TextFieldHint.js ***!
   \**************************************************/
@@ -65763,7 +65893,7 @@
 	exports.default = TextFieldHint;
 
 /***/ },
-/* 496 */
+/* 498 */
 /*!***************************************************!*\
   !*** ./~/material-ui/TextField/TextFieldLabel.js ***!
   \***************************************************/
@@ -65883,7 +66013,7 @@
 	exports.default = TextFieldLabel;
 
 /***/ },
-/* 497 */
+/* 499 */
 /*!*******************************************************!*\
   !*** ./~/material-ui/TextField/TextFieldUnderline.js ***!
   \*******************************************************/
@@ -66022,138 +66152,621 @@
 	exports.default = TextFieldUnderline;
 
 /***/ },
-/* 498 */
-/*!****************************************!*\
-  !*** ./~/react-addons-update/index.js ***!
-  \****************************************/
+/* 500 */
+/*!*****************************************!*\
+  !*** ./~/material-ui/Snackbar/index.js ***!
+  \*****************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! react/lib/update */ 499);
-
-/***/ },
-/* 499 */
-/*!*******************************!*\
-  !*** ./~/react/lib/update.js ***!
-  \*******************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule update
-	 */
-	
-	/* global hasOwnProperty:true */
-	
 	'use strict';
 	
-	var _prodInvariant = __webpack_require__(/*! ./reactProdInvariant */ 7),
-	    _assign = __webpack_require__(/*! object-assign */ 4);
-	
-	var keyOf = __webpack_require__(/*! fbjs/lib/keyOf */ 25);
-	var invariant = __webpack_require__(/*! fbjs/lib/invariant */ 8);
-	var hasOwnProperty = {}.hasOwnProperty;
-	
-	function shallowCopy(x) {
-	  if (Array.isArray(x)) {
-	    return x.concat();
-	  } else if (x && typeof x === 'object') {
-	    return _assign(new x.constructor(), x);
-	  } else {
-	    return x;
-	  }
-	}
-	
-	var COMMAND_PUSH = keyOf({ $push: null });
-	var COMMAND_UNSHIFT = keyOf({ $unshift: null });
-	var COMMAND_SPLICE = keyOf({ $splice: null });
-	var COMMAND_SET = keyOf({ $set: null });
-	var COMMAND_MERGE = keyOf({ $merge: null });
-	var COMMAND_APPLY = keyOf({ $apply: null });
-	
-	var ALL_COMMANDS_LIST = [COMMAND_PUSH, COMMAND_UNSHIFT, COMMAND_SPLICE, COMMAND_SET, COMMAND_MERGE, COMMAND_APPLY];
-	
-	var ALL_COMMANDS_SET = {};
-	
-	ALL_COMMANDS_LIST.forEach(function (command) {
-	  ALL_COMMANDS_SET[command] = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
 	});
+	exports.default = undefined;
 	
-	function invariantArrayCase(value, spec, command) {
-	  !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected target of %s to be an array; got %s.', command, value) : _prodInvariant('1', command, value) : void 0;
-	  var specValue = spec[command];
-	  !Array.isArray(specValue) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array; got %s. Did you forget to wrap your parameter in an array?', command, specValue) : _prodInvariant('2', command, specValue) : void 0;
-	}
+	var _Snackbar = __webpack_require__(/*! ./Snackbar */ 501);
 	
-	/**
-	 * Returns a updated shallow copy of an object without mutating the original.
-	 * See https://facebook.github.io/react/docs/update.html for details.
-	 */
-	function update(value, spec) {
-	  !(typeof spec === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): You provided a key path to update() that did not contain one of %s. Did you forget to include {%s: ...}?', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : _prodInvariant('3', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : void 0;
+	var _Snackbar2 = _interopRequireDefault(_Snackbar);
 	
-	  if (hasOwnProperty.call(spec, COMMAND_SET)) {
-	    !(Object.keys(spec).length === 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Cannot have more than one key in an object with %s', COMMAND_SET) : _prodInvariant('4', COMMAND_SET) : void 0;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	    return spec[COMMAND_SET];
-	  }
-	
-	  var nextValue = shallowCopy(value);
-	
-	  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
-	    var mergeObj = spec[COMMAND_MERGE];
-	    !(mergeObj && typeof mergeObj === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a spec of type \'object\'; got %s', COMMAND_MERGE, mergeObj) : _prodInvariant('5', COMMAND_MERGE, mergeObj) : void 0;
-	    !(nextValue && typeof nextValue === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a target of type \'object\'; got %s', COMMAND_MERGE, nextValue) : _prodInvariant('6', COMMAND_MERGE, nextValue) : void 0;
-	    _assign(nextValue, spec[COMMAND_MERGE]);
-	  }
-	
-	  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
-	    invariantArrayCase(value, spec, COMMAND_PUSH);
-	    spec[COMMAND_PUSH].forEach(function (item) {
-	      nextValue.push(item);
-	    });
-	  }
-	
-	  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
-	    invariantArrayCase(value, spec, COMMAND_UNSHIFT);
-	    spec[COMMAND_UNSHIFT].forEach(function (item) {
-	      nextValue.unshift(item);
-	    });
-	  }
-	
-	  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
-	    !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected %s target to be an array; got %s', COMMAND_SPLICE, value) : _prodInvariant('7', COMMAND_SPLICE, value) : void 0;
-	    !Array.isArray(spec[COMMAND_SPLICE]) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
-	    spec[COMMAND_SPLICE].forEach(function (args) {
-	      !Array.isArray(args) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
-	      nextValue.splice.apply(nextValue, args);
-	    });
-	  }
-	
-	  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
-	    !(typeof spec[COMMAND_APPLY] === 'function') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be a function; got %s.', COMMAND_APPLY, spec[COMMAND_APPLY]) : _prodInvariant('9', COMMAND_APPLY, spec[COMMAND_APPLY]) : void 0;
-	    nextValue = spec[COMMAND_APPLY](nextValue);
-	  }
-	
-	  for (var k in spec) {
-	    if (!(ALL_COMMANDS_SET.hasOwnProperty(k) && ALL_COMMANDS_SET[k])) {
-	      nextValue[k] = update(value[k], spec[k]);
-	    }
-	  }
-	
-	  return nextValue;
-	}
-	
-	module.exports = update;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
+	exports.default = _Snackbar2.default;
 
 /***/ },
-/* 500 */
+/* 501 */
+/*!********************************************!*\
+  !*** ./~/material-ui/Snackbar/Snackbar.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _simpleAssign = __webpack_require__(/*! simple-assign */ 409);
+	
+	var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _transitions = __webpack_require__(/*! ../styles/transitions */ 410);
+	
+	var _transitions2 = _interopRequireDefault(_transitions);
+	
+	var _ClickAwayListener = __webpack_require__(/*! ../internal/ClickAwayListener */ 486);
+	
+	var _ClickAwayListener2 = _interopRequireDefault(_ClickAwayListener);
+	
+	var _SnackbarBody = __webpack_require__(/*! ./SnackbarBody */ 502);
+	
+	var _SnackbarBody2 = _interopRequireDefault(_SnackbarBody);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function getStyles(props, context, state) {
+	  var _context$muiTheme = context.muiTheme;
+	  var desktopSubheaderHeight = _context$muiTheme.baseTheme.spacing.desktopSubheaderHeight;
+	  var zIndex = _context$muiTheme.zIndex;
+	  var open = state.open;
+	
+	
+	  var styles = {
+	    root: {
+	      position: 'fixed',
+	      left: 0,
+	      display: 'flex',
+	      right: 0,
+	      bottom: 0,
+	      zIndex: zIndex.snackbar,
+	      visibility: open ? 'visible' : 'hidden',
+	      transform: open ? 'translate(0, 0)' : 'translate(0, ' + desktopSubheaderHeight + 'px)',
+	      transition: _transitions2.default.easeOut('400ms', 'transform') + ', ' + _transitions2.default.easeOut('400ms', 'visibility')
+	    }
+	  };
+	
+	  return styles;
+	}
+	
+	var Snackbar = function (_Component) {
+	  _inherits(Snackbar, _Component);
+	
+	  function Snackbar() {
+	    var _Object$getPrototypeO;
+	
+	    var _temp, _this, _ret;
+	
+	    _classCallCheck(this, Snackbar);
+	
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Snackbar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.componentClickAway = function () {
+	      if (_this.timerTransitionId) {
+	        // If transitioning, don't close the snackbar.
+	        return;
+	      }
+	
+	      if (_this.props.open !== null && _this.props.onRequestClose) {
+	        _this.props.onRequestClose('clickaway');
+	      } else {
+	        _this.setState({ open: false });
+	      }
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+	
+	  _createClass(Snackbar, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.setState({
+	        open: this.props.open,
+	        message: this.props.message,
+	        action: this.props.action
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      if (this.state.open) {
+	        this.setAutoHideTimer();
+	        this.setTransitionTimer();
+	      }
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var _this2 = this;
+	
+	      if (this.props.open && nextProps.open && (nextProps.message !== this.props.message || nextProps.action !== this.props.action)) {
+	        this.setState({
+	          open: false
+	        });
+	
+	        clearTimeout(this.timerOneAtTheTimeId);
+	        this.timerOneAtTheTimeId = setTimeout(function () {
+	          _this2.setState({
+	            message: nextProps.message,
+	            action: nextProps.action,
+	            open: true
+	          });
+	        }, 400);
+	      } else {
+	        var open = nextProps.open;
+	
+	        this.setState({
+	          open: open !== null ? open : this.state.open,
+	          message: nextProps.message,
+	          action: nextProps.action
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (prevState.open !== this.state.open) {
+	        if (this.state.open) {
+	          this.setAutoHideTimer();
+	          this.setTransitionTimer();
+	        } else {
+	          clearTimeout(this.timerAutoHideId);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      clearTimeout(this.timerAutoHideId);
+	      clearTimeout(this.timerTransitionId);
+	      clearTimeout(this.timerOneAtTheTimeId);
+	    }
+	  }, {
+	    key: 'setAutoHideTimer',
+	
+	
+	    // Timer that controls delay before snackbar auto hides
+	    value: function setAutoHideTimer() {
+	      var _this3 = this;
+	
+	      var autoHideDuration = this.props.autoHideDuration;
+	
+	      if (autoHideDuration > 0) {
+	        clearTimeout(this.timerAutoHideId);
+	        this.timerAutoHideId = setTimeout(function () {
+	          if (_this3.props.open !== null && _this3.props.onRequestClose) {
+	            _this3.props.onRequestClose('timeout');
+	          } else {
+	            _this3.setState({ open: false });
+	          }
+	        }, autoHideDuration);
+	      }
+	    }
+	
+	    // Timer that controls delay before click-away events are captured (based on when animation completes)
+	
+	  }, {
+	    key: 'setTransitionTimer',
+	    value: function setTransitionTimer() {
+	      var _this4 = this;
+	
+	      this.timerTransitionId = setTimeout(function () {
+	        _this4.timerTransitionId = undefined;
+	      }, 400);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var autoHideDuration = _props.autoHideDuration;
+	      var messageProp = _props.message;
+	      var onRequestClose = _props.onRequestClose;
+	      var onActionTouchTap = _props.onActionTouchTap;
+	      var style = _props.style;
+	      var bodyStyle = _props.bodyStyle;
+	
+	      var other = _objectWithoutProperties(_props, ['autoHideDuration', 'message', 'onRequestClose', 'onActionTouchTap', 'style', 'bodyStyle']);
+	
+	      var _state = this.state;
+	      var action = _state.action;
+	      var message = _state.message;
+	      var open = _state.open;
+	      var prepareStyles = this.context.muiTheme.prepareStyles;
+	
+	      var styles = getStyles(this.props, this.context, this.state);
+	
+	      return _react2.default.createElement(
+	        _ClickAwayListener2.default,
+	        { onClickAway: open && this.componentClickAway },
+	        _react2.default.createElement(
+	          'div',
+	          _extends({}, other, { style: prepareStyles((0, _simpleAssign2.default)(styles.root, style)) }),
+	          _react2.default.createElement(_SnackbarBody2.default, {
+	            open: open,
+	            message: message,
+	            action: action,
+	            style: bodyStyle,
+	            onActionTouchTap: onActionTouchTap
+	          })
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Snackbar;
+	}(_react.Component);
+	
+	Snackbar.propTypes = {
+	  /**
+	   * The label for the action on the snackbar.
+	   */
+	  action: _react.PropTypes.node,
+	  /**
+	   * The number of milliseconds to wait before automatically dismissing.
+	   * If no value is specified the snackbar will dismiss normally.
+	   * If a value is provided the snackbar can still be dismissed normally.
+	   * If a snackbar is dismissed before the timer expires, the timer will be cleared.
+	   */
+	  autoHideDuration: _react.PropTypes.number,
+	  /**
+	   * Override the inline-styles of the body element.
+	   */
+	  bodyStyle: _react.PropTypes.object,
+	  /**
+	   * The css class name of the root element.
+	   */
+	  className: _react.PropTypes.string,
+	  /**
+	   * The message to be displayed.
+	   *
+	   * (Note: If the message is an element or array, and the `Snackbar` may re-render while it is still open,
+	   * ensure that the same object remains as the `message` property if you want to avoid the `Snackbar` hiding and
+	   * showing again)
+	   */
+	  message: _react.PropTypes.node.isRequired,
+	  /**
+	   * Fired when the action button is touchtapped.
+	   *
+	   * @param {object} event Action button event.
+	   */
+	  onActionTouchTap: _react.PropTypes.func,
+	  /**
+	   * Fired when the `Snackbar` is requested to be closed by a click outside the `Snackbar`, or after the
+	   * `autoHideDuration` timer expires.
+	   *
+	   * Typically `onRequestClose` is used to set state in the parent component, which is used to control the `Snackbar`
+	   * `open` prop.
+	   *
+	   * The `reason` parameter can optionally be used to control the response to `onRequestClose`,
+	   * for example ignoring `clickaway`.
+	   *
+	   * @param {string} reason Can be:`"timeout"` (`autoHideDuration` expired) or: `"clickaway"`
+	   */
+	  onRequestClose: _react.PropTypes.func,
+	  /**
+	   * Controls whether the `Snackbar` is opened or not.
+	   */
+	  open: _react.PropTypes.bool.isRequired,
+	  /**
+	   * Override the inline-styles of the root element.
+	   */
+	  style: _react.PropTypes.object
+	};
+	Snackbar.contextTypes = {
+	  muiTheme: _react.PropTypes.object.isRequired
+	};
+	exports.default = Snackbar;
+
+/***/ },
+/* 502 */
+/*!************************************************!*\
+  !*** ./~/material-ui/Snackbar/SnackbarBody.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.SnackbarBody = undefined;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _simpleAssign = __webpack_require__(/*! simple-assign */ 409);
+	
+	var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _transitions = __webpack_require__(/*! ../styles/transitions */ 410);
+	
+	var _transitions2 = _interopRequireDefault(_transitions);
+	
+	var _withWidth = __webpack_require__(/*! ../utils/withWidth */ 503);
+	
+	var _withWidth2 = _interopRequireDefault(_withWidth);
+	
+	var _FlatButton = __webpack_require__(/*! ../FlatButton */ 440);
+	
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function getStyles(props, context) {
+	  var open = props.open;
+	  var width = props.width;
+	  var _context$muiTheme = context.muiTheme;
+	  var _context$muiTheme$bas = _context$muiTheme.baseTheme;
+	  var _context$muiTheme$bas2 = _context$muiTheme$bas.spacing;
+	  var desktopGutter = _context$muiTheme$bas2.desktopGutter;
+	  var desktopSubheaderHeight = _context$muiTheme$bas2.desktopSubheaderHeight;
+	  var fontFamily = _context$muiTheme$bas.fontFamily;
+	  var _context$muiTheme$sna = _context$muiTheme.snackbar;
+	  var backgroundColor = _context$muiTheme$sna.backgroundColor;
+	  var textColor = _context$muiTheme$sna.textColor;
+	  var actionColor = _context$muiTheme$sna.actionColor;
+	
+	
+	  var isSmall = width === _withWidth.SMALL;
+	
+	  var styles = {
+	    root: {
+	      fontFamily: fontFamily,
+	      backgroundColor: backgroundColor,
+	      padding: '0 ' + desktopGutter + 'px',
+	      height: desktopSubheaderHeight,
+	      lineHeight: desktopSubheaderHeight + 'px',
+	      borderRadius: isSmall ? 0 : 2,
+	      maxWidth: isSmall ? 'inherit' : 568,
+	      minWidth: isSmall ? 'inherit' : 288,
+	      flexGrow: isSmall ? 1 : 0,
+	      margin: 'auto'
+	    },
+	    content: {
+	      fontSize: 14,
+	      color: textColor,
+	      opacity: open ? 1 : 0,
+	      transition: open ? _transitions2.default.easeOut('500ms', 'opacity', '100ms') : _transitions2.default.easeOut('400ms', 'opacity')
+	    },
+	    action: {
+	      color: actionColor,
+	      float: 'right',
+	      marginTop: 6,
+	      marginRight: -16,
+	      marginLeft: desktopGutter,
+	      backgroundColor: 'transparent'
+	    }
+	  };
+	
+	  return styles;
+	}
+	
+	var SnackbarBody = exports.SnackbarBody = function SnackbarBody(props, context) {
+	  var open = props.open;
+	  var action = props.action;
+	  var message = props.message;
+	  var onActionTouchTap = props.onActionTouchTap;
+	  var style = props.style;
+	
+	  var other = _objectWithoutProperties(props, ['open', 'action', 'message', 'onActionTouchTap', 'style']);
+	
+	  var prepareStyles = context.muiTheme.prepareStyles;
+	
+	  var styles = getStyles(props, context);
+	
+	  var actionButton = action && _react2.default.createElement(_FlatButton2.default, {
+	    style: styles.action,
+	    label: action,
+	    onTouchTap: onActionTouchTap
+	  });
+	
+	  return _react2.default.createElement(
+	    'div',
+	    _extends({}, other, { style: prepareStyles((0, _simpleAssign2.default)(styles.root, style)) }),
+	    _react2.default.createElement(
+	      'div',
+	      { style: prepareStyles(styles.content) },
+	      _react2.default.createElement(
+	        'span',
+	        null,
+	        message
+	      ),
+	      actionButton
+	    )
+	  );
+	};
+	
+	SnackbarBody.propTypes = {
+	  /**
+	   * The label for the action on the snackbar.
+	   */
+	  action: _react.PropTypes.node,
+	  /**
+	   * The message to be displayed.
+	   *
+	   * (Note: If the message is an element or array, and the `Snackbar` may re-render while it is still open,
+	   * ensure that the same object remains as the `message` property if you want to avoid the `Snackbar` hiding and
+	   * showing again)
+	   */
+	  message: _react.PropTypes.node.isRequired,
+	  /**
+	   * Fired when the action button is touchtapped.
+	   *
+	   * @param {object} event Action button event.
+	   */
+	  onActionTouchTap: _react.PropTypes.func,
+	  /**
+	   * @ignore
+	   * Controls whether the `Snackbar` is opened or not.
+	   */
+	  open: _react.PropTypes.bool.isRequired,
+	  /**
+	   * Override the inline-styles of the root element.
+	   */
+	  style: _react.PropTypes.object,
+	  /**
+	   * @ignore
+	   * Width of the screen.
+	   */
+	  width: _react.PropTypes.number.isRequired
+	};
+	
+	SnackbarBody.contextTypes = {
+	  muiTheme: _react.PropTypes.object.isRequired
+	};
+	
+	exports.default = (0, _withWidth2.default)()(SnackbarBody);
+
+/***/ },
+/* 503 */
+/*!******************************************!*\
+  !*** ./~/material-ui/utils/withWidth.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.LARGE = exports.MEDIUM = exports.SMALL = undefined;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	exports.default = withWidth;
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactEventListener = __webpack_require__(/*! react-event-listener */ 482);
+	
+	var _reactEventListener2 = _interopRequireDefault(_reactEventListener);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SMALL = exports.SMALL = 1;
+	var MEDIUM = exports.MEDIUM = 2;
+	var LARGE = exports.LARGE = 3;
+	
+	function withWidth() {
+	  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var _options$largeWidth = options.largeWidth;
+	  var largeWidth = _options$largeWidth === undefined ? 992 : _options$largeWidth;
+	  var _options$mediumWidth = options.mediumWidth;
+	  var mediumWidth = _options$mediumWidth === undefined ? 768 : _options$mediumWidth;
+	  var _options$resizeInterv = options.resizeInterval;
+	  var resizeInterval = _options$resizeInterv === undefined ? 166 : _options$resizeInterv;
+	
+	
+	  return function (MyComponent) {
+	    return function (_Component) {
+	      _inherits(WithWidth, _Component);
+	
+	      function WithWidth() {
+	        var _Object$getPrototypeO;
+	
+	        var _temp, _this, _ret;
+	
+	        _classCallCheck(this, WithWidth);
+	
+	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	          args[_key] = arguments[_key];
+	        }
+	
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(WithWidth)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	          /**
+	           * For the server side rendering,
+	           * let's set the width for the slower environment.
+	           */
+	          width: SMALL
+	        }, _this.handleResize = function () {
+	          clearTimeout(_this.deferTimer);
+	          _this.deferTimer = setTimeout(function () {
+	            _this.updateWidth();
+	          }, resizeInterval);
+	        }, _temp), _possibleConstructorReturn(_this, _ret);
+	      }
+	
+	      _createClass(WithWidth, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	          this.updateWidth();
+	        }
+	      }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	          clearTimeout(this.deferTimer);
+	        }
+	      }, {
+	        key: 'updateWidth',
+	        value: function updateWidth() {
+	          var innerWidth = window.innerWidth;
+	          var width = void 0;
+	
+	          if (innerWidth >= largeWidth) {
+	            width = LARGE;
+	          } else if (innerWidth >= mediumWidth) {
+	            width = MEDIUM;
+	          } else {
+	            // innerWidth < 768
+	            width = SMALL;
+	          }
+	
+	          if (width !== this.state.width) {
+	            this.setState({
+	              width: width
+	            });
+	          }
+	        }
+	      }, {
+	        key: 'render',
+	        value: function render() {
+	          return _react2.default.createElement(
+	            _reactEventListener2.default,
+	            { target: 'window', onResize: this.handleResize },
+	            _react2.default.createElement(MyComponent, _extends({}, this.props, {
+	              width: this.state.width
+	            }))
+	          );
+	        }
+	      }]);
+	
+	      return WithWidth;
+	    }(_react.Component);
+	  };
+	}
+
+/***/ },
+/* 504 */
 /*!*****************************************************!*\
   !*** ./~/material-ui/FloatingActionButton/index.js ***!
   \*****************************************************/
@@ -66166,7 +66779,7 @@
 	});
 	exports.default = undefined;
 	
-	var _FloatingActionButton = __webpack_require__(/*! ./FloatingActionButton */ 501);
+	var _FloatingActionButton = __webpack_require__(/*! ./FloatingActionButton */ 505);
 	
 	var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
 	
@@ -66175,7 +66788,7 @@
 	exports.default = _FloatingActionButton2.default;
 
 /***/ },
-/* 501 */
+/* 505 */
 /*!********************************************************************!*\
   !*** ./~/material-ui/FloatingActionButton/FloatingActionButton.js ***!
   \********************************************************************/
@@ -66537,7 +67150,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 502 */
+/* 506 */
 /*!***************************************************!*\
   !*** ./~/react-dropzone-s3-uploader/lib/index.js ***!
   \***************************************************/
@@ -66549,7 +67162,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _DropzoneS3Uploader = __webpack_require__(/*! ./DropzoneS3Uploader */ 503);
+	var _DropzoneS3Uploader = __webpack_require__(/*! ./DropzoneS3Uploader */ 507);
 	
 	var _DropzoneS3Uploader2 = _interopRequireDefault(_DropzoneS3Uploader);
 	
@@ -66557,7 +67170,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 503 */
+/* 507 */
 /*!****************************************************************!*\
   !*** ./~/react-dropzone-s3-uploader/lib/DropzoneS3Uploader.js ***!
   \****************************************************************/
@@ -66581,11 +67194,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactS3UploaderS3upload = __webpack_require__(/*! react-s3-uploader/s3upload */ 504);
+	var _reactS3UploaderS3upload = __webpack_require__(/*! react-s3-uploader/s3upload */ 508);
 	
 	var _reactS3UploaderS3upload2 = _interopRequireDefault(_reactS3UploaderS3upload);
 	
-	var _reactDropzone = __webpack_require__(/*! react-dropzone */ 507);
+	var _reactDropzone = __webpack_require__(/*! react-dropzone */ 511);
 	
 	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
 	
@@ -66811,7 +67424,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 504 */
+/* 508 */
 /*!*****************************************!*\
   !*** ./~/react-s3-uploader/s3upload.js ***!
   \*****************************************/
@@ -66822,8 +67435,8 @@
 	 * https://github.com/flyingsparx/NodeDirectUploader
 	 */
 	
-	var latinize = __webpack_require__(/*! latinize */ 505),
-	    unorm = __webpack_require__(/*! unorm */ 506);
+	var latinize = __webpack_require__(/*! latinize */ 509),
+	    unorm = __webpack_require__(/*! unorm */ 510);
 	
 	S3Upload.prototype.server = '';
 	S3Upload.prototype.signingUrl = '/sign-s3';
@@ -66993,7 +67606,7 @@
 
 
 /***/ },
-/* 505 */
+/* 509 */
 /*!********************************!*\
   !*** ./~/latinize/latinize.js ***!
   \********************************/
@@ -67850,7 +68463,7 @@
 
 
 /***/ },
-/* 506 */
+/* 510 */
 /*!******************************!*\
   !*** ./~/unorm/lib/unorm.js ***!
   \******************************/
@@ -68301,7 +68914,7 @@
 
 
 /***/ },
-/* 507 */
+/* 511 */
 /*!****************************************!*\
   !*** ./~/react-dropzone/dist/index.js ***!
   \****************************************/
@@ -68755,7 +69368,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 508 */
+/* 512 */
 /*!********************************************!*\
   !*** ./src/app/components/entry/SignUp.js ***!
   \********************************************/
@@ -68774,7 +69387,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Stepper = __webpack_require__(/*! material-ui/Stepper */ 509);
+	var _Stepper = __webpack_require__(/*! material-ui/Stepper */ 513);
 	
 	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 407);
 	
@@ -68784,7 +69397,7 @@
 	
 	var _FlatButton2 = _interopRequireDefault(_FlatButton);
 	
-	var _TextField = __webpack_require__(/*! material-ui/TextField */ 492);
+	var _TextField = __webpack_require__(/*! material-ui/TextField */ 494);
 	
 	var _TextField2 = _interopRequireDefault(_TextField);
 	
@@ -68796,7 +69409,7 @@
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
-	var _RadioButton = __webpack_require__(/*! material-ui/RadioButton */ 519);
+	var _RadioButton = __webpack_require__(/*! material-ui/RadioButton */ 523);
 	
 	var _superagent = __webpack_require__(/*! superagent */ 433);
 	
@@ -69082,7 +69695,7 @@
 	}(_react2.default.Component);
 
 /***/ },
-/* 509 */
+/* 513 */
 /*!****************************************!*\
   !*** ./~/material-ui/Stepper/index.js ***!
   \****************************************/
@@ -69095,23 +69708,23 @@
 	});
 	exports.Stepper = exports.StepLabel = exports.StepContent = exports.StepButton = exports.Step = undefined;
 	
-	var _Step2 = __webpack_require__(/*! ./Step */ 510);
+	var _Step2 = __webpack_require__(/*! ./Step */ 514);
 	
 	var _Step3 = _interopRequireDefault(_Step2);
 	
-	var _StepButton2 = __webpack_require__(/*! ./StepButton */ 511);
+	var _StepButton2 = __webpack_require__(/*! ./StepButton */ 515);
 	
 	var _StepButton3 = _interopRequireDefault(_StepButton2);
 	
-	var _StepContent2 = __webpack_require__(/*! ./StepContent */ 514);
+	var _StepContent2 = __webpack_require__(/*! ./StepContent */ 518);
 	
 	var _StepContent3 = _interopRequireDefault(_StepContent2);
 	
-	var _StepLabel2 = __webpack_require__(/*! ./StepLabel */ 512);
+	var _StepLabel2 = __webpack_require__(/*! ./StepLabel */ 516);
 	
 	var _StepLabel3 = _interopRequireDefault(_StepLabel2);
 	
-	var _Stepper2 = __webpack_require__(/*! ./Stepper */ 517);
+	var _Stepper2 = __webpack_require__(/*! ./Stepper */ 521);
 	
 	var _Stepper3 = _interopRequireDefault(_Stepper2);
 	
@@ -69124,7 +69737,7 @@
 	exports.Stepper = _Stepper3.default;
 
 /***/ },
-/* 510 */
+/* 514 */
 /*!***************************************!*\
   !*** ./~/material-ui/Stepper/Step.js ***!
   \***************************************/
@@ -69277,7 +69890,7 @@
 	exports.default = Step;
 
 /***/ },
-/* 511 */
+/* 515 */
 /*!*********************************************!*\
   !*** ./~/material-ui/Stepper/StepButton.js ***!
   \*********************************************/
@@ -69309,7 +69922,7 @@
 	
 	var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
 	
-	var _StepLabel = __webpack_require__(/*! ./StepLabel */ 512);
+	var _StepLabel = __webpack_require__(/*! ./StepLabel */ 516);
 	
 	var _StepLabel2 = _interopRequireDefault(_StepLabel);
 	
@@ -69478,7 +70091,7 @@
 	exports.default = StepButton;
 
 /***/ },
-/* 512 */
+/* 516 */
 /*!********************************************!*\
   !*** ./~/material-ui/Stepper/StepLabel.js ***!
   \********************************************/
@@ -69504,7 +70117,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _checkCircle = __webpack_require__(/*! ../svg-icons/action/check-circle */ 513);
+	var _checkCircle = __webpack_require__(/*! ../svg-icons/action/check-circle */ 517);
 	
 	var _checkCircle2 = _interopRequireDefault(_checkCircle);
 	
@@ -69692,7 +70305,7 @@
 	exports.default = StepLabel;
 
 /***/ },
-/* 513 */
+/* 517 */
 /*!********************************************************!*\
   !*** ./~/material-ui/svg-icons/action/check-circle.js ***!
   \********************************************************/
@@ -69732,7 +70345,7 @@
 	exports.default = ActionCheckCircle;
 
 /***/ },
-/* 514 */
+/* 518 */
 /*!**********************************************!*\
   !*** ./~/material-ui/Stepper/StepContent.js ***!
   \**********************************************/
@@ -69756,7 +70369,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ExpandTransition = __webpack_require__(/*! ../internal/ExpandTransition */ 515);
+	var _ExpandTransition = __webpack_require__(/*! ../internal/ExpandTransition */ 519);
 	
 	var _ExpandTransition2 = _interopRequireDefault(_ExpandTransition);
 	
@@ -69893,7 +70506,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 515 */
+/* 519 */
 /*!****************************************************!*\
   !*** ./~/material-ui/internal/ExpandTransition.js ***!
   \****************************************************/
@@ -69921,7 +70534,7 @@
 	
 	var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
 	
-	var _ExpandTransitionChild = __webpack_require__(/*! ./ExpandTransitionChild */ 516);
+	var _ExpandTransitionChild = __webpack_require__(/*! ./ExpandTransitionChild */ 520);
 	
 	var _ExpandTransitionChild2 = _interopRequireDefault(_ExpandTransitionChild);
 	
@@ -70026,7 +70639,7 @@
 	exports.default = ExpandTransition;
 
 /***/ },
-/* 516 */
+/* 520 */
 /*!*********************************************************!*\
   !*** ./~/material-ui/internal/ExpandTransitionChild.js ***!
   \*********************************************************/
@@ -70214,7 +70827,7 @@
 	exports.default = ExpandTransitionChild;
 
 /***/ },
-/* 517 */
+/* 521 */
 /*!******************************************!*\
   !*** ./~/material-ui/Stepper/Stepper.js ***!
   \******************************************/
@@ -70236,7 +70849,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StepConnector = __webpack_require__(/*! ./StepConnector */ 518);
+	var _StepConnector = __webpack_require__(/*! ./StepConnector */ 522);
 	
 	var _StepConnector2 = _interopRequireDefault(_StepConnector);
 	
@@ -70356,7 +70969,7 @@
 	exports.default = Stepper;
 
 /***/ },
-/* 518 */
+/* 522 */
 /*!************************************************!*\
   !*** ./~/material-ui/Stepper/StepConnector.js ***!
   \************************************************/
@@ -70437,7 +71050,7 @@
 	exports.default = (0, _pure2.default)(StepConnector);
 
 /***/ },
-/* 519 */
+/* 523 */
 /*!********************************************!*\
   !*** ./~/material-ui/RadioButton/index.js ***!
   \********************************************/
@@ -70450,11 +71063,11 @@
 	});
 	exports.default = exports.RadioButtonGroup = exports.RadioButton = undefined;
 	
-	var _RadioButton2 = __webpack_require__(/*! ./RadioButton */ 520);
+	var _RadioButton2 = __webpack_require__(/*! ./RadioButton */ 524);
 	
 	var _RadioButton3 = _interopRequireDefault(_RadioButton2);
 	
-	var _RadioButtonGroup2 = __webpack_require__(/*! ./RadioButtonGroup */ 523);
+	var _RadioButtonGroup2 = __webpack_require__(/*! ./RadioButtonGroup */ 527);
 	
 	var _RadioButtonGroup3 = _interopRequireDefault(_RadioButtonGroup2);
 	
@@ -70465,7 +71078,7 @@
 	exports.default = _RadioButton3.default;
 
 /***/ },
-/* 520 */
+/* 524 */
 /*!**************************************************!*\
   !*** ./~/material-ui/RadioButton/RadioButton.js ***!
   \**************************************************/
@@ -70497,11 +71110,11 @@
 	
 	var _EnhancedSwitch2 = _interopRequireDefault(_EnhancedSwitch);
 	
-	var _radioButtonUnchecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-unchecked */ 521);
+	var _radioButtonUnchecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-unchecked */ 525);
 	
 	var _radioButtonUnchecked2 = _interopRequireDefault(_radioButtonUnchecked);
 	
-	var _radioButtonChecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-checked */ 522);
+	var _radioButtonChecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-checked */ 526);
 	
 	var _radioButtonChecked2 = _interopRequireDefault(_radioButtonChecked);
 	
@@ -70731,7 +71344,7 @@
 	exports.default = RadioButton;
 
 /***/ },
-/* 521 */
+/* 525 */
 /*!******************************************************************!*\
   !*** ./~/material-ui/svg-icons/toggle/radio-button-unchecked.js ***!
   \******************************************************************/
@@ -70771,7 +71384,7 @@
 	exports.default = ToggleRadioButtonUnchecked;
 
 /***/ },
-/* 522 */
+/* 526 */
 /*!****************************************************************!*\
   !*** ./~/material-ui/svg-icons/toggle/radio-button-checked.js ***!
   \****************************************************************/
@@ -70811,7 +71424,7 @@
 	exports.default = ToggleRadioButtonChecked;
 
 /***/ },
-/* 523 */
+/* 527 */
 /*!*******************************************************!*\
   !*** ./~/material-ui/RadioButton/RadioButtonGroup.js ***!
   \*******************************************************/
@@ -70835,7 +71448,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _RadioButton = __webpack_require__(/*! ../RadioButton */ 519);
+	var _RadioButton = __webpack_require__(/*! ../RadioButton */ 523);
 	
 	var _RadioButton2 = _interopRequireDefault(_RadioButton);
 	
@@ -71030,7 +71643,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 524 */
+/* 528 */
 /*!*******************************************!*\
   !*** ./src/app/components/entry/LogIn.js ***!
   \*******************************************/

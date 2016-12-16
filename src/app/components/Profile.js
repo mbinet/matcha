@@ -35,8 +35,7 @@ export class Profile extends React.Component {
     }
 
     componentWillMount() {
-        var urld
-            = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
+        var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
             Request.get(url).then((response) => {
                 this.setState({
                     user: response.body.user,

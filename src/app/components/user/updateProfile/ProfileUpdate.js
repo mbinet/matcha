@@ -42,7 +42,10 @@ export class ProfileUpdate extends React.Component {
                 user: response.body.user,
                 saveDisabled: true,
                 activeSnack: false
-            })
+            });
+            this.setState({
+                user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
+            });
         });
     }
 
@@ -99,7 +102,7 @@ export class ProfileUpdate extends React.Component {
             borderRadius: 5,
             position: 'relative',
             cursor: 'pointer',
-        }
+        };
 
         const uploaderProps = {
             uploaderStyle,
@@ -108,7 +111,7 @@ export class ProfileUpdate extends React.Component {
             s3Url: 'https://matcha-bucket.s3.amazonaws.com',
             signingUrlQueryParams: {uploadType: 'avatar'},
             headers: {'Access-Control-Allow-Origin': '*'}
-        }
+        };
         const styles = {
             errorStyle: {
                 textAlign: "left",
@@ -133,12 +136,13 @@ export class ProfileUpdate extends React.Component {
                             <CardText>
                                 <DropzoneS3Uploader
                                     onFinish={this.handleFinishedUpload.bind(this)}
-                                    onProgress={this.jrigole}
-                                    onError={this.errorfunction}
                                     accept="image/*"
                                     className="col-centered"
                                     {...uploaderProps}
-                                />
+                                >
+                                    {/* should not be here once new image is uploaded */}
+                                    <img src={this.state.user.photo} alt=""/>
+                                    </DropzoneS3Uploader>
                                 <TextField
                                     floatingLabelText="Name"
                                     name="name"
