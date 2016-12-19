@@ -18,7 +18,7 @@ export class User extends React.Component {
             this.setState({
                 users: response.body.users
             });
-            console.log(this.state.users);
+            // console.log(this.state.users);
             // console.log(jrigole);
         });
         // console.log(this.state.movies);
@@ -35,6 +35,8 @@ export class User extends React.Component {
                     <Link to={"/profile/" + user._id} activeStyle={{color: "red"}}>{user.name}</Link>
                     <span> | </span>
                     <Link to={"/profile/update/" + user._id} activeStyle={{color: "red"}}>Edit</Link>
+                    <span> | </span>
+                    <Link to={"/profile/delete/" + user._id} activeStyle={{color: "red"}}>Delete</Link>
                 </li>)
         });
         return (

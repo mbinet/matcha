@@ -57571,7 +57571,7 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            var urld = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
+	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            _superagent2.default.get(url).then(function (response) {
 	                _this2.setState({
 	                    user: response.body.user
@@ -64800,6 +64800,9 @@
 	                    saveDisabled: true,
 	                    activeSnack: false
 	                });
+	                _this2.setState({
+	                    user: (0, _reactAddonsUpdate2.default)(_this2.state.user, { photo: { $set: "https://matcha-bucket.s3.amazonaws.com/" + _this2.state.user.photo } })
+	                });
 	            });
 	        }
 	    }, {
@@ -64904,13 +64907,15 @@
 	                            _react2.default.createElement(
 	                                _Card.CardText,
 	                                null,
-	                                _react2.default.createElement(_reactDropzoneS3Uploader2.default, _extends({
-	                                    onFinish: this.handleFinishedUpload.bind(this),
-	                                    onProgress: this.jrigole,
-	                                    onError: this.errorfunction,
-	                                    accept: "image/*",
-	                                    className: "col-centered"
-	                                }, uploaderProps)),
+	                                _react2.default.createElement(
+	                                    _reactDropzoneS3Uploader2.default,
+	                                    _extends({
+	                                        onFinish: this.handleFinishedUpload.bind(this),
+	                                        accept: "image/*",
+	                                        className: "col-centered"
+	                                    }, uploaderProps),
+	                                    _react2.default.createElement("img", { src: this.state.user.photo, alt: "" })
+	                                ),
 	                                _react2.default.createElement(_TextField2.default, {
 	                                    floatingLabelText: "Name",
 	                                    name: "name",

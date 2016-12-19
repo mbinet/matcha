@@ -9,6 +9,7 @@ import {Home} from "./components/Home";
 import {User} from "./components/User";
 import {Profile} from "./components/Profile";
 import {ProfileUpdate} from "./components/user/updateProfile/ProfileUpdate";
+import {ProfileDelete} from "./components/user/deleteProfile/ProfileDelete";
 import {SignUp} from "./components/entry/SignUp";
 import {LogIn} from "./components/entry/LogIn";
 
@@ -24,6 +25,7 @@ class App extends React.Component {
                         <Route path={"user"} component={User} />
                         <Route path={"home"} component={Home} />
                         <Route path={"profile/update/:id"} component={ProfileUpdate} />
+                        <Route path={"profile/delete/:id"} component={ProfileDelete} />
                         <Route path={"profile/:id"} component={Profile} />
                         <Route path={"signup"} component={SignUp} />
                         <Route path={"login"} component={LogIn} />
