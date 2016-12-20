@@ -77,9 +77,11 @@
 	
 	var _ProfileUpdate = __webpack_require__(/*! ./components/user/updateProfile/ProfileUpdate */ 493);
 	
-	var _SignUp = __webpack_require__(/*! ./components/entry/SignUp */ 512);
+	var _ProfileDelete = __webpack_require__(/*! ./components/user/deleteProfile/ProfileDelete */ 512);
 	
-	var _LogIn = __webpack_require__(/*! ./components/entry/LogIn */ 528);
+	var _SignUp = __webpack_require__(/*! ./components/entry/SignUp */ 513);
+	
+	var _LogIn = __webpack_require__(/*! ./components/entry/LogIn */ 529);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -116,6 +118,7 @@
 	                        _react2.default.createElement(_reactRouter.Route, { path: "user", component: _User.User }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "home", component: _Home.Home }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/update/:id", component: _ProfileUpdate.ProfileUpdate }),
+	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/delete/:id", component: _ProfileDelete.ProfileDelete }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/:id", component: _Profile.Profile }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "signup", component: _SignUp.SignUp }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "login", component: _LogIn.LogIn })
@@ -38907,7 +38910,7 @@
 	                _this2.setState({
 	                    users: response.body.users
 	                });
-	                console.log(_this2.state.users);
+	                // console.log(this.state.users);
 	                // console.log(jrigole);
 	            });
 	            // console.log(this.state.movies);
@@ -38938,6 +38941,16 @@
 	                        _reactRouter.Link,
 	                        { to: "/profile/update/" + user._id, activeStyle: { color: "red" } },
 	                        "Edit"
+	                    ),
+	                    _react2.default.createElement(
+	                        "span",
+	                        null,
+	                        " | "
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: "/profile/delete/" + user._id, activeStyle: { color: "red" } },
+	                        "Delete"
 	                    )
 	                );
 	            });
@@ -64778,7 +64791,13 @@
 	                name: "",
 	                age: "",
 	                mail: "",
-	                photo: "",
+	                photo: {
+	                    p1: "",
+	                    p2: "",
+	                    p3: "",
+	                    p4: "",
+	                    p5: ""
+	                },
 	                bio: ""
 	            },
 	            saveDisabled: true,
@@ -64800,9 +64819,9 @@
 	                    saveDisabled: true,
 	                    activeSnack: false
 	                });
-	                _this2.setState({
-	                    user: (0, _reactAddonsUpdate2.default)(_this2.state.user, { photo: { $set: "https://matcha-bucket.s3.amazonaws.com/" + _this2.state.user.photo } })
-	                });
+	                // this.setState({
+	                //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
+	                // });
 	            });
 	        }
 	    }, {
@@ -64812,7 +64831,6 @@
 	
 	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            _superagent2.default.put(url).set('Content-Type', 'application/json').send({ name: this.state.user.name }).send({ age: this.state.user.age }).send({ mail: this.state.user.mail }).send({ photo: this.state.user.photo }).send({ bio: this.state.user.bio }).end(function (response) {
-	                console.log('modified');
 	                _this3.setState({
 	                    activeSnack: true,
 	                    msgSnack: "Profile updated",
@@ -64839,9 +64857,13 @@
 	        // }
 	
 	    }, {
+	        key: "ahah",
+	        value: function ahah() {
+	            console.log("on s'amuse");
+	        }
+	    }, {
 	        key: "handleFinishedUpload",
 	        value: function handleFinishedUpload(res) {
-	            console.log(res.filename);
 	            this.setState({
 	                activeSnack: true,
 	                msgSnack: "Image uploaded",
@@ -64889,8 +64911,22 @@
 	                },
 	                floatingLabelFocusStyle: {
 	                    color: _colors.blue500
+	                },
+	                dropzoneStyle: {
+	                    width: '200px',
+	                    height: '200px',
+	                    margin: '10px',
+	                    border: '2px dashed rgb(153, 153, 153)',
+	                    borderRadius: '5px',
+	                    // position: 'relative',
+	                    cursor: 'pointer',
+	                    overflow: 'hidden',
+	                    display: 'inline-block'
 	                }
 	            };
+	
+	            // displays the current pic.
+	            if (this.state.saveDisabled) var image = _react2.default.createElement("img", { src: this.state.user.photo, alt: "", style: { maxWidth: '100%' } });
 	            return _react2.default.createElement(
 	                "div",
 	                null,
@@ -64911,11 +64947,55 @@
 	                                    _reactDropzoneS3Uploader2.default,
 	                                    _extends({
 	                                        onFinish: this.handleFinishedUpload.bind(this),
+	                                        onDrop: this.ahah,
 	                                        accept: "image/*",
-	                                        className: "col-centered"
+	                                        className: "col-centered",
+	                                        style: styles.dropzoneStyle
 	                                    }, uploaderProps),
-	                                    _react2.default.createElement("img", { src: this.state.user.photo, alt: "" })
+	                                    image
 	                                ),
+	                                _react2.default.createElement(
+	                                    _reactDropzoneS3Uploader2.default,
+	                                    _extends({
+	                                        onFinish: this.handleFinishedUpload.bind(this),
+	                                        accept: "image/*"
+	                                    }, uploaderProps, {
+	                                        //style={{display: 'inline-block'}}
+	                                        style: styles.dropzoneStyle
+	                                    }),
+	                                    image
+	                                ),
+	                                _react2.default.createElement(
+	                                    _reactDropzoneS3Uploader2.default,
+	                                    _extends({
+	                                        onFinish: this.handleFinishedUpload.bind(this),
+	                                        accept: "image/*"
+	                                        //style={{display: 'inline-block'}}
+	                                        , style: styles.dropzoneStyle
+	                                    }, uploaderProps),
+	                                    image
+	                                ),
+	                                _react2.default.createElement(
+	                                    _reactDropzoneS3Uploader2.default,
+	                                    _extends({
+	                                        onFinish: this.handleFinishedUpload.bind(this),
+	                                        accept: "image/*",
+	                                        className: "col-centered",
+	                                        style: styles.dropzoneStyle
+	                                    }, uploaderProps),
+	                                    image
+	                                ),
+	                                _react2.default.createElement(
+	                                    _reactDropzoneS3Uploader2.default,
+	                                    _extends({
+	                                        onFinish: this.handleFinishedUpload.bind(this),
+	                                        accept: "image/*",
+	                                        className: "col-centered",
+	                                        style: styles.dropzoneStyle
+	                                    }, uploaderProps),
+	                                    image
+	                                ),
+	                                _react2.default.createElement("br", null),
 	                                _react2.default.createElement(_TextField2.default, {
 	                                    floatingLabelText: "Name",
 	                                    name: "name",
@@ -69374,6 +69454,120 @@
 
 /***/ },
 /* 512 */
+/*!****************************************************************!*\
+  !*** ./src/app/components/user/deleteProfile/ProfileDelete.js ***!
+  \****************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.ProfileDelete = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _superagent = __webpack_require__(/*! superagent */ 433);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
+	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 407);
+	
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+	
+	var _FlatButton = __webpack_require__(/*! material-ui/FlatButton */ 440);
+	
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+	
+	var _Card = __webpack_require__(/*! material-ui/Card */ 443);
+	
+	var _reactFontawesome = __webpack_require__(/*! react-fontawesome */ 471);
+	
+	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
+	
+	var _lodash = __webpack_require__(/*! lodash */ 438);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	var _Table = __webpack_require__(/*! material-ui/Table */ 476);
+	
+	var _TextField = __webpack_require__(/*! material-ui/TextField */ 494);
+	
+	var _TextField2 = _interopRequireDefault(_TextField);
+	
+	var _Snackbar = __webpack_require__(/*! material-ui/Snackbar */ 500);
+	
+	var _Snackbar2 = _interopRequireDefault(_Snackbar);
+	
+	var _colors = __webpack_require__(/*! material-ui/styles/colors */ 365);
+	
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
+	
+	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	
+	var _FloatingActionButton = __webpack_require__(/*! material-ui/FloatingActionButton */ 504);
+	
+	var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 172);
+	
+	var _reactDropzoneS3Uploader = __webpack_require__(/*! react-dropzone-s3-uploader */ 506);
+	
+	var _reactDropzoneS3Uploader2 = _interopRequireDefault(_reactDropzoneS3Uploader);
+	
+	var _reactDropzone = __webpack_require__(/*! react-dropzone */ 511);
+	
+	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import {MyChip} from "./user/MyChip"
+	
+	
+	var ProfileDelete = exports.ProfileDelete = function (_React$Component) {
+	    _inherits(ProfileDelete, _React$Component);
+	
+	    function ProfileDelete() {
+	        _classCallCheck(this, ProfileDelete);
+	
+	        return _possibleConstructorReturn(this, (ProfileDelete.__proto__ || Object.getPrototypeOf(ProfileDelete)).apply(this, arguments));
+	    }
+	
+	    _createClass(ProfileDelete, [{
+	        key: "componentWillMount",
+	        value: function componentWillMount() {
+	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
+	            _superagent2.default.delete(url).then(function (response) {
+	                console.log("User Deleted.");
+	            });
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	
+	            return _react2.default.createElement(
+	                "div",
+	                null,
+	                "deleted lol"
+	            );
+	        }
+	    }]);
+	
+	    return ProfileDelete;
+	}(_react2.default.Component);
+
+/***/ },
+/* 513 */
 /*!********************************************!*\
   !*** ./src/app/components/entry/SignUp.js ***!
   \********************************************/
@@ -69392,7 +69586,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Stepper = __webpack_require__(/*! material-ui/Stepper */ 513);
+	var _Stepper = __webpack_require__(/*! material-ui/Stepper */ 514);
 	
 	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 407);
 	
@@ -69414,7 +69608,7 @@
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
-	var _RadioButton = __webpack_require__(/*! material-ui/RadioButton */ 523);
+	var _RadioButton = __webpack_require__(/*! material-ui/RadioButton */ 524);
 	
 	var _superagent = __webpack_require__(/*! superagent */ 433);
 	
@@ -69700,7 +69894,7 @@
 	}(_react2.default.Component);
 
 /***/ },
-/* 513 */
+/* 514 */
 /*!****************************************!*\
   !*** ./~/material-ui/Stepper/index.js ***!
   \****************************************/
@@ -69713,23 +69907,23 @@
 	});
 	exports.Stepper = exports.StepLabel = exports.StepContent = exports.StepButton = exports.Step = undefined;
 	
-	var _Step2 = __webpack_require__(/*! ./Step */ 514);
+	var _Step2 = __webpack_require__(/*! ./Step */ 515);
 	
 	var _Step3 = _interopRequireDefault(_Step2);
 	
-	var _StepButton2 = __webpack_require__(/*! ./StepButton */ 515);
+	var _StepButton2 = __webpack_require__(/*! ./StepButton */ 516);
 	
 	var _StepButton3 = _interopRequireDefault(_StepButton2);
 	
-	var _StepContent2 = __webpack_require__(/*! ./StepContent */ 518);
+	var _StepContent2 = __webpack_require__(/*! ./StepContent */ 519);
 	
 	var _StepContent3 = _interopRequireDefault(_StepContent2);
 	
-	var _StepLabel2 = __webpack_require__(/*! ./StepLabel */ 516);
+	var _StepLabel2 = __webpack_require__(/*! ./StepLabel */ 517);
 	
 	var _StepLabel3 = _interopRequireDefault(_StepLabel2);
 	
-	var _Stepper2 = __webpack_require__(/*! ./Stepper */ 521);
+	var _Stepper2 = __webpack_require__(/*! ./Stepper */ 522);
 	
 	var _Stepper3 = _interopRequireDefault(_Stepper2);
 	
@@ -69742,7 +69936,7 @@
 	exports.Stepper = _Stepper3.default;
 
 /***/ },
-/* 514 */
+/* 515 */
 /*!***************************************!*\
   !*** ./~/material-ui/Stepper/Step.js ***!
   \***************************************/
@@ -69895,7 +70089,7 @@
 	exports.default = Step;
 
 /***/ },
-/* 515 */
+/* 516 */
 /*!*********************************************!*\
   !*** ./~/material-ui/Stepper/StepButton.js ***!
   \*********************************************/
@@ -69927,7 +70121,7 @@
 	
 	var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
 	
-	var _StepLabel = __webpack_require__(/*! ./StepLabel */ 516);
+	var _StepLabel = __webpack_require__(/*! ./StepLabel */ 517);
 	
 	var _StepLabel2 = _interopRequireDefault(_StepLabel);
 	
@@ -70096,7 +70290,7 @@
 	exports.default = StepButton;
 
 /***/ },
-/* 516 */
+/* 517 */
 /*!********************************************!*\
   !*** ./~/material-ui/Stepper/StepLabel.js ***!
   \********************************************/
@@ -70122,7 +70316,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _checkCircle = __webpack_require__(/*! ../svg-icons/action/check-circle */ 517);
+	var _checkCircle = __webpack_require__(/*! ../svg-icons/action/check-circle */ 518);
 	
 	var _checkCircle2 = _interopRequireDefault(_checkCircle);
 	
@@ -70310,7 +70504,7 @@
 	exports.default = StepLabel;
 
 /***/ },
-/* 517 */
+/* 518 */
 /*!********************************************************!*\
   !*** ./~/material-ui/svg-icons/action/check-circle.js ***!
   \********************************************************/
@@ -70350,7 +70544,7 @@
 	exports.default = ActionCheckCircle;
 
 /***/ },
-/* 518 */
+/* 519 */
 /*!**********************************************!*\
   !*** ./~/material-ui/Stepper/StepContent.js ***!
   \**********************************************/
@@ -70374,7 +70568,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ExpandTransition = __webpack_require__(/*! ../internal/ExpandTransition */ 519);
+	var _ExpandTransition = __webpack_require__(/*! ../internal/ExpandTransition */ 520);
 	
 	var _ExpandTransition2 = _interopRequireDefault(_ExpandTransition);
 	
@@ -70511,7 +70705,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 519 */
+/* 520 */
 /*!****************************************************!*\
   !*** ./~/material-ui/internal/ExpandTransition.js ***!
   \****************************************************/
@@ -70539,7 +70733,7 @@
 	
 	var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
 	
-	var _ExpandTransitionChild = __webpack_require__(/*! ./ExpandTransitionChild */ 520);
+	var _ExpandTransitionChild = __webpack_require__(/*! ./ExpandTransitionChild */ 521);
 	
 	var _ExpandTransitionChild2 = _interopRequireDefault(_ExpandTransitionChild);
 	
@@ -70644,7 +70838,7 @@
 	exports.default = ExpandTransition;
 
 /***/ },
-/* 520 */
+/* 521 */
 /*!*********************************************************!*\
   !*** ./~/material-ui/internal/ExpandTransitionChild.js ***!
   \*********************************************************/
@@ -70832,7 +71026,7 @@
 	exports.default = ExpandTransitionChild;
 
 /***/ },
-/* 521 */
+/* 522 */
 /*!******************************************!*\
   !*** ./~/material-ui/Stepper/Stepper.js ***!
   \******************************************/
@@ -70854,7 +71048,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StepConnector = __webpack_require__(/*! ./StepConnector */ 522);
+	var _StepConnector = __webpack_require__(/*! ./StepConnector */ 523);
 	
 	var _StepConnector2 = _interopRequireDefault(_StepConnector);
 	
@@ -70974,7 +71168,7 @@
 	exports.default = Stepper;
 
 /***/ },
-/* 522 */
+/* 523 */
 /*!************************************************!*\
   !*** ./~/material-ui/Stepper/StepConnector.js ***!
   \************************************************/
@@ -71055,7 +71249,7 @@
 	exports.default = (0, _pure2.default)(StepConnector);
 
 /***/ },
-/* 523 */
+/* 524 */
 /*!********************************************!*\
   !*** ./~/material-ui/RadioButton/index.js ***!
   \********************************************/
@@ -71068,11 +71262,11 @@
 	});
 	exports.default = exports.RadioButtonGroup = exports.RadioButton = undefined;
 	
-	var _RadioButton2 = __webpack_require__(/*! ./RadioButton */ 524);
+	var _RadioButton2 = __webpack_require__(/*! ./RadioButton */ 525);
 	
 	var _RadioButton3 = _interopRequireDefault(_RadioButton2);
 	
-	var _RadioButtonGroup2 = __webpack_require__(/*! ./RadioButtonGroup */ 527);
+	var _RadioButtonGroup2 = __webpack_require__(/*! ./RadioButtonGroup */ 528);
 	
 	var _RadioButtonGroup3 = _interopRequireDefault(_RadioButtonGroup2);
 	
@@ -71083,7 +71277,7 @@
 	exports.default = _RadioButton3.default;
 
 /***/ },
-/* 524 */
+/* 525 */
 /*!**************************************************!*\
   !*** ./~/material-ui/RadioButton/RadioButton.js ***!
   \**************************************************/
@@ -71115,11 +71309,11 @@
 	
 	var _EnhancedSwitch2 = _interopRequireDefault(_EnhancedSwitch);
 	
-	var _radioButtonUnchecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-unchecked */ 525);
+	var _radioButtonUnchecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-unchecked */ 526);
 	
 	var _radioButtonUnchecked2 = _interopRequireDefault(_radioButtonUnchecked);
 	
-	var _radioButtonChecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-checked */ 526);
+	var _radioButtonChecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-checked */ 527);
 	
 	var _radioButtonChecked2 = _interopRequireDefault(_radioButtonChecked);
 	
@@ -71349,7 +71543,7 @@
 	exports.default = RadioButton;
 
 /***/ },
-/* 525 */
+/* 526 */
 /*!******************************************************************!*\
   !*** ./~/material-ui/svg-icons/toggle/radio-button-unchecked.js ***!
   \******************************************************************/
@@ -71389,7 +71583,7 @@
 	exports.default = ToggleRadioButtonUnchecked;
 
 /***/ },
-/* 526 */
+/* 527 */
 /*!****************************************************************!*\
   !*** ./~/material-ui/svg-icons/toggle/radio-button-checked.js ***!
   \****************************************************************/
@@ -71429,7 +71623,7 @@
 	exports.default = ToggleRadioButtonChecked;
 
 /***/ },
-/* 527 */
+/* 528 */
 /*!*******************************************************!*\
   !*** ./~/material-ui/RadioButton/RadioButtonGroup.js ***!
   \*******************************************************/
@@ -71453,7 +71647,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _RadioButton = __webpack_require__(/*! ../RadioButton */ 523);
+	var _RadioButton = __webpack_require__(/*! ../RadioButton */ 524);
 	
 	var _RadioButton2 = _interopRequireDefault(_RadioButton);
 	
@@ -71648,7 +71842,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 528 */
+/* 529 */
 /*!*******************************************!*\
   !*** ./src/app/components/entry/LogIn.js ***!
   \*******************************************/

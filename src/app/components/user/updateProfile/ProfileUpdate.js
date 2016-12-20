@@ -37,7 +37,8 @@ export class ProfileUpdate extends React.Component {
             },
             saveDisabled: true,
             activeSnack: false,
-            msgSnack: ""
+            msgSnack: "",
+            photoIndex: 0
         };
     }
 
@@ -49,6 +50,7 @@ export class ProfileUpdate extends React.Component {
                 saveDisabled: true,
                 activeSnack: false
             });
+            console.log(this.state.user)
             // this.setState({
             //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
             // });
@@ -83,27 +85,20 @@ export class ProfileUpdate extends React.Component {
         });
     }
 
-    // _onDrop(files) {
-    //     var file = files[0];
-    //
-    //     Request.get()
-    // }
-
-    ahah() {
-        console.log("on s'amuse");
-    }
-
     handleFinishedUpload(res) {
         this.setState({
             activeSnack: true,
             msgSnack: "Image uploaded",
             saveDisabled: false,
-            user: update(this.state.user, {photo: {$set: res.filename}})
+            user: update(this.state.user, {photo: {[this.state.photoIndex]: {$set: res.filename}}})
         });
+        console.log(this.state.photoIndex);
+        setTimeout(function () {
+            console.log(this.state.user.photo);
+        }.bind(this), 100)
+
     }
     render() {
-        var icon = <FontAwesome className='fa fa-mars' name=''/>;
-        var text = <div>From Paris | interested in <FontAwesome className='fa fa-mars' name=''/></div>;
         const uploaderStyle = {
             height: 200,
             border: 'dashed 2px #999',
@@ -121,18 +116,6 @@ export class ProfileUpdate extends React.Component {
             headers: {'Access-Control-Allow-Origin': '*'}
         };
         const styles = {
-            errorStyle: {
-                textAlign: "left",
-            },
-            underlineStyle: {
-                borderColor: orange500,
-            },
-            floatingLabelStyle: {
-                color: orange500,
-            },
-            floatingLabelFocusStyle: {
-                color: blue500,
-            },
             dropzoneStyle: {
                 width: '200px',
                 height: '200px',
@@ -146,9 +129,15 @@ export class ProfileUpdate extends React.Component {
             }
         };
 
+
+        var indents = []
+        for(var i = 0; i < 4; i++) {
+
+        }
+
         // displays the current pic.
-        if(this.state.saveDisabled)
-            var image = <img src={this.state.user.photo} alt="" style={{ maxWidth: '100%' }}/>;
+        // if(this.state.saveDisabled)
+        //     var image = <img src={this.state.user.photo.p1} alt="" style={{ maxWidth: '100%' }}/>;
         return (
             <div>
                 <div className="row">
@@ -159,50 +148,61 @@ export class ProfileUpdate extends React.Component {
                             <CardText>
                                 <DropzoneS3Uploader
                                     onFinish={this.handleFinishedUpload.bind(this)}
-                                    onDrop={this.ahah}
+                                    onDrop={() => this.setState({photoIndex: 'p1'})}
                                     accept="image/*"
                                     className="col-centered"
-                                    style={styles.dropzoneStyle}
+                                    //style={styles.dropzoneStyle}
                                     {...uploaderProps}
                                 >
-                                    {image}
+                                    {/*{this.state.saveDisabled && <img src={this.state.user.photo} alt="" style={{ maxWidth: '100%' }}/>}*/}
                                 </DropzoneS3Uploader>
                                 <DropzoneS3Uploader
                                     onFinish={this.handleFinishedUpload.bind(this)}
+                                    onDrop={() => this.setState({photoIndex: 'p2'})}
                                     accept="image/*"
                                     {...uploaderProps}
                                     //style={{display: 'inline-block'}}
                                     style={styles.dropzoneStyle}
                                 >
-                                    {image}
+                                    {/*{image}*/}
                                 </DropzoneS3Uploader>
                                 <DropzoneS3Uploader
                                     onFinish={this.handleFinishedUpload.bind(this)}
+                                    onDrop={() => this.setState({photoIndex: 'p3'})}
                                     accept="image/*"
+                                    {...uploaderProps}
                                     //style={{display: 'inline-block'}}
                                     style={styles.dropzoneStyle}
-                                    {...uploaderProps}
                                 >
-                                    {image}
+                                    {/*{image}*/}
                                 </DropzoneS3Uploader>
-                                <DropzoneS3Uploader
-                                    onFinish={this.handleFinishedUpload.bind(this)}
-                                    accept="image/*"
-                                    className="col-centered"
-                                    style={styles.dropzoneStyle}
-                                    {...uploaderProps}
-                                >
-                                    {image}
-                                </DropzoneS3Uploader>
-                                <DropzoneS3Uploader
-                                    onFinish={this.handleFinishedUpload.bind(this)}
-                                    accept="image/*"
-                                    className="col-centered"
-                                    style={styles.dropzoneStyle}
-                                    {...uploaderProps}
-                                >
-                                    {image}
-                                </DropzoneS3Uploader>
+                                {/*<DropzoneS3Uploader*/}
+                                    {/*onFinish={this.handleFinishedUpload.bind(this)}*/}
+                                    {/*accept="image/*"*/}
+                                    {/*//style={{display: 'inline-block'}}*/}
+                                    {/*style={styles.dropzoneStyle}*/}
+                                    {/*{...uploaderProps}*/}
+                                {/*>*/}
+                                    {/*{image}*/}
+                                {/*</DropzoneS3Uploader>*/}
+                                {/*<DropzoneS3Uploader*/}
+                                    {/*onFinish={this.handleFinishedUpload.bind(this)}*/}
+                                    {/*accept="image/*"*/}
+                                    {/*className="col-centered"*/}
+                                    {/*style={styles.dropzoneStyle}*/}
+                                    {/*{...uploaderProps}*/}
+                                {/*>*/}
+                                    {/*{image}*/}
+                                {/*</DropzoneS3Uploader>*/}
+                                {/*<DropzoneS3Uploader*/}
+                                    {/*onFinish={this.handleFinishedUpload.bind(this)}*/}
+                                    {/*accept="image/*"*/}
+                                    {/*className="col-centered"*/}
+                                    {/*style={styles.dropzoneStyle}*/}
+                                    {/*{...uploaderProps}*/}
+                                {/*>*/}
+                                    {/*{image}*/}
+                                {/*</DropzoneS3Uploader>*/}
                                 <br />
                                 <TextField
                                     floatingLabelText="Name"
