@@ -64802,7 +64802,8 @@
 	            },
 	            saveDisabled: true,
 	            activeSnack: false,
-	            msgSnack: ""
+	            msgSnack: "",
+	            photoIndex: 0
 	        };
 	        return _this;
 	    }
@@ -64819,6 +64820,7 @@
 	                    saveDisabled: true,
 	                    activeSnack: false
 	                });
+	                console.log(_this2.state.user);
 	                // this.setState({
 	                //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
 	                // });
@@ -64849,18 +64851,6 @@
 	                activeSnack: false
 	            });
 	        }
-	
-	        // _onDrop(files) {
-	        //     var file = files[0];
-	        //
-	        //     Request.get()
-	        // }
-	
-	    }, {
-	        key: "ahah",
-	        value: function ahah() {
-	            console.log("on s'amuse");
-	        }
 	    }, {
 	        key: "handleFinishedUpload",
 	        value: function handleFinishedUpload(res) {
@@ -64868,21 +64858,18 @@
 	                activeSnack: true,
 	                msgSnack: "Image uploaded",
 	                saveDisabled: false,
-	                user: (0, _reactAddonsUpdate2.default)(this.state.user, { photo: { $set: res.filename } })
+	                user: (0, _reactAddonsUpdate2.default)(this.state.user, { photo: _defineProperty({}, this.state.photoIndex, { $set: res.filename }) })
 	            });
+	            console.log(this.state.photoIndex);
+	            setTimeout(function () {
+	                console.log(this.state.user.photo);
+	            }.bind(this), 100);
 	        }
 	    }, {
 	        key: "render",
 	        value: function render() {
 	            var _this4 = this;
 	
-	            var icon = _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" });
-	            var text = _react2.default.createElement(
-	                "div",
-	                null,
-	                "From Paris | interested in ",
-	                _react2.default.createElement(_reactFontawesome2.default, { className: "fa fa-mars", name: "" })
-	            );
 	            var uploaderStyle = {
 	                height: 200,
 	                border: 'dashed 2px #999',
@@ -64900,18 +64887,6 @@
 	                headers: { 'Access-Control-Allow-Origin': '*' }
 	            };
 	            var styles = {
-	                errorStyle: {
-	                    textAlign: "left"
-	                },
-	                underlineStyle: {
-	                    borderColor: _colors.orange500
-	                },
-	                floatingLabelStyle: {
-	                    color: _colors.orange500
-	                },
-	                floatingLabelFocusStyle: {
-	                    color: _colors.blue500
-	                },
 	                dropzoneStyle: {
 	                    width: '200px',
 	                    height: '200px',
@@ -64925,8 +64900,12 @@
 	                }
 	            };
 	
+	            var indents = [];
+	            for (var i = 0; i < 4; i++) {}
+	
 	            // displays the current pic.
-	            if (this.state.saveDisabled) var image = _react2.default.createElement("img", { src: this.state.user.photo, alt: "", style: { maxWidth: '100%' } });
+	            // if(this.state.saveDisabled)
+	            //     var image = <img src={this.state.user.photo.p1} alt="" style={{ maxWidth: '100%' }}/>;
 	            return _react2.default.createElement(
 	                "div",
 	                null,
@@ -64943,58 +64922,35 @@
 	                            _react2.default.createElement(
 	                                _Card.CardText,
 	                                null,
-	                                _react2.default.createElement(
-	                                    _reactDropzoneS3Uploader2.default,
-	                                    _extends({
-	                                        onFinish: this.handleFinishedUpload.bind(this),
-	                                        onDrop: this.ahah,
-	                                        accept: "image/*",
-	                                        className: "col-centered",
-	                                        style: styles.dropzoneStyle
-	                                    }, uploaderProps),
-	                                    image
-	                                ),
-	                                _react2.default.createElement(
-	                                    _reactDropzoneS3Uploader2.default,
-	                                    _extends({
-	                                        onFinish: this.handleFinishedUpload.bind(this),
-	                                        accept: "image/*"
-	                                    }, uploaderProps, {
-	                                        //style={{display: 'inline-block'}}
-	                                        style: styles.dropzoneStyle
-	                                    }),
-	                                    image
-	                                ),
-	                                _react2.default.createElement(
-	                                    _reactDropzoneS3Uploader2.default,
-	                                    _extends({
-	                                        onFinish: this.handleFinishedUpload.bind(this),
-	                                        accept: "image/*"
-	                                        //style={{display: 'inline-block'}}
-	                                        , style: styles.dropzoneStyle
-	                                    }, uploaderProps),
-	                                    image
-	                                ),
-	                                _react2.default.createElement(
-	                                    _reactDropzoneS3Uploader2.default,
-	                                    _extends({
-	                                        onFinish: this.handleFinishedUpload.bind(this),
-	                                        accept: "image/*",
-	                                        className: "col-centered",
-	                                        style: styles.dropzoneStyle
-	                                    }, uploaderProps),
-	                                    image
-	                                ),
-	                                _react2.default.createElement(
-	                                    _reactDropzoneS3Uploader2.default,
-	                                    _extends({
-	                                        onFinish: this.handleFinishedUpload.bind(this),
-	                                        accept: "image/*",
-	                                        className: "col-centered",
-	                                        style: styles.dropzoneStyle
-	                                    }, uploaderProps),
-	                                    image
-	                                ),
+	                                _react2.default.createElement(_reactDropzoneS3Uploader2.default, _extends({
+	                                    onFinish: this.handleFinishedUpload.bind(this),
+	                                    onDrop: function onDrop() {
+	                                        return _this4.setState({ photoIndex: 'p1' });
+	                                    },
+	                                    accept: "image/*",
+	                                    className: "col-centered"
+	                                    //style={styles.dropzoneStyle}
+	                                }, uploaderProps)),
+	                                _react2.default.createElement(_reactDropzoneS3Uploader2.default, _extends({
+	                                    onFinish: this.handleFinishedUpload.bind(this),
+	                                    onDrop: function onDrop() {
+	                                        return _this4.setState({ photoIndex: 'p2' });
+	                                    },
+	                                    accept: "image/*"
+	                                }, uploaderProps, {
+	                                    //style={{display: 'inline-block'}}
+	                                    style: styles.dropzoneStyle
+	                                })),
+	                                _react2.default.createElement(_reactDropzoneS3Uploader2.default, _extends({
+	                                    onFinish: this.handleFinishedUpload.bind(this),
+	                                    onDrop: function onDrop() {
+	                                        return _this4.setState({ photoIndex: 'p3' });
+	                                    },
+	                                    accept: "image/*"
+	                                }, uploaderProps, {
+	                                    //style={{display: 'inline-block'}}
+	                                    style: styles.dropzoneStyle
+	                                })),
 	                                _react2.default.createElement("br", null),
 	                                _react2.default.createElement(_TextField2.default, {
 	                                    floatingLabelText: "Name",

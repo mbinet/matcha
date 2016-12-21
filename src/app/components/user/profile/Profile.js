@@ -5,9 +5,10 @@ import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card';
 import FontAwesome from 'react-fontawesome';
 import _ from 'lodash';
-import {MyChip} from "./user/MyChip"
+import {MyChip} from "../MyChip"
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import update from 'react-addons-update';
+// import {photoGallery} from "photoGallery";
 
 const styles = {
     chip: {
@@ -28,7 +29,7 @@ export class Profile extends React.Component {
                 name: "",
                 age: "",
                 mail: "",
-                photo: "",
+                photo: {},
                 bio: ""
             }
         };
@@ -40,9 +41,9 @@ export class Profile extends React.Component {
                 this.setState({
                     user: response.body.user,
                 });
-            this.setState({
-                user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
-            });
+            // this.setState({
+                //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
+                // });
         });
     }
 
@@ -76,7 +77,7 @@ export class Profile extends React.Component {
         var sex = this.getSex(this.state.user.sex);
         var name = this.state.user.name;
         var age = this.state.user.age;
-        var photo = this.state.user.photo;
+        var photo = this.state.user.photo.p1;
         var bio = this.state.user.bio;
         var style = {color: 'red'};
         var like = <FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>;
@@ -102,8 +103,9 @@ export class Profile extends React.Component {
                         />
                         <CardMedia>
                             {/*<img src="http://placekitten.com/800/250" alt=""/>*/}
-                            <img src={photo} alt=""/>
-
+                            {/*<img src={"https://matcha-bucket.s3.amazonaws.com/" + photo} alt="" style={{display: 'inline-block'}}/>*/}
+                            {/*<img src={"https://matcha-bucket.s3.amazonaws.com/" + photo} alt="" style={{display: 'inline-block'}}/>*/}
+                            <photoGallery></photoGallery>
                         </CardMedia>
                         <CardActions style={{textAlign: 'center'}}>
                             <FlatButton label={like} />

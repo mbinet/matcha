@@ -7,7 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Root} from "./components/Root";
 import {Home} from "./components/Home";
 import {User} from "./components/User";
-import {Profile} from "./components/Profile";
+import {Profile} from "./components/user/profile/Profile";
 import {ProfileUpdate} from "./components/user/updateProfile/ProfileUpdate";
 import {ProfileDelete} from "./components/user/deleteProfile/ProfileDelete";
 import {SignUp} from "./components/entry/SignUp";

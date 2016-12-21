@@ -85,59 +85,49 @@ export class ProfileUpdate extends React.Component {
         });
     }
 
-    handleFinishedUpload(res) {
+    handleFinishedUpload(res, ok, ou) {
         this.setState({
             activeSnack: true,
             msgSnack: "Image uploaded",
             saveDisabled: false,
             user: update(this.state.user, {photo: {[this.state.photoIndex]: {$set: res.filename}}})
         });
-        console.log(this.state.photoIndex);
+        //console.log(this.state.photoIndex);
         setTimeout(function () {
             console.log(this.state.user.photo);
         }.bind(this), 100)
+        // console.log('filename: ', res.filename)
+        // console.log(ok)
 
     }
-    render() {
-        const uploaderStyle = {
-            height: 200,
-            border: 'dashed 2px #999',
-            borderRadius: 5,
-            position: 'relative',
-            cursor: 'pointer',
-        };
 
+    render() {
         const uploaderProps = {
-            uploaderStyle,
             maxFileSize: 1024 * 1024 * 50,
             server: 'http://54.93.182.167:3000',
             s3Url: 'https://matcha-bucket.s3.amazonaws.com',
             signingUrlQueryParams: {uploadType: 'avatar'},
             headers: {'Access-Control-Allow-Origin': '*'}
         };
+
         const styles = {
             dropzoneStyle: {
-                width: '200px',
-                height: '200px',
+                width: '200px', height: '200px',
                 margin: '10px',
-                border: '2px dashed rgb(153, 153, 153)',
-                borderRadius: '5px',
-                // position: 'relative',
+                border: '2px dashed rgb(153, 153, 153)', borderRadius: '5px',
                 cursor: 'pointer',
-                overflow: 'hidden',
                 display: 'inline-block',
+                position: 'relative'
             }
         };
 
-
-        var indents = []
-        for(var i = 0; i < 4; i++) {
-
-        }
-
         // displays the current pic.
-        // if(this.state.saveDisabled)
-        //     var image = <img src={this.state.user.photo.p1} alt="" style={{ maxWidth: '100%' }}/>;
+        var img = []
+        _.forEach(this.state.user.photo, function (p) {
+            img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/" + p} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }}/>);
+            console.log(p)
+        })
+        var jrigole = 3;
         return (
             <div>
                 <div className="row">
@@ -146,95 +136,97 @@ export class ProfileUpdate extends React.Component {
                         <CardTitle title="Update your Profile" />
                         <div className="text-center">
                             <CardText>
-                                <DropzoneS3Uploader
-                                    onFinish={this.handleFinishedUpload.bind(this)}
-                                    onDrop={() => this.setState({photoIndex: 'p1'})}
-                                    accept="image/*"
-                                    className="col-centered"
-                                    //style={styles.dropzoneStyle}
-                                    {...uploaderProps}
-                                >
-                                    {/*{this.state.saveDisabled && <img src={this.state.user.photo} alt="" style={{ maxWidth: '100%' }}/>}*/}
-                                </DropzoneS3Uploader>
-                                <DropzoneS3Uploader
-                                    onFinish={this.handleFinishedUpload.bind(this)}
-                                    onDrop={() => this.setState({photoIndex: 'p2'})}
-                                    accept="image/*"
-                                    {...uploaderProps}
-                                    //style={{display: 'inline-block'}}
-                                    style={styles.dropzoneStyle}
-                                >
-                                    {/*{image}*/}
-                                </DropzoneS3Uploader>
-                                <DropzoneS3Uploader
-                                    onFinish={this.handleFinishedUpload.bind(this)}
-                                    onDrop={() => this.setState({photoIndex: 'p3'})}
-                                    accept="image/*"
-                                    {...uploaderProps}
-                                    //style={{display: 'inline-block'}}
-                                    style={styles.dropzoneStyle}
-                                >
-                                    {/*{image}*/}
-                                </DropzoneS3Uploader>
-                                {/*<DropzoneS3Uploader*/}
-                                    {/*onFinish={this.handleFinishedUpload.bind(this)}*/}
-                                    {/*accept="image/*"*/}
-                                    {/*//style={{display: 'inline-block'}}*/}
-                                    {/*style={styles.dropzoneStyle}*/}
-                                    {/*{...uploaderProps}*/}
-                                {/*>*/}
-                                    {/*{image}*/}
-                                {/*</DropzoneS3Uploader>*/}
-                                {/*<DropzoneS3Uploader*/}
-                                    {/*onFinish={this.handleFinishedUpload.bind(this)}*/}
-                                    {/*accept="image/*"*/}
-                                    {/*className="col-centered"*/}
-                                    {/*style={styles.dropzoneStyle}*/}
-                                    {/*{...uploaderProps}*/}
-                                {/*>*/}
-                                    {/*{image}*/}
-                                {/*</DropzoneS3Uploader>*/}
-                                {/*<DropzoneS3Uploader*/}
-                                    {/*onFinish={this.handleFinishedUpload.bind(this)}*/}
-                                    {/*accept="image/*"*/}
-                                    {/*className="col-centered"*/}
-                                    {/*style={styles.dropzoneStyle}*/}
-                                    {/*{...uploaderProps}*/}
-                                {/*>*/}
-                                    {/*{image}*/}
-                                {/*</DropzoneS3Uploader>*/}
-                                <br />
-                                <TextField
-                                    floatingLabelText="Name"
-                                    name="name"
-                                    value={this.state.user.name}
-                                    onChange={this._handleTextFieldChange.bind(this)}
-                                />
-                                <br />
-                                <TextField
-                                    floatingLabelText="Age"
-                                    name="age"
-                                    value={this.state.user.age}
-                                    onChange={this._handleTextFieldChange.bind(this)}
-                                />
-                                <br />
-                                <TextField
-                                    floatingLabelText="Mail"
-                                    name="mail"
-                                    value={this.state.user.mail}
-                                    onChange={this._handleTextFieldChange.bind(this)}
-                                />
-                                <br/>
-                                <TextField
-                                    hintText="Hi, I like stamps and cactus..."
-                                    floatingLabelText="Tell us about you"
-                                    multiLine={true}
-                                    rows={2}
-                                    name="bio"
-                                    value={this.state.user.bio}
-                                    onChange={this._handleTextFieldChange.bind(this)}
-                                    style={{textAlign: "left"}} // so the FloatingLabelText doesn't stay centered
-                                />
+                                <div className="col-sm-6 row" style={{display: 'block'}}>
+                                    <DropzoneS3Uploader
+                                        onFinish={this.handleFinishedUpload.bind(this)}
+                                        onDrop={() => this.setState({photoIndex: 'p1'})}
+                                        accept="image/*"
+                                        className="col-centered"
+                                        style={styles.dropzoneStyle}
+                                        {...uploaderProps}
+                                    >
+                                        {img[0]}
+                                        {/*{this.state.saveDisabled && <img src={this.state.user.photo} alt="" style={{ maxWidth: '100%' }}/>}*/}
+                                    </DropzoneS3Uploader>
+                                    <DropzoneS3Uploader
+                                        onFinish={this.handleFinishedUpload.bind(this)}
+                                        onDrop={() => this.setState({photoIndex: 'p2'})}
+                                        accept="image/*"
+                                        {...uploaderProps}
+                                        //style={{display: 'inline-block'}}
+                                        style={styles.dropzoneStyle}
+                                    >
+                                        {img[1]}
+                                        {/*{image}*/}
+                                    </DropzoneS3Uploader>
+                                    <DropzoneS3Uploader
+                                        onFinish={this.handleFinishedUpload.bind(this)}
+                                        onDrop={() => this.setState({photoIndex: 'p3'})}
+                                        accept="image/*"
+                                        {...uploaderProps}
+                                        //style={{display: 'inline-block'}}
+                                        style={styles.dropzoneStyle}
+                                    >
+                                        {img[2]}
+                                        {/*{image}*/}
+                                    </DropzoneS3Uploader>
+                                    <DropzoneS3Uploader
+                                        onFinish={this.handleFinishedUpload.bind(this)}
+                                        onDrop={() => this.setState({photoIndex: 'p4'})}
+                                        accept="image/*"
+                                        {...uploaderProps}
+                                        //style={{display: 'inline-block'}}
+                                        style={styles.dropzoneStyle}
+                                    >
+                                        {img[3]}
+                                        {/*{image}*/}
+                                    </DropzoneS3Uploader>
+                                    <DropzoneS3Uploader
+                                        onFinish={this.handleFinishedUpload.bind(this)}
+                                        onDrop={() => this.setState({photoIndex: 'p5'})}
+                                        accept="image/*"
+                                        {...uploaderProps}
+                                        //style={{display: 'inline-block'}}
+                                        style={styles.dropzoneStyle}
+                                    >
+                                        {img[4]}
+                                        {/*{image}*/}
+                                    </DropzoneS3Uploader>
+                                </div>
+                                <div className="row">
+                                    <br />
+                                    <TextField
+                                        floatingLabelText="Name"
+                                        name="name"
+                                        value={this.state.user.name}
+                                        onChange={this._handleTextFieldChange.bind(this)}
+                                    />
+                                    <br />
+                                    <TextField
+                                        floatingLabelText="Age"
+                                        name="age"
+                                        value={this.state.user.age}
+                                        onChange={this._handleTextFieldChange.bind(this)}
+                                    />
+                                    <br />
+                                    <TextField
+                                        floatingLabelText="Mail"
+                                        name="mail"
+                                        value={this.state.user.mail}
+                                        onChange={this._handleTextFieldChange.bind(this)}
+                                    />
+                                    <br/>
+                                    <TextField
+                                        hintText="Hi, I like stamps and cactus..."
+                                        floatingLabelText="Tell us about you"
+                                        multiLine={true}
+                                        rows={2}
+                                        name="bio"
+                                        value={this.state.user.bio}
+                                        onChange={this._handleTextFieldChange.bind(this)}
+                                        style={{textAlign: "left"}} // so the FloatingLabelText doesn't stay centered
+                                    />
+                                </div>
                             </CardText>
                         </div>
 
