@@ -123,10 +123,12 @@ export class ProfileUpdate extends React.Component {
 
         // displays the current pic.
         var img = []
-        _.forEach(this.state.user.photo, function (p) {
-            img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/" + p} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }}/>);
-            console.log(p)
-        })
+        if(this.state.user.photo.p1 != "") {
+            _.forEach(this.state.user.photo, function (p) {
+                img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/" + p} alt=""
+                              style={{maxWidth: '100%', maxHeight: '100%'}}/>);
+            });
+        }
         var jrigole = 3;
         return (
             <div>

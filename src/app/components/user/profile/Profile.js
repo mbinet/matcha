@@ -8,7 +8,7 @@ import _ from 'lodash';
 import {MyChip} from "../MyChip"
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import update from 'react-addons-update';
-// import {photoGallery} from "photoGallery";
+import PhotoGallery from './PhotoGallery';
 
 const styles = {
     chip: {
@@ -26,6 +26,7 @@ export class Profile extends React.Component {
         super();
         this.state = {
             user: {
+                _id: "",
                 name: "",
                 age: "",
                 mail: "",
@@ -41,9 +42,6 @@ export class Profile extends React.Component {
                 this.setState({
                     user: response.body.user,
                 });
-            // this.setState({
-                //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
-                // });
         });
     }
 
@@ -101,12 +99,9 @@ export class Profile extends React.Component {
                         <CardHeader
                             subtitle={this.getLove()}
                         />
-                        <CardMedia>
-                            {/*<img src="http://placekitten.com/800/250" alt=""/>*/}
-                            {/*<img src={"https://matcha-bucket.s3.amazonaws.com/" + photo} alt="" style={{display: 'inline-block'}}/>*/}
-                            {/*<img src={"https://matcha-bucket.s3.amazonaws.com/" + photo} alt="" style={{display: 'inline-block'}}/>*/}
-                            <photoGallery></photoGallery>
-                        </CardMedia>
+                        <CardText>
+                            <PhotoGallery userID={this.state.user._id}/>
+                        </CardText>
                         <CardActions style={{textAlign: 'center'}}>
                             <FlatButton label={like} />
                             <FlatButton label={<FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>} />
