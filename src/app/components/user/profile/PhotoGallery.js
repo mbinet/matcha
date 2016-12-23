@@ -53,23 +53,17 @@ export default class photoGallery extends React.Component {
                     {
                         src: "https://matcha-bucket.s3.amazonaws.com/" + p,
                         thumbnail: "https://matcha-bucket.s3.amazonaws.com/" + p,
-                        // isSelected: true,
                         thumbnailWidth: newImg.height,
                         thumbnailHeight: newImg.width,
                         caption: this.state.user.name
                     }
-
-                    // {/*<img src={"https://matcha-bucket.s3.amazonaws.com/" + p} alt=""*/}
-                    //           {/*style={{maxWidth: '100%', maxHeight: '100%'}}/>*/}
                 );
             }.bind(this));
         }
 
         return (
             <div>
-                Ahahahahah cuco
                 <Gallery images={img} backdropClosesModal={true} enableImageSelection={false}/>
-                {this.props.userID}
             </div>
         )
     }
