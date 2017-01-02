@@ -1,4 +1,18 @@
 .col-centered{
-  float: none;
-  margin: 0 auto;
+    float: none;
+    margin: 0 auto;
+}
+
+
+.img:hover img{
+    opacity: 0.5;
+}
+.img:hover .deleteImgBtn{
+    display: block;
+}
+
+.deleteImgBtn{
+	/*display: none;*/
+    /*top: -20px;*/
+    /*position: absolute;*/
 }

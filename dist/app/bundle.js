@@ -57545,10 +57545,6 @@
 	
 	var _PhotoGallery2 = _interopRequireDefault(_PhotoGallery);
 	
-	var _reactGridGallery = __webpack_require__(/*! react-grid-gallery */ 494);
-	
-	var _reactGridGallery2 = _interopRequireDefault(_reactGridGallery);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -57577,6 +57573,7 @@
 	
 	        _this.state = {
 	            user: {
+	                _id: "",
 	                name: "",
 	                age: "",
 	                mail: "",
@@ -57597,9 +57594,6 @@
 	                _this2.setState({
 	                    user: response.body.user
 	                });
-	                // this.setState({
-	                //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
-	                // });
 	            });
 	        }
 	    }, {
@@ -57645,28 +57639,6 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
-	
-	            var IMAGES = [{
-	                src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
-	                thumbnail: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_n.jpg",
-	                thumbnailWidth: 320,
-	                thumbnailHeight: 174,
-	                isSelected: true,
-	                caption: "After Rain (Jeshu John - designerspics.com)"
-	            }, {
-	                src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
-	                thumbnail: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_n.jpg",
-	                thumbnailWidth: 320,
-	                thumbnailHeight: 212,
-	                tags: [{ value: "Ocean", title: "Ocean" }, { value: "People", title: "People" }],
-	                caption: "Boats (Jeshu John - designerspics.com)"
-	            }, {
-	                src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-	                thumbnail: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-	                thumbnailWidth: 320,
-	                thumbnailHeight: 212
-	            }];
-	
 	            var sex = this.getSex(this.state.user.sex);
 	            var name = this.state.user.name;
 	            var age = this.state.user.age;
@@ -57686,7 +57658,6 @@
 	            return _react2.default.createElement(
 	                "div",
 	                { className: "" },
-	                _react2.default.createElement(_PhotoGallery2.default, null),
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "row text-center center-block" },
@@ -57733,9 +57704,9 @@
 	                            subtitle: this.getLove()
 	                        }),
 	                        _react2.default.createElement(
-	                            _Card.CardMedia,
+	                            _Card.CardText,
 	                            null,
-	                            _react2.default.createElement(_PhotoGallery2.default, null)
+	                            _react2.default.createElement(_PhotoGallery2.default, { userID: this.state.user._id })
 	                        ),
 	                        _react2.default.createElement(
 	                            _Card.CardActions,
@@ -64745,31 +64716,9 @@
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
-	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 407);
-	
-	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-	
-	var _FlatButton = __webpack_require__(/*! material-ui/FlatButton */ 440);
-	
-	var _FlatButton2 = _interopRequireDefault(_FlatButton);
-	
-	var _Card = __webpack_require__(/*! material-ui/Card */ 443);
-	
-	var _reactFontawesome = __webpack_require__(/*! react-fontawesome */ 471);
-	
-	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-	
 	var _lodash = __webpack_require__(/*! lodash */ 438);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
-	
-	var _MyChip = __webpack_require__(/*! ../MyChip */ 472);
-	
-	var _Table = __webpack_require__(/*! material-ui/Table */ 476);
-	
-	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
-	
-	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	
 	var _reactGridGallery = __webpack_require__(/*! react-grid-gallery */ 494);
 	
@@ -64789,45 +64738,70 @@
 	    function photoGallery() {
 	        _classCallCheck(this, photoGallery);
 	
-	        return _possibleConstructorReturn(this, (photoGallery.__proto__ || Object.getPrototypeOf(photoGallery)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (photoGallery.__proto__ || Object.getPrototypeOf(photoGallery)).call(this));
+	
+	        _this.state = {
+	            user: {
+	                _id: "",
+	                name: "",
+	                age: "",
+	                mail: "",
+	                photo: {},
+	                bio: ""
+	            }
+	        };
+	        return _this;
 	    }
 	
 	    _createClass(photoGallery, [{
+	        key: "componentWillReceiveProps",
+	        value: function componentWillReceiveProps(nextProps) {
+	            var _this2 = this;
+	
+	            console.log("Bon user id :", nextProps.userID);
+	            var url = "http://54.93.182.167:3000/api/users/" + nextProps.userID;
+	            _superagent2.default.get(url).then(function (response) {
+	                _this2.setState({
+	                    user: response.body.user
+	                });
+	            });
+	        }
+	    }, {
+	        key: "getImgSize",
+	        value: function getImgSize(imgSrc) {
+	            var newImg = new Image();
+	
+	            newImg.onload = function () {
+	                var height = newImg.height;
+	                var width = newImg.width;
+	            };
+	
+	            newImg.src = imgSrc;
+	            return newImg;
+	        }
+	    }, {
 	        key: "render",
-	
-	
-	        // constructor() {
-	        //     super();
-	        //     console.log("AHasdksjdsjdsdj")
-	        // }
-	
 	        value: function render() {
-	            console.log("C'est la galleriiiiiie");
-	            var IMAGES = [{
-	                src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
-	                thumbnail: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_n.jpg",
-	                thumbnailWidth: 320,
-	                thumbnailHeight: 174,
-	                // isSelected: true,
-	                caption: "After Rain (Jeshu John - designerspics.com)"
-	            }, {
-	                src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
-	                thumbnail: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_n.jpg",
-	                thumbnailWidth: 320,
-	                thumbnailHeight: 212,
-	                tags: [{ value: "Ocean", title: "Ocean" }, { value: "People", title: "People" }],
-	                caption: "Boats (Jeshu John - designerspics.com)"
-	            }, {
-	                src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-	                thumbnail: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-	                thumbnailWidth: 320,
-	                thumbnailHeight: 212
-	            }];
+	
+	            var img = [];
+	            if (this.state.user.photo.p1 != "") {
+	                _lodash2.default.forEach(this.state.user.photo, function (p) {
+	                    var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/" + p);
+	                    console.log("width: ", newImg.height);
+	                    img.push({
+	                        src: "https://matcha-bucket.s3.amazonaws.com/" + p,
+	                        thumbnail: "https://matcha-bucket.s3.amazonaws.com/" + p,
+	                        thumbnailWidth: newImg.height,
+	                        thumbnailHeight: newImg.width,
+	                        caption: this.state.user.name
+	                    });
+	                }.bind(this));
+	            }
+	
 	            return _react2.default.createElement(
 	                "div",
 	                null,
-	                "Ahahahahah cuco",
-	                _react2.default.createElement(_reactGridGallery2.default, { images: IMAGES, backdropClosesModal: true })
+	                _react2.default.createElement(_reactGridGallery2.default, { images: img, backdropClosesModal: true, enableImageSelection: false })
 	            );
 	        }
 	    }]);

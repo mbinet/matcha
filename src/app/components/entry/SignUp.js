@@ -18,10 +18,24 @@ export class SignUp extends React.Component {
         mail: "",
         passwd: "",
         sex: "",
+        photo: {
+            p1: "",
+            p2: "",
+            p3: "",
+            p4: "",
+            p5: "",
+        },
         bio: "",
     };
 
+    setDefaultPicture() {
+        this.state.photo.p1 = "Photos/400.jpeg";
+    }
+
     handleEnd(state) {
+        this.setDefaultPicture();
+        this.state.photo.p1 = "Photos/400.jpeg";
+        console.log(this.state.photo);
         var url = "http://54.93.182.167:3000/api/users/";
         console.log(state);
         Request.post(url)
@@ -29,6 +43,7 @@ export class SignUp extends React.Component {
             .send({ name: this.state.name })
             .send({ age: this.state.age })
             .send({ mail: this.state.mail })
+            .send({ photo: this.state.photo })
             .send({ passwd: this.state.passwd })
             .send({ sex: this.state.sex })
             .send({ bio: this.state.bio })

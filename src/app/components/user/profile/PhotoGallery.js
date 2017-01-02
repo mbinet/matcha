@@ -53,8 +53,8 @@ export default class photoGallery extends React.Component {
                     {
                         src: "https://matcha-bucket.s3.amazonaws.com/" + p,
                         thumbnail: "https://matcha-bucket.s3.amazonaws.com/" + p,
-                        thumbnailWidth: newImg.height,
-                        thumbnailHeight: newImg.width,
+                        thumbnailWidth: newImg.width,
+                        thumbnailHeight: newImg.height,
                         caption: this.state.user.name
                     }
                 );
@@ -62,7 +62,7 @@ export default class photoGallery extends React.Component {
         }
 
         return (
-            <div>
+            <div style={{overflow: 'hidden'}}>
                 <Gallery images={img} backdropClosesModal={true} enableImageSelection={false}/>
             </div>
         )

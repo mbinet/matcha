@@ -114,6 +114,7 @@ export class ProfileUpdate extends React.Component {
             dropzoneStyle: {
                 width: '200px', height: '200px',
                 margin: '10px',
+                padding: '5px',
                 border: '2px dashed rgb(153, 153, 153)', borderRadius: '5px',
                 cursor: 'pointer',
                 display: 'inline-block',
@@ -123,13 +124,14 @@ export class ProfileUpdate extends React.Component {
 
         // displays the current pic.
         var img = []
-        if(this.state.user.photo.p1 != "") {
-            _.forEach(this.state.user.photo, function (p) {
-                img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/" + p} alt=""
-                              style={{maxWidth: '100%', maxHeight: '100%'}}/>);
-            });
-        }
-        var jrigole = 3;
+        _.forEach(this.state.user.photo, function (p) {
+            if(p != "") {
+                img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/" + p} alt="" style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
+            }
+            else {
+                img.push(<img src={""} alt="" style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
+            }
+        });
         return (
             <div>
                 <div className="row">
@@ -139,61 +141,85 @@ export class ProfileUpdate extends React.Component {
                         <div className="text-center">
                             <CardText>
                                 <div className="col-sm-6 row" style={{display: 'block'}}>
-                                    <DropzoneS3Uploader
-                                        onFinish={this.handleFinishedUpload.bind(this)}
-                                        onDrop={() => this.setState({photoIndex: 'p1'})}
-                                        accept="image/*"
-                                        className="col-centered"
-                                        style={styles.dropzoneStyle}
-                                        {...uploaderProps}
-                                    >
-                                        {img[0]}
-                                        {/*{this.state.saveDisabled && <img src={this.state.user.photo} alt="" style={{ maxWidth: '100%' }}/>}*/}
-                                    </DropzoneS3Uploader>
-                                    <DropzoneS3Uploader
-                                        onFinish={this.handleFinishedUpload.bind(this)}
-                                        onDrop={() => this.setState({photoIndex: 'p2'})}
-                                        accept="image/*"
-                                        {...uploaderProps}
-                                        //style={{display: 'inline-block'}}
-                                        style={styles.dropzoneStyle}
-                                    >
-                                        {img[1]}
-                                        {/*{image}*/}
-                                    </DropzoneS3Uploader>
-                                    <DropzoneS3Uploader
-                                        onFinish={this.handleFinishedUpload.bind(this)}
-                                        onDrop={() => this.setState({photoIndex: 'p3'})}
-                                        accept="image/*"
-                                        {...uploaderProps}
-                                        //style={{display: 'inline-block'}}
-                                        style={styles.dropzoneStyle}
-                                    >
-                                        {img[2]}
-                                        {/*{image}*/}
-                                    </DropzoneS3Uploader>
-                                    <DropzoneS3Uploader
-                                        onFinish={this.handleFinishedUpload.bind(this)}
-                                        onDrop={() => this.setState({photoIndex: 'p4'})}
-                                        accept="image/*"
-                                        {...uploaderProps}
-                                        //style={{display: 'inline-block'}}
-                                        style={styles.dropzoneStyle}
-                                    >
-                                        {img[3]}
-                                        {/*{image}*/}
-                                    </DropzoneS3Uploader>
-                                    <DropzoneS3Uploader
-                                        onFinish={this.handleFinishedUpload.bind(this)}
-                                        onDrop={() => this.setState({photoIndex: 'p5'})}
-                                        accept="image/*"
-                                        {...uploaderProps}
-                                        //style={{display: 'inline-block'}}
-                                        style={styles.dropzoneStyle}
-                                    >
-                                        {img[4]}
-                                        {/*{image}*/}
-                                    </DropzoneS3Uploader>
+                                    <div className="col-xs-6">
+                                        <DropzoneS3Uploader
+                                            onFinish={this.handleFinishedUpload.bind(this)}
+                                            onDrop={() => this.setState({photoIndex: 'p1'})}
+                                            accept="image/*"
+                                            {...uploaderProps}
+                                            className={"col-xs-6"}
+                                            style={styles.dropzoneStyle}
+                                        >
+                                            {img[0]}
+                                            {/*{this.state.saveDisabled && <img src={this.state.user.photo} alt="" style={{ maxWidth: '100%' }}/>}*/}
+                                        </DropzoneS3Uploader>
+                                        <RaisedButton label="Delete" secondary={true}/>
+                                    </div>
+                                    <div className="col-xs-6">
+                                        <DropzoneS3Uploader
+                                            onFinish={this.handleFinishedUpload.bind(this)}
+                                            onDrop={() => this.setState({photoIndex: 'p2'})}
+                                            accept="image/*"
+                                            {...uploaderProps}
+                                            className={"col-xs-6"}
+                                            //style={{display: 'inline-block'}}
+                                            style={styles.dropzoneStyle}
+                                        >
+                                            {img[1]}
+                                            {/*{image}*/}
+                                        </DropzoneS3Uploader>
+                                        <RaisedButton label="Delete" secondary={true}/>
+                                    </div>
+                                    <div className="col-xs-6">
+                                        <DropzoneS3Uploader
+                                            onFinish={this.handleFinishedUpload.bind(this)}
+                                            onDrop={() => this.setState({photoIndex: 'p3'})}
+                                            accept="image/*"
+                                            {...uploaderProps}
+                                            className={"col-xs-6"}
+                                            //style={{display: 'inline-block'}}
+                                            style={styles.dropzoneStyle}
+                                        >
+                                            {img[2]}
+                                            {/*{image}*/}
+                                        </DropzoneS3Uploader>
+                                        <RaisedButton label="Delete" secondary={true}/>
+                                    </div>
+                                    <div className="col-xs-6">
+                                        <DropzoneS3Uploader
+                                            onFinish={this.handleFinishedUpload.bind(this)}
+                                            onDrop={() => this.setState({photoIndex: 'p4'})}
+                                            accept="image/*"
+                                            {...uploaderProps}
+                                            className={"col-xs-6"}
+                                            //style={{display: 'inline-block'}}
+                                            style={styles.dropzoneStyle}
+                                        >
+                                            {/*{img[3]}*/}
+                                            <div className="img">{img[3]}
+                                                <div className="deleteImgBtn">
+                                                    {/*<RaisedButton label="Delete" secondary={true}/>*/}
+                                                </div>
+                                            </div>
+                                            {/*{image}*/}
+                                        </DropzoneS3Uploader>
+                                        <RaisedButton label="Delete" secondary={true}/>
+                                    </div>
+                                    <div className="col-xs-6">
+                                        <DropzoneS3Uploader
+                                            onFinish={this.handleFinishedUpload.bind(this)}
+                                            onDrop={() => this.setState({photoIndex: 'p5'})}
+                                            accept="image/*"
+                                            {...uploaderProps}
+                                            className={"col-xs-6"}
+                                            //style={{display: 'inline-block'}}
+                                            style={styles.dropzoneStyle}
+                                        >
+                                            {img[4]}
+                                            {/*{image}*/}
+                                        </DropzoneS3Uploader>
+                                        <RaisedButton label="Delete" secondary={true}/>
+                                    </div>
                                 </div>
                                 <div className="row">
                                     <br />
