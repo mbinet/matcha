@@ -1,20 +1,12 @@
 import React from "react";
 import Request from "superagent";
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
-import FontAwesome from 'react-fontawesome';
+import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import _ from 'lodash';
-// import {MyChip} from "./user/MyChip"
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
-import {orange500, blue500} from 'material-ui/styles/colors';
 import update from 'react-addons-update';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import {Router, Route, browserHistory, IndexRoute} from "react-router";
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader'
-import Dropzone from 'react-dropzone'
 
 export class ProfileUpdate extends React.Component {
 
@@ -85,20 +77,31 @@ export class ProfileUpdate extends React.Component {
         });
     }
 
-    handleFinishedUpload(res, ok, ou) {
+    handleFinishedUpload(res) {
+        var filename = res.filename.replace("Photos/", "");
         this.setState({
             activeSnack: true,
             msgSnack: "Image uploaded",
             saveDisabled: false,
-            user: update(this.state.user, {photo: {[this.state.photoIndex]: {$set: res.filename}}})
+            user: update(this.state.user, {photo: {[this.state.photoIndex]: {$set: filename}}})
         });
-        //console.log(this.state.photoIndex);
-        setTimeout(function () {
-            console.log(this.state.user.photo);
-        }.bind(this), 100)
-        // console.log('filename: ', res.filename)
-        // console.log(ok)
 
+    }
+
+    handleDeletePicture(e) {
+        var previousPhoto = this.state.user.photo[e];
+        console.log(previousPhoto);
+
+        // deletes url in the state and saves current user state to db.
+        this.setState({
+            user: update(this.state.user, {photo: {[e]: {$set: ""}}}),
+            saveDisabled: false
+        }, this.handleEnd);
+
+        // deletes the photo from s3
+        var url = "http://54.93.182.167:3000/api/photo/" + previousPhoto;
+        Request.delete(url)
+            .set('Content-Type', 'application/json')
     }
 
     render() {
@@ -123,10 +126,10 @@ export class ProfileUpdate extends React.Component {
         };
 
         // displays the current pic.
-        var img = []
+        var img = [];
         _.forEach(this.state.user.photo, function (p) {
             if(p != "") {
-                img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/" + p} alt="" style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
+                img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/Photos/" + p} alt="" style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
             }
             else {
                 img.push(<img src={""} alt="" style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
@@ -151,9 +154,10 @@ export class ProfileUpdate extends React.Component {
                                             style={styles.dropzoneStyle}
                                         >
                                             {img[0]}
-                                            {/*{this.state.saveDisabled && <img src={this.state.user.photo} alt="" style={{ maxWidth: '100%' }}/>}*/}
                                         </DropzoneS3Uploader>
-                                        <RaisedButton label="Delete" secondary={true}/>
+                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p1')}/>
+                                        </div>
                                     </div>
                                     <div className="col-xs-6">
                                         <DropzoneS3Uploader
@@ -162,13 +166,13 @@ export class ProfileUpdate extends React.Component {
                                             accept="image/*"
                                             {...uploaderProps}
                                             className={"col-xs-6"}
-                                            //style={{display: 'inline-block'}}
                                             style={styles.dropzoneStyle}
                                         >
                                             {img[1]}
-                                            {/*{image}*/}
                                         </DropzoneS3Uploader>
-                                        <RaisedButton label="Delete" secondary={true}/>
+                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p2')}/>
+                                        </div>
                                     </div>
                                     <div className="col-xs-6">
                                         <DropzoneS3Uploader
@@ -177,13 +181,13 @@ export class ProfileUpdate extends React.Component {
                                             accept="image/*"
                                             {...uploaderProps}
                                             className={"col-xs-6"}
-                                            //style={{display: 'inline-block'}}
                                             style={styles.dropzoneStyle}
                                         >
                                             {img[2]}
-                                            {/*{image}*/}
                                         </DropzoneS3Uploader>
-                                        <RaisedButton label="Delete" secondary={true}/>
+                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p3')}/>
+                                        </div>
                                     </div>
                                     <div className="col-xs-6">
                                         <DropzoneS3Uploader
@@ -192,18 +196,13 @@ export class ProfileUpdate extends React.Component {
                                             accept="image/*"
                                             {...uploaderProps}
                                             className={"col-xs-6"}
-                                            //style={{display: 'inline-block'}}
                                             style={styles.dropzoneStyle}
                                         >
-                                            {/*{img[3]}*/}
-                                            <div className="img">{img[3]}
-                                                <div className="deleteImgBtn">
-                                                    {/*<RaisedButton label="Delete" secondary={true}/>*/}
-                                                </div>
-                                            </div>
-                                            {/*{image}*/}
+                                            {img[3]}
                                         </DropzoneS3Uploader>
-                                        <RaisedButton label="Delete" secondary={true}/>
+                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p4')}/>
+                                        </div>
                                     </div>
                                     <div className="col-xs-6">
                                         <DropzoneS3Uploader
@@ -212,13 +211,13 @@ export class ProfileUpdate extends React.Component {
                                             accept="image/*"
                                             {...uploaderProps}
                                             className={"col-xs-6"}
-                                            //style={{display: 'inline-block'}}
                                             style={styles.dropzoneStyle}
                                         >
                                             {img[4]}
-                                            {/*{image}*/}
                                         </DropzoneS3Uploader>
-                                        <RaisedButton label="Delete" secondary={true}/>
+                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p5')}/>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="row">
