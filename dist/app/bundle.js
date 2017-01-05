@@ -35800,254 +35800,85 @@
 	var Header = exports.Header = function Header(props) {
 	    return _react2.default.createElement(
 	        "div",
-	        { className: "navbar navbar-default" },
+	        { className: "navbar-wrapper" },
 	        _react2.default.createElement(
 	            "div",
-	            { className: "container" },
+	            { className: "navbar navbar-default", role: "navigation" },
 	            _react2.default.createElement(
 	                "div",
-	                { className: "navbar-header" },
+	                { className: "container-fluid" },
 	                _react2.default.createElement(
-	                    "button",
-	                    { type: "button", className: "navbar-toggle collapsed", "data-toggle": "collapse", "data-target": "#bs-example-navbar-collapse-1", "aria-expanded": "false" },
-	                    _react2.default.createElement(
-	                        "span",
-	                        { className: "sr-only" },
-	                        "Toggle navigation"
-	                    ),
-	                    _react2.default.createElement("span", { className: "icon-bar" }),
-	                    _react2.default.createElement("span", { className: "icon-bar" }),
-	                    _react2.default.createElement("span", { className: "icon-bar" })
-	                ),
-	                _react2.default.createElement(
-	                    "a",
-	                    { className: "navbar-brand", href: "#" },
-	                    "Brand"
-	                ),
-	                _react2.default.createElement(
-	                    "ul",
-	                    { className: "nav navbar-nav" },
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: "/home", activeStyle: { color: "red" } },
-	                            "Home"
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: "/user", activeClassName: "active" },
-	                            "User"
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: "/profile", activeStyle: { color: "red" } },
-	                            "Profile"
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: "/profile/update", activeStyle: { color: "red" } },
-	                            "Update Profile"
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { style: { float: 'right' } },
-	                            "coucou"
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    "ul",
-	                    { className: "nav navbar-header" },
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        "lol"
-	                    )
-	                )
-	            ),
-	            _react2.default.createElement(
-	                "div",
-	                { className: "collapse navbar-collapse", classID: "bs-example-navbar-collapse-1" },
-	                _react2.default.createElement(
-	                    "ul",
-	                    { className: "nav navbar-nav" },
-	                    _react2.default.createElement(
-	                        "li",
-	                        { className: "active" },
-	                        _react2.default.createElement(
-	                            "a",
-	                            { href: "#" },
-	                            "Link ",
-	                            _react2.default.createElement(
-	                                "span",
-	                                { className: "sr-only" },
-	                                "(current)"
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        _react2.default.createElement(
-	                            "a",
-	                            { href: "#" },
-	                            "Link"
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "li",
-	                        { className: "dropdown" },
-	                        _react2.default.createElement(
-	                            "a",
-	                            { href: "#", className: "dropdown-toggle", "data-toggle": "dropdown", role: "button", "aria-haspopup": "true", "aria-expanded": "false" },
-	                            "Dropdown ",
-	                            _react2.default.createElement("span", { className: "caret" })
-	                        ),
-	                        _react2.default.createElement(
-	                            "ul",
-	                            { className: "dropdown-menu" },
-	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "Action"
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "Another action"
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "Something else here"
-	                                )
-	                            ),
-	                            _react2.default.createElement("li", { role: "separator", className: "divider" }),
-	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "Separated link"
-	                                )
-	                            ),
-	                            _react2.default.createElement("li", { role: "separator", className: "divider" }),
-	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "One more separated link"
-	                                )
-	                            )
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    "form",
-	                    { className: "navbar-form navbar-left" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "form-group" },
-	                        _react2.default.createElement("input", { type: "text", className: "form-control", placeholder: "Search" })
-	                    ),
+	                    "div",
+	                    { className: "navbar-header" },
 	                    _react2.default.createElement(
 	                        "button",
-	                        { type: "submit", className: "btn btn-default" },
-	                        "Submit"
+	                        { type: "button", className: "navbar-toggle", "data-toggle": "collapse", "data-target": ".navbar-collapse" },
+	                        _react2.default.createElement(
+	                            "span",
+	                            { className: "sr-only" },
+	                            "Toggle navigation"
+	                        ),
+	                        _react2.default.createElement("span", { className: "icon-bar" }),
+	                        _react2.default.createElement("span", { className: "icon-bar" }),
+	                        _react2.default.createElement("span", { className: "icon-bar" })
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: "/home", className: "navbar-brand", activeStyle: { color: "red" } },
+	                        "Matcha"
 	                    )
 	                ),
 	                _react2.default.createElement(
-	                    "ul",
-	                    { className: "nav navbar-nav navbar-right" },
+	                    "div",
+	                    { className: "collapse navbar-collapse" },
 	                    _react2.default.createElement(
-	                        "li",
-	                        null,
+	                        "ul",
+	                        { className: "nav navbar-nav" },
 	                        _react2.default.createElement(
-	                            "a",
-	                            { href: "#" },
-	                            "Link"
+	                            "li",
+	                            null,
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: "/user", activeClassName: "active" },
+	                                "User"
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "li",
+	                            null,
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: "/profile", activeStyle: { color: "red" } },
+	                                "Profile"
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "li",
+	                            null,
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: "/profile/update", activeStyle: { color: "red" } },
+	                                "Update Profile"
+	                            )
 	                        )
 	                    ),
 	                    _react2.default.createElement(
-	                        "li",
-	                        { className: "dropdown" },
+	                        "ul",
+	                        { className: "nav navbar-nav navbar-right" },
 	                        _react2.default.createElement(
-	                            "a",
-	                            { href: "#", className: "dropdown-toggle", "data-toggle": "dropdown", role: "button", "aria-haspopup": "true", "aria-expanded": "false" },
-	                            "Dropdown ",
-	                            _react2.default.createElement("span", { className: "caret" })
+	                            "button",
+	                            { id: "loginbutton", type: "button", className: "btn btn-primary narbar-btn" },
+	                            _react2.default.createElement("i", { className: "glyphicon glyphicon-log-in" }),
+	                            "Login"
 	                        ),
 	                        _react2.default.createElement(
-	                            "ul",
-	                            { className: "dropdown-menu" },
+	                            "button",
+	                            { type: "button", className: "btn btn-success navbar-btn" },
+	                            _react2.default.createElement("i", { className: "glyphicon glyphicon-link" }),
 	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "Action"
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "Another action"
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "Something else here"
-	                                )
-	                            ),
-	                            _react2.default.createElement("li", { role: "separator", className: "divider" }),
-	                            _react2.default.createElement(
-	                                "li",
-	                                null,
-	                                _react2.default.createElement(
-	                                    "a",
-	                                    { href: "#" },
-	                                    "Separated link"
-	                                )
+	                                "a",
+	                                { href: "./register.jsp" },
+	                                "Create account"
 	                            )
 	                        )
 	                    )
@@ -73500,7 +73331,7 @@
 			exports["Dropzone"] = factory(require("react"));
 		else
 			root["Dropzone"] = factory(root["react"]);
-	})(this, function(__WEBPACK_EXTERNAL_MODULE_2__) {
+	})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
 	return /******/ (function(modules) { // webpackBootstrap
 	/******/ 	// The module cache
 	/******/ 	var installedModules = {};
@@ -73557,13 +73388,17 @@
 		
 		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 		
-		var _attrAccept = __webpack_require__(1);
+		var _react = __webpack_require__(1);
+		
+		var _react2 = _interopRequireDefault(_react);
+		
+		var _attrAccept = __webpack_require__(2);
 		
 		var _attrAccept2 = _interopRequireDefault(_attrAccept);
 		
-		var _react = __webpack_require__(2);
+		var _getDataTransferItems = __webpack_require__(3);
 		
-		var _react2 = _interopRequireDefault(_react);
+		var _getDataTransferItems2 = _interopRequireDefault(_getDataTransferItems);
 		
 		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 		
@@ -73574,6 +73409,7 @@
 		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 		
 		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint prefer-template: 0 */
+		
 		
 		var supportMultiple = typeof document !== 'undefined' && document && document.createElement ? 'multiple' in document.createElement('input') : true;
 		
@@ -73628,12 +73464,7 @@
 		      // Count the dropzone and any children that are entered.
 		      ++this.enterCounter;
 		
-		      // This is tricky. During the drag even the dataTransfer.files is null
-		      // But Chrome implements some drag store, which is accesible via dataTransfer.items
-		      var dataTransferItems = e.dataTransfer && e.dataTransfer.items ? e.dataTransfer.items : [];
-		
-		      // Now we need to convert the DataTransferList to Array
-		      var allFilesAccepted = this.allFilesAccepted(Array.prototype.slice.call(dataTransferItems));
+		      var allFilesAccepted = this.allFilesAccepted((0, _getDataTransferItems2.default)(e, this.props.multiple));
 		
 		      this.setState({
 		        isDragActive: allFilesAccepted,
@@ -73647,6 +73478,7 @@
 		  }, {
 		    key: 'onDragOver',
 		    value: function onDragOver(e) {
+		      // eslint-disable-line class-methods-use-this
 		      e.preventDefault();
 		      e.stopPropagation();
 		      try {
@@ -73678,55 +73510,69 @@
 		  }, {
 		    key: 'onDrop',
 		    value: function onDrop(e) {
+		      var _this2 = this;
+		
+		      var _props = this.props,
+		          onDrop = _props.onDrop,
+		          onDropAccepted = _props.onDropAccepted,
+		          onDropRejected = _props.onDropRejected,
+		          multiple = _props.multiple,
+		          disablePreview = _props.disablePreview;
+		
+		      var fileList = (0, _getDataTransferItems2.default)(e, multiple);
+		      var acceptedFiles = [];
+		      var rejectedFiles = [];
+		
+		      // Stop default browser behavior
 		      e.preventDefault();
 		
 		      // Reset the counter along with the drag on a drop.
 		      this.enterCounter = 0;
+		      this.isFileDialogActive = false;
 		
-		      this.setState({
-		        isDragActive: false,
-		        isDragReject: false
-		      });
-		
-		      var droppedFiles = e.dataTransfer ? e.dataTransfer.files : e.target.files;
-		      var max = this.props.multiple ? droppedFiles.length : Math.min(droppedFiles.length, 1);
-		      var acceptedFiles = [];
-		      var rejectedFiles = [];
-		
-		      for (var i = 0; i < max; i++) {
-		        var file = droppedFiles[i];
-		        // We might want to disable the preview creation to support big files
-		        if (!this.props.disablePreview) {
-		          file.preview = window.URL.createObjectURL(file);
+		      fileList.forEach(function (file) {
+		        if (!disablePreview && (0, _attrAccept2.default)(file, 'image/*')) {
+		          file.preview = window.URL.createObjectURL(file); // eslint-disable-line no-param-reassign
 		        }
 		
-		        if (this.fileAccepted(file) && this.fileMatchSize(file)) {
+		        if (_this2.fileAccepted(file) && _this2.fileMatchSize(file)) {
 		          acceptedFiles.push(file);
 		        } else {
 		          rejectedFiles.push(file);
 		        }
+		      });
+		
+		      if (onDrop) {
+		        onDrop.call(this, acceptedFiles, rejectedFiles, e);
 		      }
 		
-		      if (this.props.onDrop) {
-		        this.props.onDrop.call(this, acceptedFiles, rejectedFiles, e);
+		      if (rejectedFiles.length > 0 && onDropRejected) {
+		        onDropRejected.call(this, rejectedFiles, e);
 		      }
 		
-		      if (rejectedFiles.length > 0) {
-		        if (this.props.onDropRejected) {
-		          this.props.onDropRejected.call(this, rejectedFiles, e);
-		        }
-		      } else if (acceptedFiles.length > 0) {
-		        if (this.props.onDropAccepted) {
-		          this.props.onDropAccepted.call(this, acceptedFiles, e);
-		        }
+		      if (acceptedFiles.length > 0 && onDropAccepted) {
+		        onDropAccepted.call(this, acceptedFiles, e);
 		      }
-		      this.isFileDialogActive = false;
+		
+		      // Reset drag state
+		      this.setState({
+		        isDragActive: false,
+		        isDragReject: false
+		      });
 		    }
 		  }, {
 		    key: 'onClick',
-		    value: function onClick() {
-		      if (!this.props.disableClick) {
+		    value: function onClick(e) {
+		      e.stopPropagation();
+		      var _props2 = this.props,
+		          onClick = _props2.onClick,
+		          disableClick = _props2.disableClick;
+		
+		      if (!disableClick) {
 		        this.open();
+		        if (onClick) {
+		          onClick.call(this, e);
+		        }
 		      }
 		    }
 		  }, {
@@ -73775,16 +73621,16 @@
 		  }, {
 		    key: 'render',
 		    value: function render() {
-		      var _this2 = this;
+		      var _this3 = this;
 		
-		      var _props = this.props,
-		          accept = _props.accept,
-		          activeClassName = _props.activeClassName,
-		          inputProps = _props.inputProps,
-		          multiple = _props.multiple,
-		          name = _props.name,
-		          rejectClassName = _props.rejectClassName,
-		          rest = _objectWithoutProperties(_props, ['accept', 'activeClassName', 'inputProps', 'multiple', 'name', 'rejectClassName']);
+		      var _props3 = this.props,
+		          accept = _props3.accept,
+		          activeClassName = _props3.activeClassName,
+		          inputProps = _props3.inputProps,
+		          multiple = _props3.multiple,
+		          name = _props3.name,
+		          rejectClassName = _props3.rejectClassName,
+		          rest = _objectWithoutProperties(_props3, ['accept', 'activeClassName', 'inputProps', 'multiple', 'name', 'rejectClassName']);
 		
 		      var activeStyle = rest.activeStyle,
 		          className = rest.className,
@@ -73840,7 +73686,7 @@
 		        style: { display: 'none' },
 		        multiple: supportMultiple && multiple,
 		        ref: function ref(el) {
-		          return _this2.fileInputEl = el;
+		          return _this3.fileInputEl = el;
 		        }, // eslint-disable-line
 		        onChange: this.onDrop
 		      };
@@ -73887,12 +73733,10 @@
 		};
 		
 		Dropzone.propTypes = {
-		  // Overriding drop behavior
+		  onClick: _react2.default.PropTypes.func,
 		  onDrop: _react2.default.PropTypes.func,
 		  onDropAccepted: _react2.default.PropTypes.func,
 		  onDropRejected: _react2.default.PropTypes.func,
-		
-		  // Overriding drag behavior
 		  onDragStart: _react2.default.PropTypes.func,
 		  onDragEnter: _react2.default.PropTypes.func,
 		  onDragLeave: _react2.default.PropTypes.func,
@@ -73924,13 +73768,49 @@
 	/* 1 */
 	/***/ function(module, exports) {
 	
-		module.exports=function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]={exports:{},id:e,loaded:!1};return t[e].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var r={};return n.m=t,n.c=r,n.p="",n(0)}([function(t,n,r){"use strict";n.__esModule=!0,r(8),r(9),n["default"]=function(t,n){if(t&&n){var r=function(){var r=n.split(","),e=t.name||"",o=t.type||"",i=o.replace(/\/.*$/,"");return{v:r.some(function(t){var n=t.trim();return"."===n.charAt(0)?e.toLowerCase().endsWith(n.toLowerCase()):/\/\*$/.test(n)?i===n.replace(/\/.*$/,""):o===n})}}();if("object"==typeof r)return r.v}return!0},t.exports=n["default"]},function(t,n){var r=t.exports={version:"1.2.2"};"number"==typeof __e&&(__e=r)},function(t,n){var r=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=r)},function(t,n,r){var e=r(2),o=r(1),i=r(4),u=r(19),c="prototype",f=function(t,n){return function(){return t.apply(n,arguments)}},s=function(t,n,r){var a,p,l,d,y=t&s.G,h=t&s.P,v=y?e:t&s.S?e[n]||(e[n]={}):(e[n]||{})[c],x=y?o:o[n]||(o[n]={});y&&(r=n);for(a in r)p=!(t&s.F)&&v&&a in v,l=(p?v:r)[a],d=t&s.B&&p?f(l,e):h&&"function"==typeof l?f(Function.call,l):l,v&&!p&&u(v,a,l),x[a]!=l&&i(x,a,d),h&&((x[c]||(x[c]={}))[a]=l)};e.core=o,s.F=1,s.G=2,s.S=4,s.P=8,s.B=16,s.W=32,t.exports=s},function(t,n,r){var e=r(5),o=r(18);t.exports=r(22)?function(t,n,r){return e.setDesc(t,n,o(1,r))}:function(t,n,r){return t[n]=r,t}},function(t,n){var r=Object;t.exports={create:r.create,getProto:r.getPrototypeOf,isEnum:{}.propertyIsEnumerable,getDesc:r.getOwnPropertyDescriptor,setDesc:r.defineProperty,setDescs:r.defineProperties,getKeys:r.keys,getNames:r.getOwnPropertyNames,getSymbols:r.getOwnPropertySymbols,each:[].forEach}},function(t,n){var r=0,e=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++r+e).toString(36))}},function(t,n,r){var e=r(20)("wks"),o=r(2).Symbol;t.exports=function(t){return e[t]||(e[t]=o&&o[t]||(o||r(6))("Symbol."+t))}},function(t,n,r){r(26),t.exports=r(1).Array.some},function(t,n,r){r(25),t.exports=r(1).String.endsWith},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n){var r={}.toString;t.exports=function(t){return r.call(t).slice(8,-1)}},function(t,n,r){var e=r(10);t.exports=function(t,n,r){if(e(t),void 0===n)return t;switch(r){case 1:return function(r){return t.call(n,r)};case 2:return function(r,e){return t.call(n,r,e)};case 3:return function(r,e,o){return t.call(n,r,e,o)}}return function(){return t.apply(n,arguments)}}},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n,r){t.exports=function(t){var n=/./;try{"/./"[t](n)}catch(e){try{return n[r(7)("match")]=!1,!"/./"[t](n)}catch(o){}}return!0}},function(t,n){t.exports=function(t){try{return!!t()}catch(n){return!0}}},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n,r){var e=r(16),o=r(11),i=r(7)("match");t.exports=function(t){var n;return e(t)&&(void 0!==(n=t[i])?!!n:"RegExp"==o(t))}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n,r){var e=r(2),o=r(4),i=r(6)("src"),u="toString",c=Function[u],f=(""+c).split(u);r(1).inspectSource=function(t){return c.call(t)},(t.exports=function(t,n,r,u){"function"==typeof r&&(o(r,i,t[n]?""+t[n]:f.join(String(n))),"name"in r||(r.name=n)),t===e?t[n]=r:(u||delete t[n],o(t,n,r))})(Function.prototype,u,function(){return"function"==typeof this&&this[i]||c.call(this)})},function(t,n,r){var e=r(2),o="__core-js_shared__",i=e[o]||(e[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n,r){var e=r(17),o=r(13);t.exports=function(t,n,r){if(e(n))throw TypeError("String#"+r+" doesn't accept regex!");return String(o(t))}},function(t,n,r){t.exports=!r(15)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n){var r=Math.ceil,e=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?e:r)(t)}},function(t,n,r){var e=r(23),o=Math.min;t.exports=function(t){return t>0?o(e(t),9007199254740991):0}},function(t,n,r){"use strict";var e=r(3),o=r(24),i=r(21),u="endsWith",c=""[u];e(e.P+e.F*r(14)(u),"String",{endsWith:function(t){var n=i(this,t,u),r=arguments,e=r.length>1?r[1]:void 0,f=o(n.length),s=void 0===e?f:Math.min(o(e),f),a=String(t);return c?c.call(n,a,s):n.slice(s-a.length,s)===a}})},function(t,n,r){var e=r(5),o=r(3),i=r(1).Array||Array,u={},c=function(t,n){e.each.call(t.split(","),function(t){void 0==n&&t in i?u[t]=i[t]:t in[]&&(u[t]=r(12)(Function.call,[][t],n))})};c("pop,reverse,shift,keys,values,entries",1),c("indexOf,every,some,forEach,map,filter,find,findIndex,includes",3),c("join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill"),o(o.S,"Array",u)}]);
+		module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 	
 	/***/ },
 	/* 2 */
 	/***/ function(module, exports) {
 	
-		module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+		module.exports=function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]={exports:{},id:e,loaded:!1};return t[e].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var r={};return n.m=t,n.c=r,n.p="",n(0)}([function(t,n,r){"use strict";n.__esModule=!0,r(8),r(9),n["default"]=function(t,n){if(t&&n){var r=function(){var r=Array.isArray(n)?n:n.split(","),e=t.name||"",o=t.type||"",i=o.replace(/\/.*$/,"");return{v:r.some(function(t){var n=t.trim();return"."===n.charAt(0)?e.toLowerCase().endsWith(n.toLowerCase()):/\/\*$/.test(n)?i===n.replace(/\/.*$/,""):o===n})}}();if("object"==typeof r)return r.v}return!0},t.exports=n["default"]},function(t,n){var r=t.exports={version:"1.2.2"};"number"==typeof __e&&(__e=r)},function(t,n){var r=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=r)},function(t,n,r){var e=r(2),o=r(1),i=r(4),u=r(19),c="prototype",f=function(t,n){return function(){return t.apply(n,arguments)}},s=function(t,n,r){var a,p,l,y,d=t&s.G,h=t&s.P,v=d?e:t&s.S?e[n]||(e[n]={}):(e[n]||{})[c],x=d?o:o[n]||(o[n]={});d&&(r=n);for(a in r)p=!(t&s.F)&&v&&a in v,l=(p?v:r)[a],y=t&s.B&&p?f(l,e):h&&"function"==typeof l?f(Function.call,l):l,v&&!p&&u(v,a,l),x[a]!=l&&i(x,a,y),h&&((x[c]||(x[c]={}))[a]=l)};e.core=o,s.F=1,s.G=2,s.S=4,s.P=8,s.B=16,s.W=32,t.exports=s},function(t,n,r){var e=r(5),o=r(18);t.exports=r(22)?function(t,n,r){return e.setDesc(t,n,o(1,r))}:function(t,n,r){return t[n]=r,t}},function(t,n){var r=Object;t.exports={create:r.create,getProto:r.getPrototypeOf,isEnum:{}.propertyIsEnumerable,getDesc:r.getOwnPropertyDescriptor,setDesc:r.defineProperty,setDescs:r.defineProperties,getKeys:r.keys,getNames:r.getOwnPropertyNames,getSymbols:r.getOwnPropertySymbols,each:[].forEach}},function(t,n){var r=0,e=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++r+e).toString(36))}},function(t,n,r){var e=r(20)("wks"),o=r(2).Symbol;t.exports=function(t){return e[t]||(e[t]=o&&o[t]||(o||r(6))("Symbol."+t))}},function(t,n,r){r(26),t.exports=r(1).Array.some},function(t,n,r){r(25),t.exports=r(1).String.endsWith},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n){var r={}.toString;t.exports=function(t){return r.call(t).slice(8,-1)}},function(t,n,r){var e=r(10);t.exports=function(t,n,r){if(e(t),void 0===n)return t;switch(r){case 1:return function(r){return t.call(n,r)};case 2:return function(r,e){return t.call(n,r,e)};case 3:return function(r,e,o){return t.call(n,r,e,o)}}return function(){return t.apply(n,arguments)}}},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n,r){t.exports=function(t){var n=/./;try{"/./"[t](n)}catch(e){try{return n[r(7)("match")]=!1,!"/./"[t](n)}catch(o){}}return!0}},function(t,n){t.exports=function(t){try{return!!t()}catch(n){return!0}}},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n,r){var e=r(16),o=r(11),i=r(7)("match");t.exports=function(t){var n;return e(t)&&(void 0!==(n=t[i])?!!n:"RegExp"==o(t))}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n,r){var e=r(2),o=r(4),i=r(6)("src"),u="toString",c=Function[u],f=(""+c).split(u);r(1).inspectSource=function(t){return c.call(t)},(t.exports=function(t,n,r,u){"function"==typeof r&&(o(r,i,t[n]?""+t[n]:f.join(String(n))),"name"in r||(r.name=n)),t===e?t[n]=r:(u||delete t[n],o(t,n,r))})(Function.prototype,u,function(){return"function"==typeof this&&this[i]||c.call(this)})},function(t,n,r){var e=r(2),o="__core-js_shared__",i=e[o]||(e[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n,r){var e=r(17),o=r(13);t.exports=function(t,n,r){if(e(n))throw TypeError("String#"+r+" doesn't accept regex!");return String(o(t))}},function(t,n,r){t.exports=!r(15)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n){var r=Math.ceil,e=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?e:r)(t)}},function(t,n,r){var e=r(23),o=Math.min;t.exports=function(t){return t>0?o(e(t),9007199254740991):0}},function(t,n,r){"use strict";var e=r(3),o=r(24),i=r(21),u="endsWith",c=""[u];e(e.P+e.F*r(14)(u),"String",{endsWith:function(t){var n=i(this,t,u),r=arguments,e=r.length>1?r[1]:void 0,f=o(n.length),s=void 0===e?f:Math.min(o(e),f),a=String(t);return c?c.call(n,a,s):n.slice(s-a.length,s)===a}})},function(t,n,r){var e=r(5),o=r(3),i=r(1).Array||Array,u={},c=function(t,n){e.each.call(t.split(","),function(t){void 0==n&&t in i?u[t]=i[t]:t in[]&&(u[t]=r(12)(Function.call,[][t],n))})};c("pop,reverse,shift,keys,values,entries",1),c("indexOf,every,some,forEach,map,filter,find,findIndex,includes",3),c("join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill"),o(o.S,"Array",u)}]);
+	
+	/***/ },
+	/* 3 */
+	/***/ function(module, exports) {
+	
+		"use strict";
+		
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.default = getDataTransferFiles;
+		function getDataTransferFiles(event) {
+		  var isMultipleAllowed = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+		
+		  var dataTransferItemsList = [];
+		  if (event.dataTransfer) {
+		    var dt = event.dataTransfer;
+		    if (dt.files && dt.files.length) {
+		      dataTransferItemsList = dt.files;
+		    } else if (dt.items && dt.items.length) {
+		      // During the drag even the dataTransfer.files is null
+		      // but Chrome implements some drag store, which is accesible via dataTransfer.items
+		      dataTransferItemsList = dt.items;
+		    }
+		  } else if (event.target && event.target.files) {
+		    dataTransferItemsList = event.target.files;
+		  }
+		
+		  if (dataTransferItemsList.length > 0) {
+		    dataTransferItemsList = isMultipleAllowed ? dataTransferItemsList : [dataTransferItemsList[0]];
+		  }
+		
+		  // Convert from DataTransferItemsList to the native Array
+		  return Array.prototype.slice.call(dataTransferItemsList);
+		}
+		module.exports = exports["default"];
 	
 	/***/ }
 	/******/ ])
