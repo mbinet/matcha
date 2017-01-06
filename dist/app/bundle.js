@@ -35867,17 +35867,21 @@
 	                        { className: "nav navbar-nav navbar-right" },
 	                        _react2.default.createElement(
 	                            "button",
-	                            { id: "loginbutton", type: "button", className: "btn btn-primary narbar-btn" },
+	                            { id: "loginbutton", type: "button", className: "btn btn-secondary narbar-btn" },
 	                            _react2.default.createElement("i", { className: "glyphicon glyphicon-log-in" }),
-	                            "Login"
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: "/login" },
+	                                "Login"
+	                            )
 	                        ),
 	                        _react2.default.createElement(
 	                            "button",
 	                            { type: "button", className: "btn btn-success navbar-btn" },
 	                            _react2.default.createElement("i", { className: "glyphicon glyphicon-link" }),
 	                            _react2.default.createElement(
-	                                "a",
-	                                { href: "./register.jsp" },
+	                                _reactRouter.Link,
+	                                { to: "/signup" },
 	                                "Create account"
 	                            )
 	                        )
@@ -64826,15 +64830,17 @@
 	            var img = [];
 	            if (this.state.user.photo.p1 != "") {
 	                _lodash2.default.forEach(this.state.user.photo, function (p) {
-	                    var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/" + p);
-	                    console.log("width: ", newImg.height);
-	                    img.push({
-	                        src: "https://matcha-bucket.s3.amazonaws.com/" + p,
-	                        thumbnail: "https://matcha-bucket.s3.amazonaws.com/" + p,
-	                        thumbnailWidth: newImg.width,
-	                        thumbnailHeight: newImg.height,
-	                        caption: this.state.user.name
-	                    });
+	                    if (p != "") {
+	                        var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/Photos/" + p);
+	                        console.log("width: ", newImg.height);
+	                        img.push({
+	                            src: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
+	                            thumbnail: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
+	                            thumbnailWidth: newImg.width,
+	                            thumbnailHeight: newImg.height,
+	                            caption: this.state.user.name
+	                        });
+	                    }
 	                }.bind(this));
 	            }
 	
@@ -76613,7 +76619,7 @@
   \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -76626,7 +76632,25 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 430);
+	
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+	
+	var _TextField = __webpack_require__(/*! material-ui/TextField */ 542);
+	
+	var _TextField2 = _interopRequireDefault(_TextField);
+	
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
+	
+	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	
+	var _superagent = __webpack_require__(/*! superagent */ 436);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -76640,20 +76664,79 @@
 	    function LogIn() {
 	        _classCallCheck(this, LogIn);
 	
-	        return _possibleConstructorReturn(this, (LogIn.__proto__ || Object.getPrototypeOf(LogIn)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (LogIn.__proto__ || Object.getPrototypeOf(LogIn)).call(this));
+	
+	        _this.state = {
+	            user: {
+	                mail: "",
+	                password: ""
+	            }
+	        };
+	        return _this;
 	    }
 	
 	    _createClass(LogIn, [{
-	        key: "render",
+	        key: '_handleTextFieldChange',
+	        value: function _handleTextFieldChange(e) {
+	            this.setState({
+	                user: (0, _reactAddonsUpdate2.default)(this.state.user, _defineProperty({}, e.target.name, { $set: e.target.value }))
+	            });
+	        }
+	    }, {
+	        key: 'handleEnd',
+	        value: function handleEnd() {
+	            var url = "http://54.93.182.167:3000/api/login/";
+	            _superagent2.default.get(url).set('Content-Type', 'application/json').send({ mail: this.state.user.mail }).send({ password: this.state.user.password }).end(function (err, res) {
+	                console.log("fin de la requete");
+	                if (err) {
+	                    console.log("erreur ahah");
+	                } else {
+	                    console.log("ok cool");
+	                }
+	            });
+	            // Request.get(url).then((response) => {
+	            //     console.log(response.body.res)
+	            // });
+	        }
+	    }, {
+	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+	
 	            return _react2.default.createElement(
-	                "div",
+	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    "h3",
+	                    'h3',
 	                    null,
-	                    "LOGIN"
-	                )
+	                    'LOGIN'
+	                ),
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Email',
+	                    hintText: 'john@doe.com',
+	                    name: 'mail',
+	                    value: this.state.user.mail,
+	                    onChange: this._handleTextFieldChange.bind(this)
+	                }),
+	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Password',
+	                    hintText: '••••••••',
+	                    name: 'password',
+	                    type: 'password',
+	                    value: this.state.user.password,
+	                    onChange: this._handleTextFieldChange.bind(this)
+	                }),
+	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(_RaisedButton2.default, {
+	                    label: 'Save',
+	                    primary: true,
+	                    disabled: this.state.saveDisabled,
+	                    id: 'mdrlol',
+	                    onTouchTap: function onTouchTap() {
+	                        return _this2.handleEnd();
+	                    }
+	                })
 	            );
 	        }
 	    }]);

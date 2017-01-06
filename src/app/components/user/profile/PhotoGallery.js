@@ -47,17 +47,19 @@ export default class photoGallery extends React.Component {
         var img = [];
         if(this.state.user.photo.p1 != "") {
             _.forEach(this.state.user.photo, function (p) {
-                var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/" + p);
-                console.log("width: ", newImg.height);
-                img.push(
-                    {
-                        src: "https://matcha-bucket.s3.amazonaws.com/" + p,
-                        thumbnail: "https://matcha-bucket.s3.amazonaws.com/" + p,
-                        thumbnailWidth: newImg.width,
-                        thumbnailHeight: newImg.height,
-                        caption: this.state.user.name
-                    }
-                );
+                if (p != "") {
+                    var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/Photos/" + p);
+                    console.log("width: ", newImg.height);
+                    img.push(
+                        {
+                            src: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
+                            thumbnail: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
+                            thumbnailWidth: newImg.width,
+                            thumbnailHeight: newImg.height,
+                            caption: this.state.user.name
+                        }
+                    );
+                }
             }.bind(this));
         }
 

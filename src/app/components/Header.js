@@ -24,8 +24,10 @@ export const Header = (props) => {
                                 <li><Link to={"/profile/update"} activeStyle={{color: "red"}}>Update Profile</Link></li>
                             </ul>
                             <ul className="nav navbar-nav navbar-right">
-                                <button id="loginbutton" type="button" className="btn btn-primary narbar-btn"><i className="glyphicon glyphicon-log-in"></i>Login</button>
-                                <button type="button" className="btn btn-success navbar-btn"><i className="glyphicon glyphicon-link"></i><a href="./register.jsp">Create account</a></button>
+                                <button id="loginbutton" type="button" className="btn btn-secondary narbar-btn"><i className="glyphicon glyphicon-log-in"></i>
+                                    <Link to={"/login"}>Login</Link>
+                                </button>
+                                <button type="button" className="btn btn-success navbar-btn"><i className="glyphicon glyphicon-link"></i><Link to={"/signup"}>Create account</Link></button>
                             </ul>
                         </div>
                     </div>
