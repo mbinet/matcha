@@ -25,6 +25,7 @@ export class ProfileUpdate extends React.Component {
                     p4: "",
                     p5: "",
                 },
+                tags: "",
                 bio: ""
             },
             saveDisabled: true,
@@ -242,7 +243,6 @@ export class ProfileUpdate extends React.Component {
                                         value={this.state.user.mail}
                                         onChange={this._handleTextFieldChange.bind(this)}
                                     />
-                                    <br/>
                                     <TextField
                                         hintText="Hi, I like stamps and cactus..."
                                         floatingLabelText="Tell us about you"
@@ -253,6 +253,14 @@ export class ProfileUpdate extends React.Component {
                                         onChange={this._handleTextFieldChange.bind(this)}
                                         style={{textAlign: "left"}} // so the FloatingLabelText doesn't stay centered
                                     />
+                                    <br />
+                                    <TextField
+                                        floatingLabelText="Tags"
+                                        name="tags"
+                                        value={this.state.user.tags}
+                                        onChange={this._handleTextFieldChange.bind(this)}
+                                    />
+                                    <br/>
                                 </div>
                             </CardText>
                         </div>

@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card';
 import FontAwesome from 'react-fontawesome';
 import _ from 'lodash';
-import {MyChip} from "../MyChip"
+import {Tags} from "./Tags"
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import update from 'react-addons-update';
 import PhotoGallery from './PhotoGallery';
@@ -122,7 +122,7 @@ export class Profile extends React.Component {
                     <div className="">
                         <Card>
                             <CardText>
-                                <MyChip/>
+                                <Tags/>
                             </CardText>
                         </Card>
                     </div>

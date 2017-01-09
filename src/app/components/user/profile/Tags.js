@@ -1,6 +1,12 @@
 import React from "react";
+import Request from "superagent";
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card';
+import update from 'react-addons-update';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
+
 
 const styles = {
     chip: {
@@ -16,7 +22,8 @@ function handleTouchTap() {
     alert('You clicked the Chip.');
 }
 
-export class MyChip extends React.Component {
+export class Tags extends React.Component {
+
     render() {
         return (
             <div style={styles.wrapper}>
@@ -38,14 +45,17 @@ export class MyChip extends React.Component {
                     onTouchTap={handleTouchTap}
                     style={styles.chip}
                 >
+                    <Avatar src="http://placekitten.com/50/55" />
+                    #Bio
+                </Chip>
+                <Chip
+                    onTouchTap={handleTouchTap}
+                    style={styles.chip}
+                >
                     <Avatar src="http://placekitten.com/40/40" />
                     #Tatoo
                 </Chip>
             </div>
         )
-    };
+    }
 }
-
-/* this component should take an userID
-* sends all the chips related to this user, all wrapped
- */

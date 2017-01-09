@@ -81,7 +81,7 @@
 	
 	var _SignUp = __webpack_require__(/*! ./components/entry/SignUp */ 561);
 	
-	var _LogIn = __webpack_require__(/*! ./components/entry/LogIn */ 577);
+	var _LogIn = __webpack_require__(/*! ./components/entry/LogIn */ 580);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -58004,11 +58004,11 @@
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _MyChip = __webpack_require__(/*! ../MyChip */ 472);
+	var _Tags = __webpack_require__(/*! ./Tags */ 472);
 	
-	var _Table = __webpack_require__(/*! material-ui/Table */ 476);
+	var _Table = __webpack_require__(/*! material-ui/Table */ 478);
 	
-	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 473);
 	
 	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	
@@ -58219,7 +58219,7 @@
 	                            _react2.default.createElement(
 	                                _Card.CardText,
 	                                null,
-	                                _react2.default.createElement(_MyChip.MyChip, null)
+	                                _react2.default.createElement(_Tags.Tags, null)
 	                            )
 	                        )
 	                    )
@@ -61038,17 +61038,17 @@
 
 /***/ },
 /* 472 */
-/*!*******************************************!*\
-  !*** ./src/app/components/user/MyChip.js ***!
-  \*******************************************/
+/*!*************************************************!*\
+  !*** ./src/app/components/user/profile/Tags.js ***!
+  \*************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.MyChip = undefined;
+	exports.Tags = undefined;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -61056,11 +61056,29 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _superagent = __webpack_require__(/*! superagent */ 436);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
+	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 430);
+	
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+	
+	var _FlatButton = __webpack_require__(/*! material-ui/FlatButton */ 406);
+	
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+	
+	var _Card = __webpack_require__(/*! material-ui/Card */ 443);
+	
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 473);
+	
+	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+	
 	var _Avatar = __webpack_require__(/*! material-ui/Avatar */ 465);
 	
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 	
-	var _Chip = __webpack_require__(/*! material-ui/Chip */ 473);
+	var _Chip = __webpack_require__(/*! material-ui/Chip */ 475);
 	
 	var _Chip2 = _interopRequireDefault(_Chip);
 	
@@ -61086,20 +61104,20 @@
 	    alert('You clicked the Chip.');
 	}
 	
-	var MyChip = exports.MyChip = function (_React$Component) {
-	    _inherits(MyChip, _React$Component);
+	var Tags = exports.Tags = function (_React$Component) {
+	    _inherits(Tags, _React$Component);
 	
-	    function MyChip() {
-	        _classCallCheck(this, MyChip);
+	    function Tags() {
+	        _classCallCheck(this, Tags);
 	
-	        return _possibleConstructorReturn(this, (MyChip.__proto__ || Object.getPrototypeOf(MyChip)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (Tags.__proto__ || Object.getPrototypeOf(Tags)).apply(this, arguments));
 	    }
 	
-	    _createClass(MyChip, [{
-	        key: 'render',
+	    _createClass(Tags, [{
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
+	                "div",
 	                { style: styles.wrapper },
 	                _react2.default.createElement(
 	                    _Chip2.default,
@@ -61107,8 +61125,8 @@
 	                        onTouchTap: handleTouchTap,
 	                        style: styles.chip
 	                    },
-	                    _react2.default.createElement(_Avatar2.default, { src: 'http://placekitten.com/50/50' }),
-	                    '#Geek'
+	                    _react2.default.createElement(_Avatar2.default, { src: "http://placekitten.com/50/50" }),
+	                    "#Geek"
 	                ),
 	                _react2.default.createElement(
 	                    _Chip2.default,
@@ -61116,8 +61134,8 @@
 	                        onTouchTap: handleTouchTap,
 	                        style: styles.chip
 	                    },
-	                    _react2.default.createElement(_Avatar2.default, { src: 'http://placekitten.com/50/55' }),
-	                    '#Bio'
+	                    _react2.default.createElement(_Avatar2.default, { src: "http://placekitten.com/50/55" }),
+	                    "#Bio"
 	                ),
 	                _react2.default.createElement(
 	                    _Chip2.default,
@@ -61125,22 +61143,158 @@
 	                        onTouchTap: handleTouchTap,
 	                        style: styles.chip
 	                    },
-	                    _react2.default.createElement(_Avatar2.default, { src: 'http://placekitten.com/40/40' }),
-	                    '#Tatoo'
+	                    _react2.default.createElement(_Avatar2.default, { src: "http://placekitten.com/50/55" }),
+	                    "#Bio"
+	                ),
+	                _react2.default.createElement(
+	                    _Chip2.default,
+	                    {
+	                        onTouchTap: handleTouchTap,
+	                        style: styles.chip
+	                    },
+	                    _react2.default.createElement(_Avatar2.default, { src: "http://placekitten.com/40/40" }),
+	                    "#Tatoo"
 	                )
 	            );
 	        }
 	    }]);
 	
-	    return MyChip;
+	    return Tags;
 	}(_react2.default.Component);
-	
-	/* this component should take an userID
-	* sends all the chips related to this user, all wrapped
-	 */
 
 /***/ },
 /* 473 */
+/*!****************************************!*\
+  !*** ./~/react-addons-update/index.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(/*! react/lib/update */ 474);
+
+/***/ },
+/* 474 */
+/*!*******************************!*\
+  !*** ./~/react/lib/update.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule update
+	 */
+	
+	/* global hasOwnProperty:true */
+	
+	'use strict';
+	
+	var _prodInvariant = __webpack_require__(/*! ./reactProdInvariant */ 7),
+	    _assign = __webpack_require__(/*! object-assign */ 4);
+	
+	var keyOf = __webpack_require__(/*! fbjs/lib/keyOf */ 25);
+	var invariant = __webpack_require__(/*! fbjs/lib/invariant */ 8);
+	var hasOwnProperty = {}.hasOwnProperty;
+	
+	function shallowCopy(x) {
+	  if (Array.isArray(x)) {
+	    return x.concat();
+	  } else if (x && typeof x === 'object') {
+	    return _assign(new x.constructor(), x);
+	  } else {
+	    return x;
+	  }
+	}
+	
+	var COMMAND_PUSH = keyOf({ $push: null });
+	var COMMAND_UNSHIFT = keyOf({ $unshift: null });
+	var COMMAND_SPLICE = keyOf({ $splice: null });
+	var COMMAND_SET = keyOf({ $set: null });
+	var COMMAND_MERGE = keyOf({ $merge: null });
+	var COMMAND_APPLY = keyOf({ $apply: null });
+	
+	var ALL_COMMANDS_LIST = [COMMAND_PUSH, COMMAND_UNSHIFT, COMMAND_SPLICE, COMMAND_SET, COMMAND_MERGE, COMMAND_APPLY];
+	
+	var ALL_COMMANDS_SET = {};
+	
+	ALL_COMMANDS_LIST.forEach(function (command) {
+	  ALL_COMMANDS_SET[command] = true;
+	});
+	
+	function invariantArrayCase(value, spec, command) {
+	  !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected target of %s to be an array; got %s.', command, value) : _prodInvariant('1', command, value) : void 0;
+	  var specValue = spec[command];
+	  !Array.isArray(specValue) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array; got %s. Did you forget to wrap your parameter in an array?', command, specValue) : _prodInvariant('2', command, specValue) : void 0;
+	}
+	
+	/**
+	 * Returns a updated shallow copy of an object without mutating the original.
+	 * See https://facebook.github.io/react/docs/update.html for details.
+	 */
+	function update(value, spec) {
+	  !(typeof spec === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): You provided a key path to update() that did not contain one of %s. Did you forget to include {%s: ...}?', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : _prodInvariant('3', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : void 0;
+	
+	  if (hasOwnProperty.call(spec, COMMAND_SET)) {
+	    !(Object.keys(spec).length === 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Cannot have more than one key in an object with %s', COMMAND_SET) : _prodInvariant('4', COMMAND_SET) : void 0;
+	
+	    return spec[COMMAND_SET];
+	  }
+	
+	  var nextValue = shallowCopy(value);
+	
+	  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
+	    var mergeObj = spec[COMMAND_MERGE];
+	    !(mergeObj && typeof mergeObj === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a spec of type \'object\'; got %s', COMMAND_MERGE, mergeObj) : _prodInvariant('5', COMMAND_MERGE, mergeObj) : void 0;
+	    !(nextValue && typeof nextValue === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a target of type \'object\'; got %s', COMMAND_MERGE, nextValue) : _prodInvariant('6', COMMAND_MERGE, nextValue) : void 0;
+	    _assign(nextValue, spec[COMMAND_MERGE]);
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
+	    invariantArrayCase(value, spec, COMMAND_PUSH);
+	    spec[COMMAND_PUSH].forEach(function (item) {
+	      nextValue.push(item);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
+	    invariantArrayCase(value, spec, COMMAND_UNSHIFT);
+	    spec[COMMAND_UNSHIFT].forEach(function (item) {
+	      nextValue.unshift(item);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
+	    !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected %s target to be an array; got %s', COMMAND_SPLICE, value) : _prodInvariant('7', COMMAND_SPLICE, value) : void 0;
+	    !Array.isArray(spec[COMMAND_SPLICE]) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
+	    spec[COMMAND_SPLICE].forEach(function (args) {
+	      !Array.isArray(args) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
+	      nextValue.splice.apply(nextValue, args);
+	    });
+	  }
+	
+	  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
+	    !(typeof spec[COMMAND_APPLY] === 'function') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be a function; got %s.', COMMAND_APPLY, spec[COMMAND_APPLY]) : _prodInvariant('9', COMMAND_APPLY, spec[COMMAND_APPLY]) : void 0;
+	    nextValue = spec[COMMAND_APPLY](nextValue);
+	  }
+	
+	  for (var k in spec) {
+	    if (!(ALL_COMMANDS_SET.hasOwnProperty(k) && ALL_COMMANDS_SET[k])) {
+	      nextValue[k] = update(value[k], spec[k]);
+	    }
+	  }
+	
+	  return nextValue;
+	}
+	
+	module.exports = update;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
+
+/***/ },
+/* 475 */
 /*!*************************************!*\
   !*** ./~/material-ui/Chip/index.js ***!
   \*************************************/
@@ -61153,7 +61307,7 @@
 	});
 	exports.default = undefined;
 	
-	var _Chip = __webpack_require__(/*! ./Chip */ 474);
+	var _Chip = __webpack_require__(/*! ./Chip */ 476);
 	
 	var _Chip2 = _interopRequireDefault(_Chip);
 	
@@ -61162,7 +61316,7 @@
 	exports.default = _Chip2.default;
 
 /***/ },
-/* 474 */
+/* 476 */
 /*!************************************!*\
   !*** ./~/material-ui/Chip/Chip.js ***!
   \************************************/
@@ -61196,7 +61350,7 @@
 	
 	var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
 	
-	var _cancel = __webpack_require__(/*! ../svg-icons/navigation/cancel */ 475);
+	var _cancel = __webpack_require__(/*! ../svg-icons/navigation/cancel */ 477);
 	
 	var _cancel2 = _interopRequireDefault(_cancel);
 	
@@ -61493,7 +61647,7 @@
 	exports.default = Chip;
 
 /***/ },
-/* 475 */
+/* 477 */
 /*!******************************************************!*\
   !*** ./~/material-ui/svg-icons/navigation/cancel.js ***!
   \******************************************************/
@@ -61533,7 +61687,7 @@
 	exports.default = NavigationCancel;
 
 /***/ },
-/* 476 */
+/* 478 */
 /*!**************************************!*\
   !*** ./~/material-ui/Table/index.js ***!
   \**************************************/
@@ -61546,31 +61700,31 @@
 	});
 	exports.default = exports.TableRowColumn = exports.TableRow = exports.TableHeaderColumn = exports.TableHeader = exports.TableFooter = exports.TableBody = exports.Table = undefined;
 	
-	var _Table2 = __webpack_require__(/*! ./Table */ 477);
+	var _Table2 = __webpack_require__(/*! ./Table */ 479);
 	
 	var _Table3 = _interopRequireDefault(_Table2);
 	
-	var _TableBody2 = __webpack_require__(/*! ./TableBody */ 478);
+	var _TableBody2 = __webpack_require__(/*! ./TableBody */ 480);
 	
 	var _TableBody3 = _interopRequireDefault(_TableBody2);
 	
-	var _TableFooter2 = __webpack_require__(/*! ./TableFooter */ 487);
+	var _TableFooter2 = __webpack_require__(/*! ./TableFooter */ 489);
 	
 	var _TableFooter3 = _interopRequireDefault(_TableFooter2);
 	
-	var _TableHeader2 = __webpack_require__(/*! ./TableHeader */ 488);
+	var _TableHeader2 = __webpack_require__(/*! ./TableHeader */ 490);
 	
 	var _TableHeader3 = _interopRequireDefault(_TableHeader2);
 	
-	var _TableHeaderColumn2 = __webpack_require__(/*! ./TableHeaderColumn */ 489);
+	var _TableHeaderColumn2 = __webpack_require__(/*! ./TableHeaderColumn */ 491);
 	
 	var _TableHeaderColumn3 = _interopRequireDefault(_TableHeaderColumn2);
 	
-	var _TableRow2 = __webpack_require__(/*! ./TableRow */ 490);
+	var _TableRow2 = __webpack_require__(/*! ./TableRow */ 492);
 	
 	var _TableRow3 = _interopRequireDefault(_TableRow2);
 	
-	var _TableRowColumn2 = __webpack_require__(/*! ./TableRowColumn */ 485);
+	var _TableRowColumn2 = __webpack_require__(/*! ./TableRowColumn */ 487);
 	
 	var _TableRowColumn3 = _interopRequireDefault(_TableRowColumn2);
 	
@@ -61586,7 +61740,7 @@
 	exports.default = _Table3.default;
 
 /***/ },
-/* 477 */
+/* 479 */
 /*!**************************************!*\
   !*** ./~/material-ui/Table/Table.js ***!
   \**************************************/
@@ -61939,7 +62093,7 @@
 	exports.default = Table;
 
 /***/ },
-/* 478 */
+/* 480 */
 /*!******************************************!*\
   !*** ./~/material-ui/Table/TableBody.js ***!
   \******************************************/
@@ -61965,15 +62119,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Checkbox = __webpack_require__(/*! ../Checkbox */ 479);
+	var _Checkbox = __webpack_require__(/*! ../Checkbox */ 481);
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
-	var _TableRowColumn = __webpack_require__(/*! ./TableRowColumn */ 485);
+	var _TableRowColumn = __webpack_require__(/*! ./TableRowColumn */ 487);
 	
 	var _TableRowColumn2 = _interopRequireDefault(_TableRowColumn);
 	
-	var _ClickAwayListener = __webpack_require__(/*! ../internal/ClickAwayListener */ 486);
+	var _ClickAwayListener = __webpack_require__(/*! ../internal/ClickAwayListener */ 488);
 	
 	var _ClickAwayListener2 = _interopRequireDefault(_ClickAwayListener);
 	
@@ -62451,7 +62605,7 @@
 	exports.default = TableBody;
 
 /***/ },
-/* 479 */
+/* 481 */
 /*!*****************************************!*\
   !*** ./~/material-ui/Checkbox/index.js ***!
   \*****************************************/
@@ -62464,7 +62618,7 @@
 	});
 	exports.default = undefined;
 	
-	var _Checkbox = __webpack_require__(/*! ./Checkbox */ 480);
+	var _Checkbox = __webpack_require__(/*! ./Checkbox */ 482);
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
@@ -62473,7 +62627,7 @@
 	exports.default = _Checkbox2.default;
 
 /***/ },
-/* 480 */
+/* 482 */
 /*!********************************************!*\
   !*** ./~/material-ui/Checkbox/Checkbox.js ***!
   \********************************************/
@@ -62497,7 +62651,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _EnhancedSwitch = __webpack_require__(/*! ../internal/EnhancedSwitch */ 481);
+	var _EnhancedSwitch = __webpack_require__(/*! ../internal/EnhancedSwitch */ 483);
 	
 	var _EnhancedSwitch2 = _interopRequireDefault(_EnhancedSwitch);
 	
@@ -62505,11 +62659,11 @@
 	
 	var _transitions2 = _interopRequireDefault(_transitions);
 	
-	var _checkBoxOutlineBlank = __webpack_require__(/*! ../svg-icons/toggle/check-box-outline-blank */ 483);
+	var _checkBoxOutlineBlank = __webpack_require__(/*! ../svg-icons/toggle/check-box-outline-blank */ 485);
 	
 	var _checkBoxOutlineBlank2 = _interopRequireDefault(_checkBoxOutlineBlank);
 	
-	var _checkBox = __webpack_require__(/*! ../svg-icons/toggle/check-box */ 484);
+	var _checkBox = __webpack_require__(/*! ../svg-icons/toggle/check-box */ 486);
 	
 	var _checkBox2 = _interopRequireDefault(_checkBox);
 	
@@ -62768,7 +62922,7 @@
 	exports.default = Checkbox;
 
 /***/ },
-/* 481 */
+/* 483 */
 /*!**************************************************!*\
   !*** ./~/material-ui/internal/EnhancedSwitch.js ***!
   \**************************************************/
@@ -62792,7 +62946,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactEventListener = __webpack_require__(/*! react-event-listener */ 482);
+	var _reactEventListener = __webpack_require__(/*! react-event-listener */ 484);
 	
 	var _reactEventListener2 = _interopRequireDefault(_reactEventListener);
 	
@@ -63215,7 +63369,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 482 */
+/* 484 */
 /*!*********************************************!*\
   !*** ./~/react-event-listener/lib/index.js ***!
   \*********************************************/
@@ -63385,7 +63539,7 @@
 	exports.default = EventListener;
 
 /***/ },
-/* 483 */
+/* 485 */
 /*!*******************************************************************!*\
   !*** ./~/material-ui/svg-icons/toggle/check-box-outline-blank.js ***!
   \*******************************************************************/
@@ -63425,7 +63579,7 @@
 	exports.default = ToggleCheckBoxOutlineBlank;
 
 /***/ },
-/* 484 */
+/* 486 */
 /*!*****************************************************!*\
   !*** ./~/material-ui/svg-icons/toggle/check-box.js ***!
   \*****************************************************/
@@ -63465,7 +63619,7 @@
 	exports.default = ToggleCheckBox;
 
 /***/ },
-/* 485 */
+/* 487 */
 /*!***********************************************!*\
   !*** ./~/material-ui/Table/TableRowColumn.js ***!
   \***********************************************/
@@ -63639,7 +63793,7 @@
 	exports.default = TableRowColumn;
 
 /***/ },
-/* 486 */
+/* 488 */
 /*!*****************************************************!*\
   !*** ./~/material-ui/internal/ClickAwayListener.js ***!
   \*****************************************************/
@@ -63761,7 +63915,7 @@
 	exports.default = ClickAwayListener;
 
 /***/ },
-/* 487 */
+/* 489 */
 /*!********************************************!*\
   !*** ./~/material-ui/Table/TableFooter.js ***!
   \********************************************/
@@ -63785,7 +63939,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _TableRowColumn = __webpack_require__(/*! ./TableRowColumn */ 485);
+	var _TableRowColumn = __webpack_require__(/*! ./TableRowColumn */ 487);
 	
 	var _TableRowColumn2 = _interopRequireDefault(_TableRowColumn);
 	
@@ -63902,7 +64056,7 @@
 	exports.default = TableFooter;
 
 /***/ },
-/* 488 */
+/* 490 */
 /*!********************************************!*\
   !*** ./~/material-ui/Table/TableHeader.js ***!
   \********************************************/
@@ -63924,11 +64078,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Checkbox = __webpack_require__(/*! ../Checkbox */ 479);
+	var _Checkbox = __webpack_require__(/*! ../Checkbox */ 481);
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
-	var _TableHeaderColumn = __webpack_require__(/*! ./TableHeaderColumn */ 489);
+	var _TableHeaderColumn = __webpack_require__(/*! ./TableHeaderColumn */ 491);
 	
 	var _TableHeaderColumn2 = _interopRequireDefault(_TableHeaderColumn);
 	
@@ -64145,7 +64299,7 @@
 	exports.default = TableHeader;
 
 /***/ },
-/* 489 */
+/* 491 */
 /*!**************************************************!*\
   !*** ./~/material-ui/Table/TableHeaderColumn.js ***!
   \**************************************************/
@@ -64338,7 +64492,7 @@
 	exports.default = TableHeaderColumn;
 
 /***/ },
-/* 490 */
+/* 492 */
 /*!*****************************************!*\
   !*** ./~/material-ui/Table/TableRow.js ***!
   \*****************************************/
@@ -64605,137 +64759,6 @@
 	  muiTheme: _react.PropTypes.object.isRequired
 	};
 	exports.default = TableRow;
-
-/***/ },
-/* 491 */
-/*!****************************************!*\
-  !*** ./~/react-addons-update/index.js ***!
-  \****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(/*! react/lib/update */ 492);
-
-/***/ },
-/* 492 */
-/*!*******************************!*\
-  !*** ./~/react/lib/update.js ***!
-  \*******************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule update
-	 */
-	
-	/* global hasOwnProperty:true */
-	
-	'use strict';
-	
-	var _prodInvariant = __webpack_require__(/*! ./reactProdInvariant */ 7),
-	    _assign = __webpack_require__(/*! object-assign */ 4);
-	
-	var keyOf = __webpack_require__(/*! fbjs/lib/keyOf */ 25);
-	var invariant = __webpack_require__(/*! fbjs/lib/invariant */ 8);
-	var hasOwnProperty = {}.hasOwnProperty;
-	
-	function shallowCopy(x) {
-	  if (Array.isArray(x)) {
-	    return x.concat();
-	  } else if (x && typeof x === 'object') {
-	    return _assign(new x.constructor(), x);
-	  } else {
-	    return x;
-	  }
-	}
-	
-	var COMMAND_PUSH = keyOf({ $push: null });
-	var COMMAND_UNSHIFT = keyOf({ $unshift: null });
-	var COMMAND_SPLICE = keyOf({ $splice: null });
-	var COMMAND_SET = keyOf({ $set: null });
-	var COMMAND_MERGE = keyOf({ $merge: null });
-	var COMMAND_APPLY = keyOf({ $apply: null });
-	
-	var ALL_COMMANDS_LIST = [COMMAND_PUSH, COMMAND_UNSHIFT, COMMAND_SPLICE, COMMAND_SET, COMMAND_MERGE, COMMAND_APPLY];
-	
-	var ALL_COMMANDS_SET = {};
-	
-	ALL_COMMANDS_LIST.forEach(function (command) {
-	  ALL_COMMANDS_SET[command] = true;
-	});
-	
-	function invariantArrayCase(value, spec, command) {
-	  !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected target of %s to be an array; got %s.', command, value) : _prodInvariant('1', command, value) : void 0;
-	  var specValue = spec[command];
-	  !Array.isArray(specValue) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array; got %s. Did you forget to wrap your parameter in an array?', command, specValue) : _prodInvariant('2', command, specValue) : void 0;
-	}
-	
-	/**
-	 * Returns a updated shallow copy of an object without mutating the original.
-	 * See https://facebook.github.io/react/docs/update.html for details.
-	 */
-	function update(value, spec) {
-	  !(typeof spec === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): You provided a key path to update() that did not contain one of %s. Did you forget to include {%s: ...}?', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : _prodInvariant('3', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : void 0;
-	
-	  if (hasOwnProperty.call(spec, COMMAND_SET)) {
-	    !(Object.keys(spec).length === 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Cannot have more than one key in an object with %s', COMMAND_SET) : _prodInvariant('4', COMMAND_SET) : void 0;
-	
-	    return spec[COMMAND_SET];
-	  }
-	
-	  var nextValue = shallowCopy(value);
-	
-	  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
-	    var mergeObj = spec[COMMAND_MERGE];
-	    !(mergeObj && typeof mergeObj === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a spec of type \'object\'; got %s', COMMAND_MERGE, mergeObj) : _prodInvariant('5', COMMAND_MERGE, mergeObj) : void 0;
-	    !(nextValue && typeof nextValue === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a target of type \'object\'; got %s', COMMAND_MERGE, nextValue) : _prodInvariant('6', COMMAND_MERGE, nextValue) : void 0;
-	    _assign(nextValue, spec[COMMAND_MERGE]);
-	  }
-	
-	  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
-	    invariantArrayCase(value, spec, COMMAND_PUSH);
-	    spec[COMMAND_PUSH].forEach(function (item) {
-	      nextValue.push(item);
-	    });
-	  }
-	
-	  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
-	    invariantArrayCase(value, spec, COMMAND_UNSHIFT);
-	    spec[COMMAND_UNSHIFT].forEach(function (item) {
-	      nextValue.unshift(item);
-	    });
-	  }
-	
-	  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
-	    !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected %s target to be an array; got %s', COMMAND_SPLICE, value) : _prodInvariant('7', COMMAND_SPLICE, value) : void 0;
-	    !Array.isArray(spec[COMMAND_SPLICE]) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
-	    spec[COMMAND_SPLICE].forEach(function (args) {
-	      !Array.isArray(args) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
-	      nextValue.splice.apply(nextValue, args);
-	    });
-	  }
-	
-	  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
-	    !(typeof spec[COMMAND_APPLY] === 'function') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be a function; got %s.', COMMAND_APPLY, spec[COMMAND_APPLY]) : _prodInvariant('9', COMMAND_APPLY, spec[COMMAND_APPLY]) : void 0;
-	    nextValue = spec[COMMAND_APPLY](nextValue);
-	  }
-	
-	  for (var k in spec) {
-	    if (!(ALL_COMMANDS_SET.hasOwnProperty(k) && ALL_COMMANDS_SET[k])) {
-	      nextValue[k] = update(value[k], spec[k]);
-	    }
-	  }
-	
-	  return nextValue;
-	}
-	
-	module.exports = update;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
 /* 493 */
@@ -69400,7 +69423,7 @@
 	
 	var _Snackbar2 = _interopRequireDefault(_Snackbar);
 	
-	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 473);
 	
 	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	
@@ -69439,6 +69462,7 @@
 	                    p4: "",
 	                    p5: ""
 	                },
+	                tags: [],
 	                bio: ""
 	            },
 	            saveDisabled: true,
@@ -69720,6 +69744,13 @@
 	                                        floatingLabelText: "Mail",
 	                                        name: "mail",
 	                                        value: this.state.user.mail,
+	                                        onChange: this._handleTextFieldChange.bind(this)
+	                                    }),
+	                                    _react2.default.createElement("br", null),
+	                                    _react2.default.createElement(_TextField2.default, {
+	                                        floatingLabelText: "Tags",
+	                                        name: "tags",
+	                                        value: this.state.user.tags,
 	                                        onChange: this._handleTextFieldChange.bind(this)
 	                                    }),
 	                                    _react2.default.createElement("br", null),
@@ -70394,7 +70425,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactEventListener = __webpack_require__(/*! react-event-listener */ 482);
+	var _reactEventListener = __webpack_require__(/*! react-event-listener */ 484);
 	
 	var _reactEventListener2 = _interopRequireDefault(_reactEventListener);
 	
@@ -70994,7 +71025,7 @@
 	
 	var _transitions2 = _interopRequireDefault(_transitions);
 	
-	var _ClickAwayListener = __webpack_require__(/*! ../internal/ClickAwayListener */ 486);
+	var _ClickAwayListener = __webpack_require__(/*! ../internal/ClickAwayListener */ 488);
 	
 	var _ClickAwayListener2 = _interopRequireDefault(_ClickAwayListener);
 	
@@ -71453,7 +71484,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactEventListener = __webpack_require__(/*! react-event-listener */ 482);
+	var _reactEventListener = __webpack_require__(/*! react-event-listener */ 484);
 	
 	var _reactEventListener2 = _interopRequireDefault(_reactEventListener);
 	
@@ -73866,7 +73897,7 @@
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _Table = __webpack_require__(/*! material-ui/Table */ 476);
+	var _Table = __webpack_require__(/*! material-ui/Table */ 478);
 	
 	var _TextField = __webpack_require__(/*! material-ui/TextField */ 542);
 	
@@ -73878,7 +73909,7 @@
 	
 	var _colors = __webpack_require__(/*! material-ui/styles/colors */ 365);
 	
-	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 473);
 	
 	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	
@@ -74360,7 +74391,7 @@
 	
 	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 	
-	var _Checkbox = __webpack_require__(/*! material-ui/Checkbox */ 479);
+	var _Checkbox = __webpack_require__(/*! material-ui/Checkbox */ 481);
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
@@ -74371,6 +74402,10 @@
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 172);
+	
+	var _sha = __webpack_require__(/*! sha256 */ 577);
+	
+	var _sha2 = _interopRequireDefault(_sha);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -74462,11 +74497,11 @@
 	        key: 'handleEnd',
 	        value: function handleEnd(state) {
 	            this.setDefaultPicture();
-	            this.state.photo.p1 = "Photos/400.jpeg";
+	            this.state.photo.p1 = "400.jpeg";
 	            console.log(this.state.photo);
 	            var url = "http://54.93.182.167:3000/api/users/";
-	            console.log(state);
-	            _superagent2.default.post(url).set('Content-Type', 'application/json').send({ name: this.state.name }).send({ age: this.state.age }).send({ mail: this.state.mail }).send({ photo: this.state.photo }).send({ passwd: this.state.passwd }).send({ sex: this.state.sex }).send({ bio: this.state.bio }).end(function (response) {
+	            var shaPass = (0, _sha2.default)(this.state.passwd);
+	            _superagent2.default.post(url).set('Content-Type', 'application/json').send({ name: this.state.name }).send({ age: this.state.age }).send({ mail: this.state.mail }).send({ photo: this.state.photo }).send({ passwd: shaPass }).send({ sex: this.state.sex }).send({ bio: this.state.bio }).end(function (response) {
 	                console.log('inserted');
 	                console.log(response);
 	                _reactRouter.browserHistory.push("/home", "jdec");
@@ -76076,7 +76111,7 @@
 	
 	var _transitions2 = _interopRequireDefault(_transitions);
 	
-	var _EnhancedSwitch = __webpack_require__(/*! ../internal/EnhancedSwitch */ 481);
+	var _EnhancedSwitch = __webpack_require__(/*! ../internal/EnhancedSwitch */ 483);
 	
 	var _EnhancedSwitch2 = _interopRequireDefault(_EnhancedSwitch);
 	
@@ -76614,6 +76649,260 @@
 
 /***/ },
 /* 577 */
+/*!********************************!*\
+  !*** ./~/sha256/lib/sha256.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	!function(globals) {
+	'use strict'
+	
+	var _imports = {}
+	
+	if (typeof module !== 'undefined' && module.exports) { //CommonJS
+	  _imports.bytesToHex = __webpack_require__(/*! convert-hex */ 578).bytesToHex
+	  _imports.convertString = __webpack_require__(/*! convert-string */ 579)
+	  module.exports = sha256
+	} else {
+	  _imports.bytesToHex = globals.convertHex.bytesToHex
+	  _imports.convertString = globals.convertString
+	  globals.sha256 = sha256
+	}
+	
+	/*
+	CryptoJS v3.1.2
+	code.google.com/p/crypto-js
+	(c) 2009-2013 by Jeff Mott. All rights reserved.
+	code.google.com/p/crypto-js/wiki/License
+	*/
+	
+	// Initialization round constants tables
+	var K = []
+	
+	// Compute constants
+	!function () {
+	  function isPrime(n) {
+	    var sqrtN = Math.sqrt(n);
+	    for (var factor = 2; factor <= sqrtN; factor++) {
+	      if (!(n % factor)) return false
+	    }
+	
+	    return true
+	  }
+	
+	  function getFractionalBits(n) {
+	    return ((n - (n | 0)) * 0x100000000) | 0
+	  }
+	
+	  var n = 2
+	  var nPrime = 0
+	  while (nPrime < 64) {
+	    if (isPrime(n)) {
+	      K[nPrime] = getFractionalBits(Math.pow(n, 1 / 3))
+	      nPrime++
+	    }
+	
+	    n++
+	  }
+	}()
+	
+	var bytesToWords = function (bytes) {
+	  var words = []
+	  for (var i = 0, b = 0; i < bytes.length; i++, b += 8) {
+	    words[b >>> 5] |= bytes[i] << (24 - b % 32)
+	  }
+	  return words
+	}
+	
+	var wordsToBytes = function (words) {
+	  var bytes = []
+	  for (var b = 0; b < words.length * 32; b += 8) {
+	    bytes.push((words[b >>> 5] >>> (24 - b % 32)) & 0xFF)
+	  }
+	  return bytes
+	}
+	
+	// Reusable object
+	var W = []
+	
+	var processBlock = function (H, M, offset) {
+	  // Working variables
+	  var a = H[0], b = H[1], c = H[2], d = H[3]
+	  var e = H[4], f = H[5], g = H[6], h = H[7]
+	
+	    // Computation
+	  for (var i = 0; i < 64; i++) {
+	    if (i < 16) {
+	      W[i] = M[offset + i] | 0
+	    } else {
+	      var gamma0x = W[i - 15]
+	      var gamma0  = ((gamma0x << 25) | (gamma0x >>> 7))  ^
+	                    ((gamma0x << 14) | (gamma0x >>> 18)) ^
+	                    (gamma0x >>> 3)
+	
+	      var gamma1x = W[i - 2];
+	      var gamma1  = ((gamma1x << 15) | (gamma1x >>> 17)) ^
+	                    ((gamma1x << 13) | (gamma1x >>> 19)) ^
+	                    (gamma1x >>> 10)
+	
+	      W[i] = gamma0 + W[i - 7] + gamma1 + W[i - 16];
+	    }
+	
+	    var ch  = (e & f) ^ (~e & g);
+	    var maj = (a & b) ^ (a & c) ^ (b & c);
+	
+	    var sigma0 = ((a << 30) | (a >>> 2)) ^ ((a << 19) | (a >>> 13)) ^ ((a << 10) | (a >>> 22));
+	    var sigma1 = ((e << 26) | (e >>> 6)) ^ ((e << 21) | (e >>> 11)) ^ ((e << 7)  | (e >>> 25));
+	
+	    var t1 = h + sigma1 + ch + K[i] + W[i];
+	    var t2 = sigma0 + maj;
+	
+	    h = g;
+	    g = f;
+	    f = e;
+	    e = (d + t1) | 0;
+	    d = c;
+	    c = b;
+	    b = a;
+	    a = (t1 + t2) | 0;
+	  }
+	
+	  // Intermediate hash value
+	  H[0] = (H[0] + a) | 0;
+	  H[1] = (H[1] + b) | 0;
+	  H[2] = (H[2] + c) | 0;
+	  H[3] = (H[3] + d) | 0;
+	  H[4] = (H[4] + e) | 0;
+	  H[5] = (H[5] + f) | 0;
+	  H[6] = (H[6] + g) | 0;
+	  H[7] = (H[7] + h) | 0;
+	}
+	
+	function sha256(message, options) {;
+	  if (message.constructor === String) {
+	    message = _imports.convertString.UTF8.stringToBytes(message);
+	  }
+	
+	  var H =[ 0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A,
+	           0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19 ];
+	
+	  var m = bytesToWords(message);
+	  var l = message.length * 8;
+	
+	  m[l >> 5] |= 0x80 << (24 - l % 32);
+	  m[((l + 64 >> 9) << 4) + 15] = l;
+	
+	  for (var i=0 ; i<m.length; i += 16) {
+	    processBlock(H, m, i);
+	  }
+	
+	  var digestbytes = wordsToBytes(H);
+	  return options && options.asBytes ? digestbytes :
+	         options && options.asString ? _imports.convertString.bytesToString(digestbytes) :
+	         _imports.bytesToHex(digestbytes)
+	}
+	
+	sha256.x2 = function(message, options) {
+	  return sha256(sha256(message, { asBytes:true }), options)
+	}
+	
+	}(this);
+
+
+/***/ },
+/* 578 */
+/*!**************************************!*\
+  !*** ./~/convert-hex/convert-hex.js ***!
+  \**************************************/
+/***/ function(module, exports) {
+
+	!function(globals) {
+	'use strict'
+	
+	var convertHex = {
+	  bytesToHex: function(bytes) {
+	    /*if (typeof bytes.byteLength != 'undefined') {
+	      var newBytes = []
+	
+	      if (typeof bytes.buffer != 'undefined')
+	        bytes = new DataView(bytes.buffer)
+	      else
+	        bytes = new DataView(bytes)
+	
+	      for (var i = 0; i < bytes.byteLength; ++i) {
+	        newBytes.push(bytes.getUint8(i))
+	      }
+	      bytes = newBytes
+	    }*/
+	    return arrBytesToHex(bytes)
+	  },
+	  hexToBytes: function(hex) {
+	    if (hex.length % 2 === 1) throw new Error("hexToBytes can't have a string with an odd number of characters.")
+	    if (hex.indexOf('0x') === 0) hex = hex.slice(2)
+	    return hex.match(/../g).map(function(x) { return parseInt(x,16) })
+	  }
+	}
+	
+	
+	// PRIVATE
+	
+	function arrBytesToHex(bytes) {
+	  return bytes.map(function(x) { return padLeft(x.toString(16),2) }).join('')
+	}
+	
+	function padLeft(orig, len) {
+	  if (orig.length > len) return orig
+	  return Array(len - orig.length + 1).join('0') + orig
+	}
+	
+	
+	if (typeof module !== 'undefined' && module.exports) { //CommonJS
+	  module.exports = convertHex
+	} else {
+	  globals.convertHex = convertHex
+	}
+	
+	}(this);
+
+/***/ },
+/* 579 */
+/*!********************************************!*\
+  !*** ./~/convert-string/convert-string.js ***!
+  \********************************************/
+/***/ function(module, exports) {
+
+	!function(globals) {
+	'use strict'
+	
+	var convertString = {
+	  bytesToString: function(bytes) {
+	    return bytes.map(function(x){ return String.fromCharCode(x) }).join('')
+	  },
+	  stringToBytes: function(str) {
+	    return str.split('').map(function(x) { return x.charCodeAt(0) })
+	  }
+	}
+	
+	//http://hossa.in/2012/07/20/utf-8-in-javascript.html
+	convertString.UTF8 = {
+	   bytesToString: function(bytes) {
+	    return decodeURIComponent(escape(convertString.bytesToString(bytes)))
+	  },
+	  stringToBytes: function(str) {
+	   return convertString.stringToBytes(unescape(encodeURIComponent(str)))
+	  }
+	}
+	
+	if (typeof module !== 'undefined' && module.exports) { //CommonJS
+	  module.exports = convertString
+	} else {
+	  globals.convertString = convertString
+	}
+	
+	}(this);
+
+/***/ },
+/* 580 */
 /*!*******************************************!*\
   !*** ./src/app/components/entry/LogIn.js ***!
   \*******************************************/
@@ -76640,13 +76929,17 @@
 	
 	var _TextField2 = _interopRequireDefault(_TextField);
 	
-	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 491);
+	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 473);
 	
 	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 	
 	var _superagent = __webpack_require__(/*! superagent */ 436);
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
+	
+	var _sha = __webpack_require__(/*! sha256 */ 577);
+	
+	var _sha2 = _interopRequireDefault(_sha);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -76664,15 +76957,15 @@
 	    function LogIn() {
 	        _classCallCheck(this, LogIn);
 	
-	        var _this = _possibleConstructorReturn(this, (LogIn.__proto__ || Object.getPrototypeOf(LogIn)).call(this));
+	        var _this2 = _possibleConstructorReturn(this, (LogIn.__proto__ || Object.getPrototypeOf(LogIn)).call(this));
 	
-	        _this.state = {
+	        _this2.state = {
 	            user: {
 	                mail: "",
 	                password: ""
 	            }
 	        };
-	        return _this;
+	        return _this2;
 	    }
 	
 	    _createClass(LogIn, [{
@@ -76685,23 +76978,47 @@
 	    }, {
 	        key: 'handleEnd',
 	        value: function handleEnd() {
+	            var shaPass = (0, _sha2.default)(this.state.user.password);
+	            var _this = this;
+	            console.log(shaPass);
 	            var url = "http://54.93.182.167:3000/api/login/";
-	            _superagent2.default.get(url).set('Content-Type', 'application/json').send({ mail: this.state.user.mail }).send({ password: this.state.user.password }).end(function (err, res) {
-	                console.log("fin de la requete");
+	            _superagent2.default.post(url).set('Content-Type', 'application/json').send({ mail: this.state.user.mail }).send({ passwd: shaPass }).end(function (err, res) {
 	                if (err) {
-	                    console.log("erreur ahah");
+	                    console.log('There was an unexpected error.');
 	                } else {
-	                    console.log("ok cool");
+	                    console.log(res.body);
+	                    if (res.body.message == 'Failure') {
+	                        _this.handleWrongCombination();
+	                    } else {
+	                        _this.handleSignInSuccess(res.body.token);
+	                    }
 	                }
-	            });
+	            }, this);
 	            // Request.get(url).then((response) => {
 	            //     console.log(response.body.res)
 	            // });
 	        }
 	    }, {
+	        key: 'handleSignInSuccess',
+	        value: function handleSignInSuccess(token) {
+	            console.log('You are signed in ! And token is : ', token);
+	        }
+	    }, {
+	        key: 'handleWrongCombination',
+	        value: function handleWrongCombination() {
+	            console.log('Wrong conbination mail/password');
+	        }
+	    }, {
+	        key: '_handleKeyDown',
+	        value: function _handleKeyDown(event) {
+	            if (event.which === 13) {
+	                this.handleEnd();
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
+	            var _this3 = this;
 	
 	            return _react2.default.createElement(
 	                'div',
@@ -76716,7 +77033,8 @@
 	                    hintText: 'john@doe.com',
 	                    name: 'mail',
 	                    value: this.state.user.mail,
-	                    onChange: this._handleTextFieldChange.bind(this)
+	                    onChange: this._handleTextFieldChange.bind(this),
+	                    onKeyDown: this._handleKeyDown.bind(this)
 	                }),
 	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(_TextField2.default, {
@@ -76725,7 +77043,8 @@
 	                    name: 'password',
 	                    type: 'password',
 	                    value: this.state.user.password,
-	                    onChange: this._handleTextFieldChange.bind(this)
+	                    onChange: this._handleTextFieldChange.bind(this),
+	                    onKeyDown: this._handleKeyDown.bind(this)
 	                }),
 	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(_RaisedButton2.default, {
@@ -76734,7 +77053,7 @@
 	                    disabled: this.state.saveDisabled,
 	                    id: 'mdrlol',
 	                    onTouchTap: function onTouchTap() {
-	                        return _this2.handleEnd();
+	                        return _this3.handleEnd();
 	                    }
 	                })
 	            );
