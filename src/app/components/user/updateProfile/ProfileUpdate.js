@@ -7,6 +7,7 @@ import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import update from 'react-addons-update';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader'
+import AutoJrigole from './AutoComplete';
 
 export class ProfileUpdate extends React.Component {
 
@@ -43,6 +44,7 @@ export class ProfileUpdate extends React.Component {
                 saveDisabled: true,
                 activeSnack: false
             });
+
             console.log(this.state.user)
             // this.setState({
             //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
@@ -136,10 +138,11 @@ export class ProfileUpdate extends React.Component {
                 img.push(<img src={""} alt="" style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
             }
         });
+
         return (
             <div>
                 <div className="row">
-
+                    <AutoJrigole/>
                     <Card>
                         <CardTitle title="Update your Profile" />
                         <div className="text-center">
@@ -243,6 +246,7 @@ export class ProfileUpdate extends React.Component {
                                         value={this.state.user.mail}
                                         onChange={this._handleTextFieldChange.bind(this)}
                                     />
+                                    <br />
                                     <TextField
                                         hintText="Hi, I like stamps and cactus..."
                                         floatingLabelText="Tell us about you"

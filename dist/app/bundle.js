@@ -69462,7 +69462,7 @@
 	                    p4: "",
 	                    p5: ""
 	                },
-	                tags: [],
+	                tags: "",
 	                bio: ""
 	            },
 	            saveDisabled: true,
@@ -69485,6 +69485,7 @@
 	                    saveDisabled: true,
 	                    activeSnack: false
 	                });
+	
 	                console.log(_this2.state.user);
 	                // this.setState({
 	                //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
@@ -69746,14 +69747,6 @@
 	                                        value: this.state.user.mail,
 	                                        onChange: this._handleTextFieldChange.bind(this)
 	                                    }),
-	                                    _react2.default.createElement("br", null),
-	                                    _react2.default.createElement(_TextField2.default, {
-	                                        floatingLabelText: "Tags",
-	                                        name: "tags",
-	                                        value: this.state.user.tags,
-	                                        onChange: this._handleTextFieldChange.bind(this)
-	                                    }),
-	                                    _react2.default.createElement("br", null),
 	                                    _react2.default.createElement(_TextField2.default, {
 	                                        hintText: "Hi, I like stamps and cactus...",
 	                                        floatingLabelText: "Tell us about you",
@@ -69763,7 +69756,15 @@
 	                                        value: this.state.user.bio,
 	                                        onChange: this._handleTextFieldChange.bind(this),
 	                                        style: { textAlign: "left" } // so the FloatingLabelText doesn't stay centered
-	                                    })
+	                                    }),
+	                                    _react2.default.createElement("br", null),
+	                                    _react2.default.createElement(_TextField2.default, {
+	                                        floatingLabelText: "Tags",
+	                                        name: "tags",
+	                                        value: this.state.user.tags,
+	                                        onChange: this._handleTextFieldChange.bind(this)
+	                                    }),
+	                                    _react2.default.createElement("br", null)
 	                                )
 	                            )
 	                        ),
