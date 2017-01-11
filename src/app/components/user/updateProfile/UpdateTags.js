@@ -25,7 +25,7 @@ export default class AutoCompleteExampleDataSource extends Component {
         searchText: '',
         tags: [],
         searchTags: [
-        ]
+          ]
     };
 
     componentWillMount() {
@@ -37,6 +37,7 @@ export default class AutoCompleteExampleDataSource extends Component {
             console.log('response', response.body.tags)
             console.log('state de searchTags : ', this.state.searchTags)
         });
+        console.warn('Mous sommes bien dans le component will mount')
     }
 
     handleUpdateInput = (searchText) => {
@@ -47,6 +48,7 @@ export default class AutoCompleteExampleDataSource extends Component {
 
     handleNewRequest = (chosenRequest) => {
         this.state.tags.push(chosenRequest);
+        this.props.func();
         console.log(this.state.tags);
         this.setState({
             searchText: '',
@@ -61,32 +63,25 @@ export default class AutoCompleteExampleDataSource extends Component {
             .end(function (err, res) {
                 if(err) { console.log('There was an unexpected error.') }
                 else {
-                    console.log('rate lol');
+                    console.log('C\'est dans la boite ;)');
                 }
-            }, this)
-        // console.log(this.state.tags);
-        console.log("submiiiiiit");
+            });
     }
 
     render() {
         return (
-            <div>
-                <AutoComplete
-                    hintText="Type 'r', case insensitive"
-                    searchText={this.state.searchText}
-                    onUpdateInput={this.handleUpdateInput}
-                    onNewRequest={this.handleNewRequest}
-                    dataSource={this.state.searchTags}
-                    dataSourceConfig={{text: 'textKey', value: 'valueKey'}}
-                    //filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
-                    filter={AutoComplete.fuzzyFilter}
-                    openOnFocus={true}
-                />
-                <RaisedButton
-                    label="Cancel"
-                    onTouchTap={() => this.submitForm()} // gets data from server again
-                />
-            </div>
+            <AutoComplete
+                hintText="#Geek"
+                floatingLabelText="Tags"
+                searchText={this.state.searchText}
+                onUpdateInput={this.handleUpdateInput}
+                onNewRequest={this.handleNewRequest}
+                dataSource={this.state.searchTags}
+                dataSourceConfig={{text: 'textKey', value: 'valueKey'}}
+                //filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
+                filter={AutoComplete.fuzzyFilter}
+                openOnFocus={true}
+            />
         );
     }
 }

@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import update from 'react-addons-update';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader'
-import AutoJrigole from './AutoComplete';
+import UpdateTags from './UpdateTags';
 
 export class ProfileUpdate extends React.Component {
 
@@ -26,13 +26,12 @@ export class ProfileUpdate extends React.Component {
                     p4: "",
                     p5: "",
                 },
-                tags: "",
                 bio: ""
             },
             saveDisabled: true,
             activeSnack: false,
             msgSnack: "",
-            photoIndex: 0
+            photoIndex: 0,
         };
     }
 
@@ -52,7 +51,19 @@ export class ProfileUpdate extends React.Component {
         });
     }
 
+    enableSaving() {
+        this.setState({
+            saveDisabled: false
+        })
+    }
+
     handleEnd() {
+        this.refs.autocomplete.submitForm()
+        this.refs.autocomplete.componentWillMount();
+        // setTimeout(function() {
+        //
+        // }, 300)
+
         var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
         Request.put(url)
             .set('Content-Type', 'application/json')
@@ -142,13 +153,12 @@ export class ProfileUpdate extends React.Component {
         return (
             <div>
                 <div className="row">
-                    <AutoJrigole/>
                     <Card>
                         <CardTitle title="Update your Profile" />
                         <div className="text-center">
                             <CardText>
                                 <div className="col-sm-6 row" style={{display: 'block'}}>
-                                    <div className="col-xs-6">
+                                    <div className="col-xs-6 col-sm-6">
                                         <DropzoneS3Uploader
                                             onFinish={this.handleFinishedUpload.bind(this)}
                                             onDrop={() => this.setState({photoIndex: 'p1'})}
@@ -163,7 +173,7 @@ export class ProfileUpdate extends React.Component {
                                             <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p1')}/>
                                         </div>
                                     </div>
-                                    <div className="col-xs-6">
+                                    <div className="col-xs-6 col-sm-6">
                                         <DropzoneS3Uploader
                                             onFinish={this.handleFinishedUpload.bind(this)}
                                             onDrop={() => this.setState({photoIndex: 'p2'})}
@@ -258,12 +268,7 @@ export class ProfileUpdate extends React.Component {
                                         style={{textAlign: "left"}} // so the FloatingLabelText doesn't stay centered
                                     />
                                     <br />
-                                    <TextField
-                                        floatingLabelText="Tags"
-                                        name="tags"
-                                        value={this.state.user.tags}
-                                        onChange={this._handleTextFieldChange.bind(this)}
-                                    />
+                                    <UpdateTags func={this.enableSaving.bind(this)} ref="autocomplete"/>
                                     <br/>
                                 </div>
                             </CardText>
