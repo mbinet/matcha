@@ -69431,9 +69431,9 @@
 	
 	var _reactDropzoneS3Uploader2 = _interopRequireDefault(_reactDropzoneS3Uploader);
 	
-	var _AutoComplete = __webpack_require__(/*! ./AutoComplete */ 558);
+	var _UpdateTags = __webpack_require__(/*! ./UpdateTags */ 558);
 	
-	var _AutoComplete2 = _interopRequireDefault(_AutoComplete);
+	var _UpdateTags2 = _interopRequireDefault(_UpdateTags);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -69466,7 +69466,6 @@
 	                    p4: "",
 	                    p5: ""
 	                },
-	                tags: "",
 	                bio: ""
 	            },
 	            saveDisabled: true,
@@ -69497,9 +69496,22 @@
 	            });
 	        }
 	    }, {
+	        key: "enableSaving",
+	        value: function enableSaving() {
+	            this.setState({
+	                saveDisabled: false
+	            });
+	        }
+	    }, {
 	        key: "handleEnd",
 	        value: function handleEnd() {
 	            var _this3 = this;
+	
+	            this.refs.autocomplete.submitForm();
+	            this.refs.autocomplete.componentWillMount();
+	            // setTimeout(function() {
+	            //
+	            // }, 300)
 	
 	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            _superagent2.default.put(url).set('Content-Type', 'application/json').send({ name: this.state.user.name }).send({ age: this.state.user.age }).send({ mail: this.state.user.mail }).send({ photo: this.state.user.photo }).send({ bio: this.state.user.bio }).end(function (response) {
@@ -69589,7 +69601,6 @@
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "row" },
-	                    _react2.default.createElement(_AutoComplete2.default, null),
 	                    _react2.default.createElement(
 	                        _Card.Card,
 	                        null,
@@ -69605,7 +69616,7 @@
 	                                    { className: "col-sm-6 row", style: { display: 'block' } },
 	                                    _react2.default.createElement(
 	                                        "div",
-	                                        { className: "col-xs-6" },
+	                                        { className: "col-xs-6 col-sm-6" },
 	                                        _react2.default.createElement(
 	                                            _reactDropzoneS3Uploader2.default,
 	                                            _extends({
@@ -69630,7 +69641,7 @@
 	                                    ),
 	                                    _react2.default.createElement(
 	                                        "div",
-	                                        { className: "col-xs-6" },
+	                                        { className: "col-xs-6 col-sm-6" },
 	                                        _react2.default.createElement(
 	                                            _reactDropzoneS3Uploader2.default,
 	                                            _extends({
@@ -69765,12 +69776,7 @@
 	                                        style: { textAlign: "left" } // so the FloatingLabelText doesn't stay centered
 	                                    }),
 	                                    _react2.default.createElement("br", null),
-	                                    _react2.default.createElement(_TextField2.default, {
-	                                        floatingLabelText: "Tags",
-	                                        name: "tags",
-	                                        value: this.state.user.tags,
-	                                        onChange: this._handleTextFieldChange.bind(this)
-	                                    }),
+	                                    _react2.default.createElement(_UpdateTags2.default, { func: this.enableSaving.bind(this), ref: "autocomplete" }),
 	                                    _react2.default.createElement("br", null)
 	                                )
 	                            )
@@ -73865,9 +73871,9 @@
 
 /***/ },
 /* 558 */
-/*!***************************************************************!*\
+/*!*************************************************************!*\
   !*** ./src/app/components/user/updateProfile/UpdateTags.js ***!
-  \***************************************************************/
+  \*************************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73930,6 +73936,7 @@
 	            });
 	        }, _this.handleNewRequest = function (chosenRequest) {
 	            _this.state.tags.push(chosenRequest);
+	            _this.props.func();
 	            console.log(_this.state.tags);
 	            _this.setState({
 	                searchText: ''
@@ -73950,6 +73957,7 @@
 	                console.log('response', response.body.tags);
 	                console.log('state de searchTags : ', _this2.state.searchTags);
 	            });
+	            console.warn('Mous sommes bien dans le component will mount');
 	        }
 	    }, {
 	        key: 'submitForm',
@@ -73959,38 +73967,25 @@
 	                if (err) {
 	                    console.log('There was an unexpected error.');
 	                } else {
-	                    console.log('rate lol');
+	                    console.log('C\'est dans la boite ;)');
 	                }
-	            }, this);
-	            // console.log(this.state.tags);
-	            console.log("submiiiiiit");
+	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this3 = this;
-	
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(_AutoComplete2.default, {
-	                    hintText: 'Type \'r\', case insensitive',
-	                    searchText: this.state.searchText,
-	                    onUpdateInput: this.handleUpdateInput,
-	                    onNewRequest: this.handleNewRequest,
-	                    dataSource: this.state.searchTags,
-	                    dataSourceConfig: { text: 'textKey', value: 'valueKey' }
-	                    //filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
-	                    , filter: _AutoComplete2.default.fuzzyFilter,
-	                    openOnFocus: true
-	                }),
-	                _react2.default.createElement(_RaisedButton2.default, {
-	                    label: 'Cancel',
-	                    onTouchTap: function onTouchTap() {
-	                        return _this3.submitForm();
-	                    } // gets data from server again
-	                })
-	            );
+	            return _react2.default.createElement(_AutoComplete2.default, {
+	                hintText: '#Geek',
+	                floatingLabelText: 'Tags',
+	                searchText: this.state.searchText,
+	                onUpdateInput: this.handleUpdateInput,
+	                onNewRequest: this.handleNewRequest,
+	                dataSource: this.state.searchTags,
+	                dataSourceConfig: { text: 'textKey', value: 'valueKey' }
+	                //filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
+	                , filter: _AutoComplete2.default.fuzzyFilter,
+	                openOnFocus: true
+	            });
 	        }
 	    }]);
 	
@@ -74024,7 +74019,7 @@
 /***/ },
 /* 560 */
 /*!****************************************************!*\
-  !*** ./~/material-ui/AutoComplete/UpdateTags.js ***!
+  !*** ./~/material-ui/AutoComplete/AutoComplete.js ***!
   \****************************************************/
 /***/ function(module, exports, __webpack_require__) {
 

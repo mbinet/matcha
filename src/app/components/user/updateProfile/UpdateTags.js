@@ -21,6 +21,7 @@ const colors = [
 
 
 export default class AutoCompleteExampleDataSource extends Component {
+
     state = {
         searchText: '',
         tags: [],
@@ -55,7 +56,7 @@ export default class AutoCompleteExampleDataSource extends Component {
         });
     };
     
-    submitForm() {
+    submitForm(callback) {
         var url = "http://54.93.182.167:3000/api/tags";
         Request.post(url)
             .set('Content-Type', 'application/json')
@@ -63,7 +64,9 @@ export default class AutoCompleteExampleDataSource extends Component {
             .end(function (err, res) {
                 if(err) { console.log('There was an unexpected error.') }
                 else {
-                    console.log('C\'est dans la boite ;)');
+                    console.log('C\'est dans la boite ;)')
+                    var response = 'ok'
+                    callback(response)
                 }
             });
     }

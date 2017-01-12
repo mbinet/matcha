@@ -58,11 +58,9 @@ export class ProfileUpdate extends React.Component {
     }
 
     handleEnd() {
-        this.refs.autocomplete.submitForm()
-        this.refs.autocomplete.componentWillMount();
-        // setTimeout(function() {
-        //
-        // }, 300)
+        this.refs.autocomplete.submitForm(() =>  {
+            this.refs.autocomplete.componentWillMount();
+        });
 
         var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
         Request.put(url)
