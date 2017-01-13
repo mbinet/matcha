@@ -29,11 +29,11 @@ export class LogIn extends React.Component {
         console.log(shaPass);
         var url = "http://54.93.182.167:3000/api/login/";
         Request.post(url)
-            .set('Content-Type', 'application/json')
+            .set('Content-Type', 'application/x-www-form-urlencoded')
             .send({ mail: this.state.user.mail })
             .send({ passwd: shaPass })
             .end(function (err, res) {
-                if(err) { console.log('There was an unexpected error.') }
+                if(err) { console.log('There was an unexpected error.', err + "RESRESRES : " + res) }
                 else {
                     console.log(res.body);
                     if (res.body.message == 'Failure') {

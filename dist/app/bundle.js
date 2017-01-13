@@ -69507,11 +69507,9 @@
 	        value: function handleEnd() {
 	            var _this3 = this;
 	
-	            this.refs.autocomplete.submitForm();
-	            this.refs.autocomplete.componentWillMount();
-	            // setTimeout(function() {
-	            //
-	            // }, 300)
+	            this.refs.autocomplete.submitForm(function () {
+	                _this3.refs.autocomplete.componentWillMount();
+	            });
 	
 	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
 	            _superagent2.default.put(url).set('Content-Type', 'application/json').send({ name: this.state.user.name }).send({ age: this.state.user.age }).send({ mail: this.state.user.mail }).send({ photo: this.state.user.photo }).send({ bio: this.state.user.bio }).end(function (response) {
@@ -73961,13 +73959,15 @@
 	        }
 	    }, {
 	        key: 'submitForm',
-	        value: function submitForm() {
+	        value: function submitForm(callback) {
 	            var url = "http://54.93.182.167:3000/api/tags";
 	            _superagent2.default.post(url).set('Content-Type', 'application/json').send({ tags: this.state.tags }).end(function (err, res) {
 	                if (err) {
 	                    console.log('There was an unexpected error.');
 	                } else {
 	                    console.log('C\'est dans la boite ;)');
+	                    var response = 'ok';
+	                    callback(response);
 	                }
 	            });
 	        }
