@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import update from 'react-addons-update';
 import Request from 'superagent';
 import sha256 from 'sha256';
+import cookie from 'react-cookie';
 
 export class LogIn extends React.Component {
 
@@ -40,17 +41,16 @@ export class LogIn extends React.Component {
                         _this.handleWrongCombination();
                     }
                     else {
-                        _this.handleSignInSuccess(res.body.token);
+                        _this.handleSignInSuccess(res.body.token, res.body.user);
                     }
                 }
-            }, this)
-        // Request.get(url).then((response) => {
-        //     console.log(response.body.res)
-        // });
+            }, this);
     }
 
-    handleSignInSuccess(token) {
-        console.log('You are signed in ! And token is : ', token);
+    handleSignInSuccess(token, user) {
+        cookie.save('token', token, { path: '/'});
+        cookie.save('user', user, { path: '/'});
+        window.location.reload();
     }
 
     handleWrongCombination() {

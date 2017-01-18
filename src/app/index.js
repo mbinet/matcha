@@ -12,15 +12,17 @@ import {ProfileUpdate} from "./components/user/updateProfile/ProfileUpdate";
 import {ProfileDelete} from "./components/user/deleteProfile/ProfileDelete";
 import {SignUp} from "./components/entry/SignUp";
 import {LogIn} from "./components/entry/LogIn";
+import {LogOut} from "./components/entry/LogOut";
 
 injectTapEventPlugin();
 
 class App extends React.Component {
+
     render() {
         return (
             <MuiThemeProvider>
                 <Router history={browserHistory}>
-                    <Route path={"/"} component={Root}>
+                    <Route path={"/"} component={Root} >
                         <IndexRoute component={Home} />
                         <Route path={"user"} component={User} />
                         <Route path={"home"} component={Home} />
@@ -29,6 +31,7 @@ class App extends React.Component {
                         <Route path={"profile/:id"} component={Profile} />
                         <Route path={"signup"} component={SignUp} />
                         <Route path={"login"} component={LogIn} />
+                        <Route path={"logout"} component={LogOut} />
                     </Route>
                 </Router>
             </MuiThemeProvider>

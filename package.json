@@ -26,6 +26,7 @@
     "nodemon": "^1.10.2",
     "react": "^15.3.2",
     "react-addons-update": "^15.3.2",
+    "react-cookie": "^1.0.4",
     "react-dom": "^15.3.2",
     "react-dropzone-s3-uploader": "^0.9.0",
     "react-fontawesome": "^1.2.0",

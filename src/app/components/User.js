@@ -18,10 +18,7 @@ export class User extends React.Component {
             this.setState({
                 users: response.body.users
             });
-            // console.log(this.state.users);
-            // console.log(jrigole);
         });
-        // console.log(this.state.movies);
     }
 
     onNavigateHome() {
