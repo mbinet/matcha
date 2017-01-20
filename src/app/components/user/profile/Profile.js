@@ -1,14 +1,12 @@
 import React from "react";
 import Request from "superagent";
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card';
 import FontAwesome from 'react-fontawesome';
-import _ from 'lodash';
 import {Tags} from "./Tags"
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import update from 'react-addons-update';
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
 import PhotoGallery from './PhotoGallery';
+import cookie from 'react-cookie';
 
 const styles = {
     chip: {
@@ -37,8 +35,11 @@ export class Profile extends React.Component {
     }
 
     componentWillMount() {
-        var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-            Request.get(url).then((response) => {
+        var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({ token : cookie.load('token') })
+                .then((response) => {
                 this.setState({
                     user: response.body.user,
                 });

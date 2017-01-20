@@ -8,6 +8,7 @@ import Snackbar from 'material-ui/Snackbar';
 import update from 'react-addons-update';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader'
 import UpdateTags from './UpdateTags';
+import cookie from 'react-cookie';
 
 export class ProfileUpdate extends React.Component {
 
@@ -36,15 +37,17 @@ export class ProfileUpdate extends React.Component {
     }
 
     componentWillMount() {
-        var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-        Request.get(url).then((response) => {
+        var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : cookie.load('token') })
+            .then((response) => {
             this.setState({
                 user: response.body.user,
                 saveDisabled: true,
                 activeSnack: false
             });
 
-            console.log(this.state.user)
             // this.setState({
             //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
             // });
@@ -62,9 +65,10 @@ export class ProfileUpdate extends React.Component {
             this.refs.autocomplete.componentWillMount();
         });
 
-        var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-        Request.put(url)
-            .set('Content-Type', 'application/json')
+        var url = "http://54.93.182.167:3000/api/users/updateOne/" + this.props.params.id;
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : cookie.load('token') })
             .send({ name: this.state.user.name })
             .send({ age: this.state.user.age })
             .send({ mail: this.state.user.mail })
@@ -91,6 +95,9 @@ export class ProfileUpdate extends React.Component {
 
     handleFinishedUpload(res) {
         var filename = res.filename.replace("Photos/", "");
+        console.warn('filename : \n', filename);
+        console.warn('State user : \n', this.state.user);
+        // console.warn('filename : \n', filename);
         this.setState({
             activeSnack: true,
             msgSnack: "Image uploaded",
@@ -102,7 +109,6 @@ export class ProfileUpdate extends React.Component {
 
     handleDeletePicture(e) {
         var previousPhoto = this.state.user.photo[e];
-        console.log(previousPhoto);
 
         // deletes url in the state and saves current user state to db.
         this.setState({

@@ -9,6 +9,7 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Request from "superagent";
 import { browserHistory } from "react-router";
 import sha256 from 'sha256';
+import cookie from 'react-cookie';
 
 export class SignUp extends React.Component {
 
@@ -33,14 +34,17 @@ export class SignUp extends React.Component {
         this.state.photo.p1 = "Photos/400.jpeg";
     }
 
+
+
     handleEnd(state) {
-        this.setDefaultPicture();
+        // this.setDefaultPicture();
         this.state.photo.p1 = "400.jpeg";
-        console.log(this.state.photo);
-        var url = "http://54.93.182.167:3000/api/users/";
+        console.log(this.state.photo)
+        var url = "http://54.93.182.167:3000/api/createUser/";
         var shaPass = sha256(this.state.passwd);
         Request.post(url)
-            .set('Content-Type', 'application/json')
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            // .set('Content-Type', 'application/json')
             .send({ name: this.state.name })
             .send({ age: this.state.age })
             .send({ mail: this.state.mail })
@@ -51,7 +55,7 @@ export class SignUp extends React.Component {
             .end((response) => {
                 console.log('inserted');
                 console.log(response);
-                browserHistory.push("/home", "jdec");
+                // browserHistory.push("/home", "jdec");
             });
     }
 

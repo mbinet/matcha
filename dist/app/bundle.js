@@ -79,11 +79,11 @@
 	
 	var _ProfileDelete = __webpack_require__(/*! ./components/user/deleteProfile/ProfileDelete */ 586);
 	
-	var _SignUp = __webpack_require__(/*! ./components/entry/SignUp */ 589);
+	var _SignUp = __webpack_require__(/*! ./components/entry/SignUp */ 587);
 	
-	var _LogIn = __webpack_require__(/*! ./components/entry/LogIn */ 608);
+	var _LogIn = __webpack_require__(/*! ./components/entry/LogIn */ 606);
 	
-	var _LogOut = __webpack_require__(/*! ./components/entry/LogOut */ 609);
+	var _LogOut = __webpack_require__(/*! ./components/entry/LogOut */ 607);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -105,14 +105,6 @@
 	    }
 	
 	    _createClass(App, [{
-	        key: "onGreet",
-	        value: function onGreet(param) {
-	            alert("Hello!");
-	            console.log(param);
-	            this.refs.child.ptdr();
-	            console.log(this);
-	        }
-	    }, {
 	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -123,11 +115,9 @@
 	                    { history: _reactRouter.browserHistory },
 	                    _react2.default.createElement(
 	                        _reactRouter.Route,
-	                        { path: "/", component: _Root.Root, ref: "child" },
-	                        "jrigole=",
-	                        "bonjours",
+	                        { path: "/", component: _Root.Root },
 	                        _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home.Home }),
-	                        _react2.default.createElement(_reactRouter.Route, { path: "user", component: _User.User, greet: this.onGreet, sperme: "coucou" }),
+	                        _react2.default.createElement(_reactRouter.Route, { path: "user", component: _User.User }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "home", component: _Home.Home }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/update/:id", component: _ProfileUpdate.ProfileUpdate }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: "profile/delete/:id", component: _ProfileDelete.ProfileDelete }),
@@ -35753,11 +35743,6 @@
 	    }
 	
 	    _createClass(Root, [{
-	        key: "ptdr",
-	        value: function ptdr() {
-	            alert("JPPPPPPP");
-	        }
-	    }, {
 	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -35769,7 +35754,6 @@
 	                    _react2.default.createElement(
 	                        "div",
 	                        { className: "col-xs-10 col-xs-offset-1" },
-	                        this.props.jrigole,
 	                        _react2.default.createElement(_Header.Header, null)
 	                    )
 	                ),
@@ -35844,15 +35828,6 @@
 	    _createClass(Header, [{
 	        key: "componentWillMount",
 	        value: function componentWillMount() {
-	            this.state = {
-	                user: _reactCookie2.default.load('user'),
-	                token: _reactCookie2.default.load('token')
-	            };
-	            //console.log('CEST LA STATE', this.state.user.name);
-	        }
-	    }, {
-	        key: "componentWillUpdate",
-	        value: function componentWillUpdate() {
 	            this.state = {
 	                user: _reactCookie2.default.load('user'),
 	                token: _reactCookie2.default.load('token')
@@ -39832,7 +39807,7 @@
 	        var _this = _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this));
 	
 	        _this.state = {
-	            homeLink: "changed link"
+	            users: []
 	        };
 	        // this.state.users = [];
 	        return _this;
@@ -39841,30 +39816,22 @@
 	    _createClass(User, [{
 	        key: "componentWillMount",
 	        value: function componentWillMount() {
-	            var _this2 = this;
-	
-	            var url = "http://54.93.182.167:3000/api/users";
-	            _superagent2.default.get(url).then(function (response) {
-	                _this2.setState({
-	                    users: response.body.users
-	                });
-	                // console.log(this.state.users);
-	                // console.log(jrigole);
+	            var url = "http://54.93.182.167:3000/api/users/";
+	            var token = _reactCookie2.default.load('token');
+	            var that = this;
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: token }).end(function (err, res) {
+	                if (err) console.log('err : \n', err);
+	                if (res) {
+	                    that.setState({
+	                        users: res.body.users
+	                    });
+	                }
 	            });
-	            console.log(this.state.movies);
 	        }
 	    }, {
 	        key: "onNavigateHome",
 	        value: function onNavigateHome() {
 	            _reactRouter.browserHistory.push("/home");
-	        }
-	    }, {
-	        key: "onChangeLink",
-	        value: function onChangeLink() {
-	            // alert('weird')
-	            console.log(this.props);
-	            // console.log(this.props.homeLink);
-	            this.props.route.greet('ahah');
 	        }
 	    }, {
 	        key: "render",
@@ -39923,16 +39890,6 @@
 	                    "button",
 	                    { onClick: this.onNavigateHome, className: "btn btn-primary" },
 	                    "Go Home!"
-	                ),
-	                _react2.default.createElement(
-	                    "button",
-	                    { onClick: this.onChangeLink.bind(this) },
-	                    "Greet"
-	                ),
-	                _react2.default.createElement(
-	                    "p",
-	                    null,
-	                    this.props.route.sperme
 	                )
 	            );
 	        }
@@ -58471,10 +58428,6 @@
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
-	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 431);
-	
-	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-	
 	var _FlatButton = __webpack_require__(/*! material-ui/FlatButton */ 406);
 	
 	var _FlatButton2 = _interopRequireDefault(_FlatButton);
@@ -58485,21 +58438,17 @@
 	
 	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 	
-	var _lodash = __webpack_require__(/*! lodash */ 443);
-	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
 	var _Tags = __webpack_require__(/*! ./Tags */ 474);
 	
 	var _Table = __webpack_require__(/*! material-ui/Table */ 480);
 	
-	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 475);
-	
-	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-	
 	var _PhotoGallery = __webpack_require__(/*! ./PhotoGallery */ 495);
 	
 	var _PhotoGallery2 = _interopRequireDefault(_PhotoGallery);
+	
+	var _reactCookie = __webpack_require__(/*! react-cookie */ 429);
+	
+	var _reactCookie2 = _interopRequireDefault(_reactCookie);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -58545,8 +58494,8 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-	            _superagent2.default.get(url).then(function (response) {
+	            var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: _reactCookie2.default.load('token') }).then(function (response) {
 	                _this2.setState({
 	                    user: response.body.user
 	                });
@@ -65276,6 +65225,10 @@
 	
 	var _reactGridGallery2 = _interopRequireDefault(_reactGridGallery);
 	
+	var _reactCookie = __webpack_require__(/*! react-cookie */ 429);
+	
+	var _reactCookie2 = _interopRequireDefault(_reactCookie);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65311,8 +65264,8 @@
 	            var _this2 = this;
 	
 	            console.log("Bon user id :", nextProps.userID);
-	            var url = "http://54.93.182.167:3000/api/users/" + nextProps.userID;
-	            _superagent2.default.get(url).then(function (response) {
+	            var url = "http://54.93.182.167:3000/api/users/getOne/" + nextProps.userID;
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: _reactCookie2.default.load('token') }).then(function (response) {
 	                _this2.setState({
 	                    user: response.body.user
 	                });
@@ -69920,6 +69873,10 @@
 	
 	var _UpdateTags2 = _interopRequireDefault(_UpdateTags);
 	
+	var _reactCookie = __webpack_require__(/*! react-cookie */ 429);
+	
+	var _reactCookie2 = _interopRequireDefault(_reactCookie);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -69966,15 +69923,14 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-	            _superagent2.default.get(url).then(function (response) {
+	            var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: _reactCookie2.default.load('token') }).then(function (response) {
 	                _this2.setState({
 	                    user: response.body.user,
 	                    saveDisabled: true,
 	                    activeSnack: false
 	                });
 	
-	                console.log(_this2.state.user);
 	                // this.setState({
 	                //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
 	                // });
@@ -69996,8 +69952,8 @@
 	                _this3.refs.autocomplete.componentWillMount();
 	            });
 	
-	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-	            _superagent2.default.put(url).set('Content-Type', 'application/json').send({ name: this.state.user.name }).send({ age: this.state.user.age }).send({ mail: this.state.user.mail }).send({ photo: this.state.user.photo }).send({ bio: this.state.user.bio }).end(function (response) {
+	            var url = "http://54.93.182.167:3000/api/users/updateOne/" + this.props.params.id;
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: _reactCookie2.default.load('token') }).send({ name: this.state.user.name }).send({ age: this.state.user.age }).send({ mail: this.state.user.mail }).send({ photo: this.state.user.photo }).send({ bio: this.state.user.bio }).end(function (response) {
 	                _this3.setState({
 	                    activeSnack: true,
 	                    msgSnack: "Profile updated",
@@ -70020,6 +69976,9 @@
 	        key: "handleFinishedUpload",
 	        value: function handleFinishedUpload(res) {
 	            var filename = res.filename.replace("Photos/", "");
+	            console.warn('filename : \n', filename);
+	            console.warn('State user : \n', this.state.user);
+	            // console.warn('filename : \n', filename);
 	            this.setState({
 	                activeSnack: true,
 	                msgSnack: "Image uploaded",
@@ -70031,7 +69990,6 @@
 	        key: "handleDeletePicture",
 	        value: function handleDeletePicture(e) {
 	            var previousPhoto = this.state.user.photo[e];
-	            console.log(previousPhoto);
 	
 	            // deletes url in the state and saves current user state to db.
 	            this.setState({
@@ -74383,6 +74341,10 @@
 	
 	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 	
+	var _reactCookie = __webpack_require__(/*! react-cookie */ 429);
+	
+	var _reactCookie2 = _interopRequireDefault(_reactCookie);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -74420,7 +74382,6 @@
 	        }, _this.handleNewRequest = function (chosenRequest) {
 	            _this.state.tags.push(chosenRequest);
 	            _this.props.func();
-	            console.log(_this.state.tags);
 	            _this.setState({
 	                searchText: ''
 	            });
@@ -74432,25 +74393,21 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 	
-	            var url = "http://54.93.182.167:3000/api/tags/";
-	            _superagent2.default.get(url).then(function (response) {
+	            var url = "http://54.93.182.167:3000/api/tags/getAll";
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: _reactCookie2.default.load('token') }).then(function (response) {
 	                _this2.setState({
 	                    searchTags: response.body.tags
 	                });
-	                console.log('response', response.body.tags);
-	                console.log('state de searchTags : ', _this2.state.searchTags);
 	            });
-	            console.warn('Mous sommes bien dans le component will mount');
 	        }
 	    }, {
 	        key: 'submitForm',
 	        value: function submitForm(callback) {
 	            var url = "http://54.93.182.167:3000/api/tags";
-	            _superagent2.default.post(url).set('Content-Type', 'application/json').send({ tags: this.state.tags }).end(function (err, res) {
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: _reactCookie2.default.load('token') }).send({ tags: this.state.tags }).end(function (err, res) {
 	                if (err) {
 	                    console.log('There was an unexpected error.');
 	                } else {
-	                    console.log('C\'est dans la boite ;)');
 	                    var response = 'ok';
 	                    callback(response);
 	                }
@@ -78851,53 +78808,9 @@
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
-	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 431);
+	var _reactCookie = __webpack_require__(/*! react-cookie */ 429);
 	
-	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-	
-	var _FlatButton = __webpack_require__(/*! material-ui/FlatButton */ 406);
-	
-	var _FlatButton2 = _interopRequireDefault(_FlatButton);
-	
-	var _Card = __webpack_require__(/*! material-ui/Card */ 445);
-	
-	var _reactFontawesome = __webpack_require__(/*! react-fontawesome */ 473);
-	
-	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-	
-	var _lodash = __webpack_require__(/*! lodash */ 443);
-	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
-	var _Table = __webpack_require__(/*! material-ui/Table */ 480);
-	
-	var _TextField = __webpack_require__(/*! material-ui/TextField */ 544);
-	
-	var _TextField2 = _interopRequireDefault(_TextField);
-	
-	var _Snackbar = __webpack_require__(/*! material-ui/Snackbar */ 550);
-	
-	var _Snackbar2 = _interopRequireDefault(_Snackbar);
-	
-	var _colors = __webpack_require__(/*! material-ui/styles/colors */ 365);
-	
-	var _reactAddonsUpdate = __webpack_require__(/*! react-addons-update */ 475);
-	
-	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-	
-	var _FloatingActionButton = __webpack_require__(/*! material-ui/FloatingActionButton */ 587);
-	
-	var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
-	
-	var _reactRouter = __webpack_require__(/*! react-router */ 172);
-	
-	var _reactDropzoneS3Uploader = __webpack_require__(/*! react-dropzone-s3-uploader */ 554);
-	
-	var _reactDropzoneS3Uploader2 = _interopRequireDefault(_reactDropzoneS3Uploader);
-	
-	var _reactDropzone = __webpack_require__(/*! react-dropzone */ 559);
-	
-	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
+	var _reactCookie2 = _interopRequireDefault(_reactCookie);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -78906,8 +78819,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import {MyChip} from "./user/MyChip"
-	
 	
 	var ProfileDelete = exports.ProfileDelete = function (_React$Component) {
 	    _inherits(ProfileDelete, _React$Component);
@@ -78921,8 +78832,8 @@
 	    _createClass(ProfileDelete, [{
 	        key: "componentWillMount",
 	        value: function componentWillMount() {
-	            var url = "http://54.93.182.167:3000/api/users/" + this.props.params.id;
-	            _superagent2.default.delete(url).then(function (response) {
+	            var url = "http://54.93.182.167:3000/api/users/delete/" + this.props.params.id;
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: _reactCookie2.default.load('token') }).then(function (response) {
 	                console.log("User Deleted.");
 	            });
 	        }
@@ -78943,390 +78854,6 @@
 
 /***/ },
 /* 587 */
-/*!*****************************************************!*\
-  !*** ./~/material-ui/FloatingActionButton/index.js ***!
-  \*****************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = undefined;
-	
-	var _FloatingActionButton = __webpack_require__(/*! ./FloatingActionButton */ 588);
-	
-	var _FloatingActionButton2 = _interopRequireDefault(_FloatingActionButton);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _FloatingActionButton2.default;
-
-/***/ },
-/* 588 */
-/*!********************************************************************!*\
-  !*** ./~/material-ui/FloatingActionButton/FloatingActionButton.js ***!
-  \********************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _simpleAssign = __webpack_require__(/*! simple-assign */ 408);
-	
-	var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _transitions = __webpack_require__(/*! ../styles/transitions */ 409);
-	
-	var _transitions2 = _interopRequireDefault(_transitions);
-	
-	var _colorManipulator = __webpack_require__(/*! ../utils/colorManipulator */ 363);
-	
-	var _EnhancedButton = __webpack_require__(/*! ../internal/EnhancedButton */ 413);
-	
-	var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
-	
-	var _FontIcon = __webpack_require__(/*! ../FontIcon */ 463);
-	
-	var _FontIcon2 = _interopRequireDefault(_FontIcon);
-	
-	var _Paper = __webpack_require__(/*! ../Paper */ 433);
-	
-	var _Paper2 = _interopRequireDefault(_Paper);
-	
-	var _childUtils = __webpack_require__(/*! ../utils/childUtils */ 410);
-	
-	var _warning = __webpack_require__(/*! warning */ 177);
-	
-	var _warning2 = _interopRequireDefault(_warning);
-	
-	var _propTypes = __webpack_require__(/*! ../utils/propTypes */ 435);
-	
-	var _propTypes2 = _interopRequireDefault(_propTypes);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	function getStyles(props, context) {
-	  var floatingActionButton = context.muiTheme.floatingActionButton;
-	
-	
-	  var backgroundColor = props.backgroundColor || floatingActionButton.color;
-	  var iconColor = floatingActionButton.iconColor;
-	
-	  if (props.disabled) {
-	    backgroundColor = props.disabledColor || floatingActionButton.disabledColor;
-	    iconColor = floatingActionButton.disabledTextColor;
-	  } else if (props.secondary) {
-	    backgroundColor = floatingActionButton.secondaryColor;
-	    iconColor = floatingActionButton.secondaryIconColor;
-	  }
-	
-	  return {
-	    root: {
-	      transition: _transitions2.default.easeOut(),
-	      display: 'inline-block'
-	    },
-	    container: {
-	      backgroundColor: backgroundColor,
-	      transition: _transitions2.default.easeOut(),
-	      position: 'relative',
-	      height: floatingActionButton.buttonSize,
-	      width: floatingActionButton.buttonSize,
-	      padding: 0,
-	      overflow: 'hidden',
-	      borderRadius: '50%',
-	      textAlign: 'center',
-	      verticalAlign: 'bottom'
-	    },
-	    containerWhenMini: {
-	      height: floatingActionButton.miniSize,
-	      width: floatingActionButton.miniSize
-	    },
-	    overlay: {
-	      transition: _transitions2.default.easeOut(),
-	      top: 0
-	    },
-	    overlayWhenHovered: {
-	      backgroundColor: (0, _colorManipulator.fade)(iconColor, 0.4)
-	    },
-	    icon: {
-	      height: floatingActionButton.buttonSize,
-	      lineHeight: floatingActionButton.buttonSize + 'px',
-	      fill: iconColor,
-	      color: iconColor
-	    },
-	    iconWhenMini: {
-	      height: floatingActionButton.miniSize,
-	      lineHeight: floatingActionButton.miniSize + 'px'
-	    }
-	  };
-	}
-	
-	var FloatingActionButton = function (_Component) {
-	  _inherits(FloatingActionButton, _Component);
-	
-	  function FloatingActionButton() {
-	    var _Object$getPrototypeO;
-	
-	    var _temp, _this, _ret;
-	
-	    _classCallCheck(this, FloatingActionButton);
-	
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-	
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(FloatingActionButton)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
-	      hovered: false,
-	      touch: false,
-	      zDepth: undefined
-	    }, _this.handleMouseDown = function (event) {
-	      // only listen to left clicks
-	      if (event.button === 0) {
-	        _this.setState({ zDepth: _this.props.zDepth + 1 });
-	      }
-	      if (_this.props.onMouseDown) _this.props.onMouseDown(event);
-	    }, _this.handleMouseUp = function (event) {
-	      _this.setState({ zDepth: _this.props.zDepth });
-	      if (_this.props.onMouseUp) {
-	        _this.props.onMouseUp(event);
-	      }
-	    }, _this.handleMouseLeave = function (event) {
-	      if (!_this.refs.container.isKeyboardFocused()) {
-	        _this.setState({ zDepth: _this.props.zDepth, hovered: false });
-	      }
-	      if (_this.props.onMouseLeave) {
-	        _this.props.onMouseLeave(event);
-	      }
-	    }, _this.handleMouseEnter = function (event) {
-	      if (!_this.refs.container.isKeyboardFocused() && !_this.state.touch) {
-	        _this.setState({ hovered: true });
-	      }
-	      if (_this.props.onMouseEnter) {
-	        _this.props.onMouseEnter(event);
-	      }
-	    }, _this.handleTouchStart = function (event) {
-	      _this.setState({
-	        touch: true,
-	        zDepth: _this.props.zDepth + 1
-	      });
-	      if (_this.props.onTouchStart) {
-	        _this.props.onTouchStart(event);
-	      }
-	    }, _this.handleTouchEnd = function (event) {
-	      _this.setState({ zDepth: _this.props.zDepth });
-	      if (_this.props.onTouchEnd) {
-	        _this.props.onTouchEnd(event);
-	      }
-	    }, _this.handleKeyboardFocus = function (event, keyboardFocused) {
-	      if (keyboardFocused && !_this.props.disabled) {
-	        _this.setState({ zDepth: _this.props.zDepth + 1 });
-	        _this.refs.overlay.style.backgroundColor = (0, _colorManipulator.fade)(getStyles(_this.props, _this.context).icon.color, 0.4);
-	      } else if (!_this.state.hovered) {
-	        _this.setState({ zDepth: _this.props.zDepth });
-	        _this.refs.overlay.style.backgroundColor = 'transparent';
-	      }
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-	
-	  _createClass(FloatingActionButton, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      this.setState({
-	        zDepth: this.props.disabled ? 0 : this.props.zDepth
-	      });
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      process.env.NODE_ENV !== "production" ? (0, _warning2.default)(!this.props.iconClassName || !this.props.children, 'You have set both an iconClassName and a child icon. ' + 'It is recommended you use only one method when adding ' + 'icons to FloatingActionButtons.') : void 0;
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if (nextProps.disabled !== this.props.disabled) {
-	        this.setState({
-	          zDepth: nextProps.disabled ? 0 : this.props.zDepth
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var backgroundColor = _props.backgroundColor;
-	      var className = _props.className;
-	      var disabled = _props.disabled;
-	      var mini = _props.mini;
-	      var secondary = _props.secondary;
-	      var iconStyle = _props.iconStyle;
-	      var iconClassName = _props.iconClassName;
-	      var zDepth = _props.zDepth;
-	
-	      var other = _objectWithoutProperties(_props, ['backgroundColor', 'className', 'disabled', 'mini', 'secondary', 'iconStyle', 'iconClassName', 'zDepth']);
-	
-	      var prepareStyles = this.context.muiTheme.prepareStyles;
-	
-	      var styles = getStyles(this.props, this.context);
-	
-	      var iconElement = void 0;
-	      if (iconClassName) {
-	        iconElement = _react2.default.createElement(_FontIcon2.default, {
-	          className: iconClassName,
-	          style: (0, _simpleAssign2.default)({}, styles.icon, mini && styles.iconWhenMini, iconStyle)
-	        });
-	      }
-	
-	      var children = (0, _childUtils.extendChildren)(this.props.children, {
-	        style: (0, _simpleAssign2.default)({}, styles.icon, mini && styles.iconWhenMini, iconStyle)
-	      });
-	
-	      var buttonEventHandlers = disabled ? null : {
-	        onMouseDown: this.handleMouseDown,
-	        onMouseUp: this.handleMouseUp,
-	        onMouseLeave: this.handleMouseLeave,
-	        onMouseEnter: this.handleMouseEnter,
-	        onTouchStart: this.handleTouchStart,
-	        onTouchEnd: this.handleTouchEnd,
-	        onKeyboardFocus: this.handleKeyboardFocus
-	      };
-	
-	      return _react2.default.createElement(
-	        _Paper2.default,
-	        {
-	          className: className,
-	          style: (0, _simpleAssign2.default)(styles.root, this.props.style),
-	          zDepth: this.state.zDepth,
-	          circle: true
-	        },
-	        _react2.default.createElement(
-	          _EnhancedButton2.default,
-	          _extends({}, other, buttonEventHandlers, {
-	            ref: 'container',
-	            disabled: disabled,
-	            style: (0, _simpleAssign2.default)(styles.container, this.props.mini && styles.containerWhenMini, iconStyle),
-	            focusRippleColor: styles.icon.color,
-	            touchRippleColor: styles.icon.color
-	          }),
-	          _react2.default.createElement(
-	            'div',
-	            {
-	              ref: 'overlay',
-	              style: prepareStyles((0, _simpleAssign2.default)(styles.overlay, this.state.hovered && !this.props.disabled && styles.overlayWhenHovered))
-	            },
-	            iconElement,
-	            children
-	          )
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return FloatingActionButton;
-	}(_react.Component);
-	
-	FloatingActionButton.propTypes = {
-	  /**
-	   * This value will override the default background color for the button.
-	   * However it will not override the default disabled background color.
-	   * This has to be set separately using the disabledColor attribute.
-	   */
-	  backgroundColor: _react.PropTypes.string,
-	  /**
-	   * This is what displayed inside the floating action button; for example, a SVG Icon.
-	   */
-	  children: _react.PropTypes.node,
-	  /**
-	   * The css class name of the root element.
-	   */
-	  className: _react.PropTypes.string,
-	  /**
-	   * Disables the button if set to true.
-	   */
-	  disabled: _react.PropTypes.bool,
-	  /**
-	   * This value will override the default background color for the button when it is disabled.
-	   */
-	  disabledColor: _react.PropTypes.string,
-	  /**
-	   * The URL to link to when the button is clicked.
-	   */
-	  href: _react.PropTypes.string,
-	  /**
-	   * The icon within the FloatingActionButton is a FontIcon component.
-	   * This property is the classname of the icon to be displayed inside the button.
-	   * An alternative to adding an iconClassName would be to manually insert a
-	   * FontIcon component or custom SvgIcon component or as a child of FloatingActionButton.
-	   */
-	  iconClassName: _react.PropTypes.string,
-	  /**
-	   * This is the equivalent to iconClassName except that it is used for
-	   * overriding the inline-styles of the FontIcon component.
-	   */
-	  iconStyle: _react.PropTypes.object,
-	  /**
-	   * If true, the button will be a small floating action button.
-	   */
-	  mini: _react.PropTypes.bool,
-	  /** @ignore */
-	  onMouseDown: _react.PropTypes.func,
-	  /** @ignore */
-	  onMouseEnter: _react.PropTypes.func,
-	  /** @ignore */
-	  onMouseLeave: _react.PropTypes.func,
-	  /** @ignore */
-	  onMouseUp: _react.PropTypes.func,
-	  /** @ignore */
-	  onTouchEnd: _react.PropTypes.func,
-	  /** @ignore */
-	  onTouchStart: _react.PropTypes.func,
-	  /**
-	   * If true, the button will use the secondary button colors.
-	   */
-	  secondary: _react.PropTypes.bool,
-	  /**
-	   * Override the inline-styles of the root element.
-	   */
-	  style: _react.PropTypes.object,
-	  /**
-	   * The zDepth of the underlying `Paper` component.
-	   */
-	  zDepth: _propTypes2.default.zDepth
-	};
-	FloatingActionButton.defaultProps = {
-	  disabled: false,
-	  mini: false,
-	  secondary: false,
-	  zDepth: 2
-	};
-	FloatingActionButton.contextTypes = {
-	  muiTheme: _react.PropTypes.object.isRequired
-	};
-	exports.default = FloatingActionButton;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
-
-/***/ },
-/* 589 */
 /*!********************************************!*\
   !*** ./src/app/components/entry/SignUp.js ***!
   \********************************************/
@@ -79345,7 +78872,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Stepper = __webpack_require__(/*! material-ui/Stepper */ 590);
+	var _Stepper = __webpack_require__(/*! material-ui/Stepper */ 588);
 	
 	var _RaisedButton = __webpack_require__(/*! material-ui/RaisedButton */ 431);
 	
@@ -79367,7 +78894,7 @@
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
-	var _RadioButton = __webpack_require__(/*! material-ui/RadioButton */ 600);
+	var _RadioButton = __webpack_require__(/*! material-ui/RadioButton */ 598);
 	
 	var _superagent = __webpack_require__(/*! superagent */ 438);
 	
@@ -79375,9 +78902,13 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 172);
 	
-	var _sha = __webpack_require__(/*! sha256 */ 605);
+	var _sha = __webpack_require__(/*! sha256 */ 603);
 	
 	var _sha2 = _interopRequireDefault(_sha);
+	
+	var _reactCookie = __webpack_require__(/*! react-cookie */ 429);
+	
+	var _reactCookie2 = _interopRequireDefault(_reactCookie);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -79468,15 +78999,15 @@
 	    }, {
 	        key: 'handleEnd',
 	        value: function handleEnd(state) {
-	            this.setDefaultPicture();
+	            // this.setDefaultPicture();
 	            this.state.photo.p1 = "400.jpeg";
 	            console.log(this.state.photo);
-	            var url = "http://54.93.182.167:3000/api/users/";
+	            var url = "http://54.93.182.167:3000/api/createUser/";
 	            var shaPass = (0, _sha2.default)(this.state.passwd);
-	            _superagent2.default.post(url).set('Content-Type', 'application/json').send({ name: this.state.name }).send({ age: this.state.age }).send({ mail: this.state.mail }).send({ photo: this.state.photo }).send({ passwd: shaPass }).send({ sex: this.state.sex }).send({ bio: this.state.bio }).end(function (response) {
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').set('Content-Type', 'application/json').send({ name: this.state.name }).send({ age: this.state.age }).send({ mail: this.state.mail }).send({ photo: this.state.photo }).send({ passwd: shaPass }).send({ sex: this.state.sex }).send({ bio: this.state.bio }).end(function (response) {
 	                console.log('inserted');
 	                console.log(response);
-	                _reactRouter.browserHistory.push("/home", "jdec");
+	                // browserHistory.push("/home", "jdec");
 	            });
 	        }
 	    }, {
@@ -79672,7 +79203,7 @@
 	}(_react2.default.Component);
 
 /***/ },
-/* 590 */
+/* 588 */
 /*!****************************************!*\
   !*** ./~/material-ui/Stepper/index.js ***!
   \****************************************/
@@ -79685,23 +79216,23 @@
 	});
 	exports.Stepper = exports.StepLabel = exports.StepContent = exports.StepButton = exports.Step = undefined;
 	
-	var _Step2 = __webpack_require__(/*! ./Step */ 591);
+	var _Step2 = __webpack_require__(/*! ./Step */ 589);
 	
 	var _Step3 = _interopRequireDefault(_Step2);
 	
-	var _StepButton2 = __webpack_require__(/*! ./StepButton */ 592);
+	var _StepButton2 = __webpack_require__(/*! ./StepButton */ 590);
 	
 	var _StepButton3 = _interopRequireDefault(_StepButton2);
 	
-	var _StepContent2 = __webpack_require__(/*! ./StepContent */ 595);
+	var _StepContent2 = __webpack_require__(/*! ./StepContent */ 593);
 	
 	var _StepContent3 = _interopRequireDefault(_StepContent2);
 	
-	var _StepLabel2 = __webpack_require__(/*! ./StepLabel */ 593);
+	var _StepLabel2 = __webpack_require__(/*! ./StepLabel */ 591);
 	
 	var _StepLabel3 = _interopRequireDefault(_StepLabel2);
 	
-	var _Stepper2 = __webpack_require__(/*! ./Stepper */ 598);
+	var _Stepper2 = __webpack_require__(/*! ./Stepper */ 596);
 	
 	var _Stepper3 = _interopRequireDefault(_Stepper2);
 	
@@ -79714,7 +79245,7 @@
 	exports.Stepper = _Stepper3.default;
 
 /***/ },
-/* 591 */
+/* 589 */
 /*!***************************************!*\
   !*** ./~/material-ui/Stepper/Step.js ***!
   \***************************************/
@@ -79867,7 +79398,7 @@
 	exports.default = Step;
 
 /***/ },
-/* 592 */
+/* 590 */
 /*!*********************************************!*\
   !*** ./~/material-ui/Stepper/StepButton.js ***!
   \*********************************************/
@@ -79899,7 +79430,7 @@
 	
 	var _EnhancedButton2 = _interopRequireDefault(_EnhancedButton);
 	
-	var _StepLabel = __webpack_require__(/*! ./StepLabel */ 593);
+	var _StepLabel = __webpack_require__(/*! ./StepLabel */ 591);
 	
 	var _StepLabel2 = _interopRequireDefault(_StepLabel);
 	
@@ -80068,7 +79599,7 @@
 	exports.default = StepButton;
 
 /***/ },
-/* 593 */
+/* 591 */
 /*!********************************************!*\
   !*** ./~/material-ui/Stepper/StepLabel.js ***!
   \********************************************/
@@ -80094,7 +79625,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _checkCircle = __webpack_require__(/*! ../svg-icons/action/check-circle */ 594);
+	var _checkCircle = __webpack_require__(/*! ../svg-icons/action/check-circle */ 592);
 	
 	var _checkCircle2 = _interopRequireDefault(_checkCircle);
 	
@@ -80282,7 +79813,7 @@
 	exports.default = StepLabel;
 
 /***/ },
-/* 594 */
+/* 592 */
 /*!********************************************************!*\
   !*** ./~/material-ui/svg-icons/action/check-circle.js ***!
   \********************************************************/
@@ -80322,7 +79853,7 @@
 	exports.default = ActionCheckCircle;
 
 /***/ },
-/* 595 */
+/* 593 */
 /*!**********************************************!*\
   !*** ./~/material-ui/Stepper/StepContent.js ***!
   \**********************************************/
@@ -80346,7 +79877,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ExpandTransition = __webpack_require__(/*! ../internal/ExpandTransition */ 596);
+	var _ExpandTransition = __webpack_require__(/*! ../internal/ExpandTransition */ 594);
 	
 	var _ExpandTransition2 = _interopRequireDefault(_ExpandTransition);
 	
@@ -80483,7 +80014,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 596 */
+/* 594 */
 /*!****************************************************!*\
   !*** ./~/material-ui/internal/ExpandTransition.js ***!
   \****************************************************/
@@ -80511,7 +80042,7 @@
 	
 	var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
 	
-	var _ExpandTransitionChild = __webpack_require__(/*! ./ExpandTransitionChild */ 597);
+	var _ExpandTransitionChild = __webpack_require__(/*! ./ExpandTransitionChild */ 595);
 	
 	var _ExpandTransitionChild2 = _interopRequireDefault(_ExpandTransitionChild);
 	
@@ -80616,7 +80147,7 @@
 	exports.default = ExpandTransition;
 
 /***/ },
-/* 597 */
+/* 595 */
 /*!*********************************************************!*\
   !*** ./~/material-ui/internal/ExpandTransitionChild.js ***!
   \*********************************************************/
@@ -80804,7 +80335,7 @@
 	exports.default = ExpandTransitionChild;
 
 /***/ },
-/* 598 */
+/* 596 */
 /*!******************************************!*\
   !*** ./~/material-ui/Stepper/Stepper.js ***!
   \******************************************/
@@ -80826,7 +80357,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _StepConnector = __webpack_require__(/*! ./StepConnector */ 599);
+	var _StepConnector = __webpack_require__(/*! ./StepConnector */ 597);
 	
 	var _StepConnector2 = _interopRequireDefault(_StepConnector);
 	
@@ -80946,7 +80477,7 @@
 	exports.default = Stepper;
 
 /***/ },
-/* 599 */
+/* 597 */
 /*!************************************************!*\
   !*** ./~/material-ui/Stepper/StepConnector.js ***!
   \************************************************/
@@ -81027,7 +80558,7 @@
 	exports.default = (0, _pure2.default)(StepConnector);
 
 /***/ },
-/* 600 */
+/* 598 */
 /*!********************************************!*\
   !*** ./~/material-ui/RadioButton/index.js ***!
   \********************************************/
@@ -81040,11 +80571,11 @@
 	});
 	exports.default = exports.RadioButtonGroup = exports.RadioButton = undefined;
 	
-	var _RadioButton2 = __webpack_require__(/*! ./RadioButton */ 601);
+	var _RadioButton2 = __webpack_require__(/*! ./RadioButton */ 599);
 	
 	var _RadioButton3 = _interopRequireDefault(_RadioButton2);
 	
-	var _RadioButtonGroup2 = __webpack_require__(/*! ./RadioButtonGroup */ 604);
+	var _RadioButtonGroup2 = __webpack_require__(/*! ./RadioButtonGroup */ 602);
 	
 	var _RadioButtonGroup3 = _interopRequireDefault(_RadioButtonGroup2);
 	
@@ -81055,7 +80586,7 @@
 	exports.default = _RadioButton3.default;
 
 /***/ },
-/* 601 */
+/* 599 */
 /*!**************************************************!*\
   !*** ./~/material-ui/RadioButton/RadioButton.js ***!
   \**************************************************/
@@ -81087,11 +80618,11 @@
 	
 	var _EnhancedSwitch2 = _interopRequireDefault(_EnhancedSwitch);
 	
-	var _radioButtonUnchecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-unchecked */ 602);
+	var _radioButtonUnchecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-unchecked */ 600);
 	
 	var _radioButtonUnchecked2 = _interopRequireDefault(_radioButtonUnchecked);
 	
-	var _radioButtonChecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-checked */ 603);
+	var _radioButtonChecked = __webpack_require__(/*! ../svg-icons/toggle/radio-button-checked */ 601);
 	
 	var _radioButtonChecked2 = _interopRequireDefault(_radioButtonChecked);
 	
@@ -81321,7 +80852,7 @@
 	exports.default = RadioButton;
 
 /***/ },
-/* 602 */
+/* 600 */
 /*!******************************************************************!*\
   !*** ./~/material-ui/svg-icons/toggle/radio-button-unchecked.js ***!
   \******************************************************************/
@@ -81361,7 +80892,7 @@
 	exports.default = ToggleRadioButtonUnchecked;
 
 /***/ },
-/* 603 */
+/* 601 */
 /*!****************************************************************!*\
   !*** ./~/material-ui/svg-icons/toggle/radio-button-checked.js ***!
   \****************************************************************/
@@ -81401,7 +80932,7 @@
 	exports.default = ToggleRadioButtonChecked;
 
 /***/ },
-/* 604 */
+/* 602 */
 /*!*******************************************************!*\
   !*** ./~/material-ui/RadioButton/RadioButtonGroup.js ***!
   \*******************************************************/
@@ -81425,7 +80956,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _RadioButton = __webpack_require__(/*! ../RadioButton */ 600);
+	var _RadioButton = __webpack_require__(/*! ../RadioButton */ 598);
 	
 	var _RadioButton2 = _interopRequireDefault(_RadioButton);
 	
@@ -81620,7 +81151,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 3)))
 
 /***/ },
-/* 605 */
+/* 603 */
 /*!********************************!*\
   !*** ./~/sha256/lib/sha256.js ***!
   \********************************/
@@ -81632,8 +81163,8 @@
 	var _imports = {}
 	
 	if (typeof module !== 'undefined' && module.exports) { //CommonJS
-	  _imports.bytesToHex = __webpack_require__(/*! convert-hex */ 606).bytesToHex
-	  _imports.convertString = __webpack_require__(/*! convert-string */ 607)
+	  _imports.bytesToHex = __webpack_require__(/*! convert-hex */ 604).bytesToHex
+	  _imports.convertString = __webpack_require__(/*! convert-string */ 605)
 	  module.exports = sha256
 	} else {
 	  _imports.bytesToHex = globals.convertHex.bytesToHex
@@ -81782,7 +81313,7 @@
 
 
 /***/ },
-/* 606 */
+/* 604 */
 /*!**************************************!*\
   !*** ./~/convert-hex/convert-hex.js ***!
   \**************************************/
@@ -81837,7 +81368,7 @@
 	}(this);
 
 /***/ },
-/* 607 */
+/* 605 */
 /*!********************************************!*\
   !*** ./~/convert-string/convert-string.js ***!
   \********************************************/
@@ -81874,7 +81405,7 @@
 	}(this);
 
 /***/ },
-/* 608 */
+/* 606 */
 /*!*******************************************!*\
   !*** ./src/app/components/entry/LogIn.js ***!
   \*******************************************/
@@ -81909,7 +81440,7 @@
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
-	var _sha = __webpack_require__(/*! sha256 */ 605);
+	var _sha = __webpack_require__(/*! sha256 */ 603);
 	
 	var _sha2 = _interopRequireDefault(_sha);
 	
@@ -81966,22 +81497,17 @@
 	                    if (res.body.message == 'Failure') {
 	                        _this.handleWrongCombination();
 	                    } else {
-	                        console.log('USER LKKKKK', res.body.user);
 	                        _this.handleSignInSuccess(res.body.token, res.body.user);
 	                    }
 	                }
 	            }, this);
-	            // Request.get(url).then((response) => {
-	            //     console.log(response.body.res)
-	            // });
 	        }
 	    }, {
 	        key: 'handleSignInSuccess',
 	        value: function handleSignInSuccess(token, user) {
 	            _reactCookie2.default.save('token', token, { path: '/' });
 	            _reactCookie2.default.save('user', user, { path: '/' });
-	            this.props.changeLink("coucou");
-	            // this.props.route.jrigole
+	            window.location.reload();
 	        }
 	    }, {
 	        key: 'handleWrongCombination',
@@ -82044,7 +81570,7 @@
 	}(_react2.default.Component);
 
 /***/ },
-/* 609 */
+/* 607 */
 /*!********************************************!*\
   !*** ./src/app/components/entry/LogOut.js ***!
   \********************************************/
@@ -82079,13 +81605,15 @@
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
-	var _sha = __webpack_require__(/*! sha256 */ 605);
+	var _sha = __webpack_require__(/*! sha256 */ 603);
 	
 	var _sha2 = _interopRequireDefault(_sha);
 	
 	var _reactCookie = __webpack_require__(/*! react-cookie */ 429);
 	
 	var _reactCookie2 = _interopRequireDefault(_reactCookie);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 172);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -82103,8 +81631,11 @@
 	
 	        var _this = _possibleConstructorReturn(this, (LogOut.__proto__ || Object.getPrototypeOf(LogOut)).call(this));
 	
-	        _reactCookie2.default.remove('user', { path: '/' });
-	        _reactCookie2.default.remove('token', { path: '/' });
+	        if (_reactCookie2.default.load('user')) {
+	            _reactCookie2.default.remove('user', { path: '/' });
+	            _reactCookie2.default.remove('token', { path: '/' });
+	            window.location.reload();
+	        }
 	        return _this;
 	    }
 	
@@ -82118,7 +81649,14 @@
 	                    'h3',
 	                    null,
 	                    'You are logged out.'
-	                )
+	                ),
+	                _react2.default.createElement(_RaisedButton2.default, {
+	                    label: 'Take me back home',
+	                    primary: true,
+	                    onTouchTap: function onTouchTap() {
+	                        return _reactRouter.browserHistory.push('/home');
+	                    }
+	                })
 	            );
 	        }
 	    }]);

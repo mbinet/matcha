@@ -17,21 +17,27 @@ export class Header extends React.Component {
         var rightBar;
         if (this.state.user) {
             rightBar =
-                <ul className="nav navbar-nav navbar-right">
-                    <Link to={'/login'}>
-                        <RaisedButton
-                            label={'Hi ' + this.state.user.name}
-                            primary={true}
-                        />
-                    </Link>
-                    <Link to={'/logout'}>
-                        <RaisedButton
-                            label='Logout'
-                            secondary={true}
-                            icon={<i className="glyphicon glyphicon-off"></i>}
-                        />
-                    </Link>
-                </ul>
+                <span>
+                    <ul className="nav navbar-nav">
+                        <li><Link to={"/user"} activeStyle={{color: "red"}}>Users</Link></li>
+                        <li><Link to={'/profile/update/' + this.state.user._id} activeStyle={{color: "red"}}>Update Profile</Link></li>
+                    </ul>
+                    <ul className="nav navbar-nav navbar-right">
+                        <Link to={'/profile/' + this.state.user._id}>
+                            <RaisedButton
+                                label={'Hi ' + this.state.user.name}
+                                primary={true}
+                            />
+                        </Link>
+                        <Link to={'/logout'}>
+                            <RaisedButton
+                                label='Logout'
+                                secondary={true}
+                                icon={<i className="glyphicon glyphicon-off"></i>}
+                            />
+                        </Link>
+                    </ul>
+                </span>
         }
         else {
             rightBar =
@@ -62,12 +68,7 @@ export class Header extends React.Component {
                         <Link to={"/home"} className="navbar-brand" activeStyle={{color: "red"}}>Matcha</Link>
                     </div>
                     <div className="collapse navbar-collapse">
-                        <ul className="nav navbar-nav">
-                            {/*<li><Link to={"/home"} activeStyle={{color: "red"}}>Home</Link></li>*/}
-                            <li><Link to={"/user"} activeClassName={"active"}>User</Link></li>
-                            <li><Link to={"/profile"} activeStyle={{color: "red"}}>Profile</Link></li>
-                            <li><Link to={"/profile/update"} activeStyle={{color: "red"}}>Update Profile</Link></li>
-                        </ul>
+
                         { rightBar }
                     </div>
                 </div>

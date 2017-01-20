@@ -2,6 +2,7 @@ import React from "react";
 import Request from "superagent";
 import _ from 'lodash';
 import Gallery from 'react-grid-gallery';
+import cookie from 'react-cookie';
 
 
 export default class photoGallery extends React.Component {
@@ -22,8 +23,11 @@ export default class photoGallery extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("Bon user id :", nextProps.userID);
-        var url = "http://54.93.182.167:3000/api/users/" + nextProps.userID;
-        Request.get(url).then((response) => {
+        var url = "http://54.93.182.167:3000/api/users/getOne/" + nextProps.userID;
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : cookie.load('token') })
+            .then((response) => {
             this.setState({
                 user: response.body.user,
             });

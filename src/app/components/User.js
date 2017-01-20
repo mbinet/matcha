@@ -3,22 +3,35 @@ import { browserHistory } from "react-router";
 import Request from "superagent";
 import _ from "lodash";
 import {Link} from "react-router";
+import cookie from 'react-cookie';
 
 export class User extends React.Component {
 
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            users: []
+        };
         // this.state.users = [];
     }
 
     componentWillMount() {
-        var url = "http://54.93.182.167:3000/api/users";
-        Request.get(url).then((response) => {
-            this.setState({
-                users: response.body.users
-            });
-        });
+        var url = "http://54.93.182.167:3000/api/users/";
+        var token = cookie.load('token');
+        var that = this;
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : token})
+            .end(function (err, res) {
+                if (err)
+                    console.log('err : \n', err);
+                if (res) {
+                    console.log("HELLO", res)
+                    that.setState({
+                        users: res.body.users
+                    })
+                }
+            })
     }
 
     onNavigateHome() {
