@@ -14,6 +14,7 @@ export class LogIn extends React.Component {
             user: {
                 mail: "",
                 password: "",
+                mailReco: ""
             }
         };
     }
@@ -28,7 +29,7 @@ export class LogIn extends React.Component {
         var shaPass = sha256(this.state.user.password);
         var _this = this;
         console.log(shaPass);
-        var url = "http://54.93.182.167:3000/api/login/";
+        var url = "http://54.93.182.167:3000/api/login";
         Request.post(url)
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .send({ mail: this.state.user.mail })
@@ -43,6 +44,19 @@ export class LogIn extends React.Component {
                     else {
                         _this.handleSignInSuccess(res.body.token, res.body.user);
                     }
+                }
+            }, this);
+    }
+
+    handleRecover() {
+        var url = "http://54.93.182.167:3000/api/recoverPasswd";
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ mail: this.state.user.mailReco })
+            .end(function (err, res) {
+                if(err) { console.log('There was an unexpected error.', err + "RESRESRES : " + res) }
+                else {
+                    console.log(res.body.message);
                 }
             }, this);
     }
@@ -62,36 +76,63 @@ export class LogIn extends React.Component {
             this.handleEnd();
         }
     }
+
+    _handleKeyDownReco(event) {
+        if (event.which === 13) {
+            this.handleRecover();
+        }
+    }
+
     render() {
         return (
             <div>
-                <h3>LOGIN</h3>
-                <TextField
-                    floatingLabelText="Email"
-                    hintText="john@doe.com"
-                    name="mail"
-                    value={this.state.user.mail}
-                    onChange={this._handleTextFieldChange.bind(this)}
-                    onKeyDown={this._handleKeyDown.bind(this)}
-                />
-                <br />
-                <TextField
-                    floatingLabelText="Password"
-                    hintText="••••••••"
-                    name="password"
-                    type="password"
-                    value={this.state.user.password}
-                    onChange={this._handleTextFieldChange.bind(this)}
-                    onKeyDown={this._handleKeyDown.bind(this)}
-                />
-                <br />
-                <RaisedButton
-                    label="Save"
-                    primary={true}
-                    disabled={this.state.saveDisabled}
-                    id="mdrlol"
-                    onTouchTap={() => this.handleEnd()}
-                />
+                <div className="col-sm-6">
+                    <h3>LOGIN</h3>
+                    <TextField
+                        floatingLabelText="Email"
+                        hintText="john@doe.com"
+                        name="mail"
+                        value={this.state.user.mail}
+                        onChange={this._handleTextFieldChange.bind(this)}
+                        onKeyDown={this._handleKeyDown.bind(this)}
+                    />
+                    <br />
+                    <TextField
+                        floatingLabelText="Password"
+                        hintText="••••••••"
+                        name="password"
+                        type="password"
+                        value={this.state.user.password}
+                        onChange={this._handleTextFieldChange.bind(this)}
+                        onKeyDown={this._handleKeyDown.bind(this)}
+                    />
+                    <br />
+                    <RaisedButton
+                        label="Save"
+                        primary={true}
+                        disabled={this.state.saveDisabled}
+                        id="mdrlol"
+                        onTouchTap={() => this.handleEnd()}
+                    />
+                </div>
+                <div className="col-sm-6">
+                    <TextField
+                        floatingLabelText="Email"
+                        hintText="john@doe.com"
+                        name="mailReco"
+                        value={this.state.user.mailReco}
+                        onChange={this._handleTextFieldChange.bind(this)}
+                        onKeyDown={this._handleKeyDownReco.bind(this)}
+                    />
+                    <br />
+                    <RaisedButton
+                        label="Recover passord"
+                        primary={true}
+                        disabled={this.state.saveDisabled}
+                        id="mdrlol"
+                        onTouchTap={() => this.handleRecover()}
+                    />
+                </div>
             </div>
         );
     }
