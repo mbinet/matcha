@@ -81446,6 +81446,10 @@
 	
 	var _reactCookie2 = _interopRequireDefault(_reactCookie);
 	
+	var _Snackbar = __webpack_require__(/*! material-ui/Snackbar */ 550);
+	
+	var _Snackbar2 = _interopRequireDefault(_Snackbar);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -81469,7 +81473,9 @@
 	                mail: "",
 	                password: "",
 	                mailReco: ""
-	            }
+	            },
+	            snackOpen: false,
+	            snackMsg: ""
 	        };
 	        return _this2;
 	    }
@@ -81512,6 +81518,10 @@
 	                    console.log(res.body.message);
 	                }
 	            }, this);
+	            this.setState({
+	                snackMsg: 'If you are a returning user, an email has been sent to you',
+	                snackOpen: true
+	            });
 	        }
 	    }, {
 	        key: 'handleSignInSuccess',
@@ -81524,6 +81534,10 @@
 	        key: 'handleWrongCombination',
 	        value: function handleWrongCombination() {
 	            console.log('Wrong conbination mail/password');
+	            this.setState({
+	                snackMsg: 'Check your credentials',
+	                snackOpen: true
+	            });
 	        }
 	    }, {
 	        key: '_handleKeyDown',
@@ -81575,7 +81589,7 @@
 	                    }),
 	                    _react2.default.createElement('br', null),
 	                    _react2.default.createElement(_RaisedButton2.default, {
-	                        label: 'Save',
+	                        label: 'Login',
 	                        primary: true,
 	                        disabled: this.state.saveDisabled,
 	                        id: 'mdrlol',
@@ -81603,6 +81617,14 @@
 	                        id: 'mdrlol',
 	                        onTouchTap: function onTouchTap() {
 	                            return _this3.handleRecover();
+	                        }
+	                    }),
+	                    _react2.default.createElement(_Snackbar2.default, {
+	                        open: this.state.snackOpen,
+	                        message: this.state.snackMsg,
+	                        autoHideDuration: 4000,
+	                        onRequestClose: function onRequestClose() {
+	                            return _this3.setState({ snackOpen: false });
 	                        }
 	                    })
 	                )
