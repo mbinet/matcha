@@ -35839,24 +35839,50 @@
 	            var rightBar;
 	            if (this.state.user) {
 	                rightBar = _react2.default.createElement(
-	                    "ul",
-	                    { className: "nav navbar-nav navbar-right" },
+	                    "span",
+	                    null,
 	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { to: '/login' },
-	                        _react2.default.createElement(_RaisedButton2.default, {
-	                            label: 'Hi ' + this.state.user.name,
-	                            primary: true
-	                        })
+	                        "ul",
+	                        { className: "nav navbar-nav" },
+	                        _react2.default.createElement(
+	                            "li",
+	                            null,
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: "/user", activeStyle: { color: "red" } },
+	                                "Users"
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "li",
+	                            null,
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: '/profile/update/' + this.state.user._id, activeStyle: { color: "red" } },
+	                                "Update Profile"
+	                            )
+	                        )
 	                    ),
 	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { to: '/logout' },
-	                        _react2.default.createElement(_RaisedButton2.default, {
-	                            label: "Logout",
-	                            secondary: true,
-	                            icon: _react2.default.createElement("i", { className: "glyphicon glyphicon-off" })
-	                        })
+	                        "ul",
+	                        { className: "nav navbar-nav navbar-right" },
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/profile/' + this.state.user._id },
+	                            _react2.default.createElement(_RaisedButton2.default, {
+	                                label: 'Hi ' + this.state.user.name,
+	                                primary: true
+	                            })
+	                        ),
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/logout' },
+	                            _react2.default.createElement(_RaisedButton2.default, {
+	                                label: "Logout",
+	                                secondary: true,
+	                                icon: _react2.default.createElement("i", { className: "glyphicon glyphicon-off" })
+	                            })
+	                        )
 	                    )
 	                );
 	            } else {
@@ -35920,37 +35946,6 @@
 	                        _react2.default.createElement(
 	                            "div",
 	                            { className: "collapse navbar-collapse" },
-	                            _react2.default.createElement(
-	                                "ul",
-	                                { className: "nav navbar-nav" },
-	                                _react2.default.createElement(
-	                                    "li",
-	                                    null,
-	                                    _react2.default.createElement(
-	                                        _reactRouter.Link,
-	                                        { to: "/user", activeClassName: "active" },
-	                                        "User"
-	                                    )
-	                                ),
-	                                _react2.default.createElement(
-	                                    "li",
-	                                    null,
-	                                    _react2.default.createElement(
-	                                        _reactRouter.Link,
-	                                        { to: "/profile", activeStyle: { color: "red" } },
-	                                        "Profile"
-	                                    )
-	                                ),
-	                                _react2.default.createElement(
-	                                    "li",
-	                                    null,
-	                                    _react2.default.createElement(
-	                                        _reactRouter.Link,
-	                                        { to: "/profile/update", activeStyle: { color: "red" } },
-	                                        "Update Profile"
-	                                    )
-	                                )
-	                            ),
 	                            rightBar
 	                        )
 	                    )
@@ -39822,6 +39817,7 @@
 	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ token: token }).end(function (err, res) {
 	                if (err) console.log('err : \n', err);
 	                if (res) {
+	                    console.log("HELLO", res);
 	                    that.setState({
 	                        users: res.body.users
 	                    });
@@ -79004,7 +79000,9 @@
 	            console.log(this.state.photo);
 	            var url = "http://54.93.182.167:3000/api/createUser/";
 	            var shaPass = (0, _sha2.default)(this.state.passwd);
-	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').set('Content-Type', 'application/json').send({ name: this.state.name }).send({ age: this.state.age }).send({ mail: this.state.mail }).send({ photo: this.state.photo }).send({ passwd: shaPass }).send({ sex: this.state.sex }).send({ bio: this.state.bio }).end(function (response) {
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded')
+	            // .set('Content-Type', 'application/json')
+	            .send({ name: this.state.name }).send({ age: this.state.age }).send({ mail: this.state.mail }).send({ photo: this.state.photo }).send({ passwd: shaPass }).send({ sex: this.state.sex }).send({ bio: this.state.bio }).end(function (response) {
 	                console.log('inserted');
 	                console.log(response);
 	                // browserHistory.push("/home", "jdec");
@@ -81469,7 +81467,8 @@
 	        _this2.state = {
 	            user: {
 	                mail: "",
-	                password: ""
+	                password: "",
+	                mailReco: ""
 	            }
 	        };
 	        return _this2;
@@ -81488,7 +81487,7 @@
 	            var shaPass = (0, _sha2.default)(this.state.user.password);
 	            var _this = this;
 	            console.log(shaPass);
-	            var url = "http://54.93.182.167:3000/api/login/";
+	            var url = "http://54.93.182.167:3000/api/login";
 	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ mail: this.state.user.mail }).send({ passwd: shaPass }).end(function (err, res) {
 	                if (err) {
 	                    console.log('There was an unexpected error.', err + "RESRESRES : " + res);
@@ -81499,6 +81498,18 @@
 	                    } else {
 	                        _this.handleSignInSuccess(res.body.token, res.body.user);
 	                    }
+	                }
+	            }, this);
+	        }
+	    }, {
+	        key: 'handleRecover',
+	        value: function handleRecover() {
+	            var url = "http://54.93.182.167:3000/api/recoverPasswd";
+	            _superagent2.default.post(url).set('Content-Type', 'application/x-www-form-urlencoded').send({ mail: this.state.user.mailReco }).end(function (err, res) {
+	                if (err) {
+	                    console.log('There was an unexpected error.', err + "RESRESRES : " + res);
+	                } else {
+	                    console.log(res.body.message);
 	                }
 	            }, this);
 	        }
@@ -81522,6 +81533,13 @@
 	            }
 	        }
 	    }, {
+	        key: '_handleKeyDownReco',
+	        value: function _handleKeyDownReco(event) {
+	            if (event.which === 13) {
+	                this.handleRecover();
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this3 = this;
@@ -81530,38 +81548,64 @@
 	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    'h3',
-	                    null,
-	                    'LOGIN'
+	                    'div',
+	                    { className: 'col-sm-6' },
+	                    _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'LOGIN'
+	                    ),
+	                    _react2.default.createElement(_TextField2.default, {
+	                        floatingLabelText: 'Email',
+	                        hintText: 'john@doe.com',
+	                        name: 'mail',
+	                        value: this.state.user.mail,
+	                        onChange: this._handleTextFieldChange.bind(this),
+	                        onKeyDown: this._handleKeyDown.bind(this)
+	                    }),
+	                    _react2.default.createElement('br', null),
+	                    _react2.default.createElement(_TextField2.default, {
+	                        floatingLabelText: 'Password',
+	                        hintText: '••••••••',
+	                        name: 'password',
+	                        type: 'password',
+	                        value: this.state.user.password,
+	                        onChange: this._handleTextFieldChange.bind(this),
+	                        onKeyDown: this._handleKeyDown.bind(this)
+	                    }),
+	                    _react2.default.createElement('br', null),
+	                    _react2.default.createElement(_RaisedButton2.default, {
+	                        label: 'Save',
+	                        primary: true,
+	                        disabled: this.state.saveDisabled,
+	                        id: 'mdrlol',
+	                        onTouchTap: function onTouchTap() {
+	                            return _this3.handleEnd();
+	                        }
+	                    })
 	                ),
-	                _react2.default.createElement(_TextField2.default, {
-	                    floatingLabelText: 'Email',
-	                    hintText: 'john@doe.com',
-	                    name: 'mail',
-	                    value: this.state.user.mail,
-	                    onChange: this._handleTextFieldChange.bind(this),
-	                    onKeyDown: this._handleKeyDown.bind(this)
-	                }),
-	                _react2.default.createElement('br', null),
-	                _react2.default.createElement(_TextField2.default, {
-	                    floatingLabelText: 'Password',
-	                    hintText: '••••••••',
-	                    name: 'password',
-	                    type: 'password',
-	                    value: this.state.user.password,
-	                    onChange: this._handleTextFieldChange.bind(this),
-	                    onKeyDown: this._handleKeyDown.bind(this)
-	                }),
-	                _react2.default.createElement('br', null),
-	                _react2.default.createElement(_RaisedButton2.default, {
-	                    label: 'Save',
-	                    primary: true,
-	                    disabled: this.state.saveDisabled,
-	                    id: 'mdrlol',
-	                    onTouchTap: function onTouchTap() {
-	                        return _this3.handleEnd();
-	                    }
-	                })
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-sm-6' },
+	                    _react2.default.createElement(_TextField2.default, {
+	                        floatingLabelText: 'Email',
+	                        hintText: 'john@doe.com',
+	                        name: 'mailReco',
+	                        value: this.state.user.mailReco,
+	                        onChange: this._handleTextFieldChange.bind(this),
+	                        onKeyDown: this._handleKeyDownReco.bind(this)
+	                    }),
+	                    _react2.default.createElement('br', null),
+	                    _react2.default.createElement(_RaisedButton2.default, {
+	                        label: 'Recover passord',
+	                        primary: true,
+	                        disabled: this.state.saveDisabled,
+	                        id: 'mdrlol',
+	                        onTouchTap: function onTouchTap() {
+	                            return _this3.handleRecover();
+	                        }
+	                    })
+	                )
 	            );
 	        }
 	    }]);

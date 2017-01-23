@@ -5,6 +5,7 @@ import update from 'react-addons-update';
 import Request from 'superagent';
 import sha256 from 'sha256';
 import cookie from 'react-cookie';
+import Snackbar from 'material-ui/Snackbar';
 
 export class LogIn extends React.Component {
 
@@ -15,7 +16,9 @@ export class LogIn extends React.Component {
                 mail: "",
                 password: "",
                 mailReco: ""
-            }
+            },
+            snackOpen: false,
+            snackMsg: ""
         };
     }
 
@@ -59,6 +62,10 @@ export class LogIn extends React.Component {
                     console.log(res.body.message);
                 }
             }, this);
+        this.setState({
+            snackMsg: 'If you are a returning user, an email has been sent to you',
+            snackOpen: true
+        })
     }
 
     handleSignInSuccess(token, user) {
@@ -69,6 +76,10 @@ export class LogIn extends React.Component {
 
     handleWrongCombination() {
         console.log('Wrong conbination mail/password');
+        this.setState({
+            snackMsg: 'Check your credentials',
+            snackOpen: true
+        })
     }
 
     _handleKeyDown(event) {
@@ -108,7 +119,7 @@ export class LogIn extends React.Component {
                     />
                     <br />
                     <RaisedButton
-                        label="Save"
+                        label="Login"
                         primary={true}
                         disabled={this.state.saveDisabled}
                         id="mdrlol"
@@ -131,6 +142,13 @@ export class LogIn extends React.Component {
                         disabled={this.state.saveDisabled}
                         id="mdrlol"
                         onTouchTap={() => this.handleRecover()}
+                    />
+
+                    <Snackbar
+                        open={this.state.snackOpen}
+                        message={this.state.snackMsg}
+                        autoHideDuration={4000}
+                        onRequestClose={() => this.setState({ snackOpen: false })}
                     />
                 </div>
             </div>
