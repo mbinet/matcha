@@ -318,7 +318,12 @@ export class ProfileUpdate extends React.Component {
                                     />
                                     <br />
                                     <UpdateTags func={this.enableSaving.bind(this)} ref="autocomplete"/>
-                                    <Tags tags={this.state.user.tags} reload={this.componentWillMount.bind(this)} ref="tagComponent" />
+                                    <Tags
+                                        tags={this.state.user.tags}
+                                        reload={this.componentWillMount.bind(this)}
+                                        ref="tagComponent"
+                                        isDeletable={true}
+                                    />
                                     <br/>
                                 </div>
                             </CardText>

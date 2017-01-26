@@ -68,28 +68,52 @@ export class Tags extends React.Component {
         that.state.tagsTable = [];
         if (typeof nextProps.tags != 'object') {
             that.state.tags[0] = nextProps.tags
-            that.state.tagsTable.push(
-                <Chip onTouchTap={handleTouchTap}
-                      style={styles.chip}
-                      key={nextProps.tags + Math.random()}
-                      onRequestDelete={() => that.handleRequestDelete(nextProps.tags)}
-                >
-                    {nextProps.tags}
-                </Chip>
-            )
+            if (nextProps.isDeletable == true) {
+                that.state.tagsTable.push(
+                    <Chip onTouchTap={handleTouchTap}
+                          style={styles.chip}
+                          key={nextProps.tags + Math.random()}
+                          onRequestDelete={() => that.handleRequestDelete(nextProps.tags)}
+                    >
+                        {nextProps.tags}
+                    </Chip>
+                )
+            }
+            else {
+                that.state.tagsTable.push(
+                    <Chip onTouchTap={handleTouchTap}
+                          style={styles.chip}
+                          key={nextProps.tags + Math.random()}
+                    >
+                        {nextProps.tags}
+                    </Chip>
+                )
+            }
         }
         else {
             that.state.tags = nextProps.tags
             _.forEach(nextProps.tags, function(p) {
-                that.state.tagsTable.push(
-                    <Chip onTouchTap={handleTouchTap}
-                          style={styles.chip}
-                          key={p + Math.random()}
-                          onRequestDelete={() => that.handleRequestDelete(p)}
-                    >
-                        {p}
-                    </Chip>
-                )
+                if (nextProps.isDeletable == true) {
+                    that.state.tagsTable.push(
+                        <Chip onTouchTap={handleTouchTap}
+                              style={styles.chip}
+                              key={p + Math.random()}
+                              onRequestDelete={() => that.handleRequestDelete(p)}
+                        >
+                            {p}
+                        </Chip>
+                    )
+                }
+                else {
+                    that.state.tagsTable.push(
+                        <Chip onTouchTap={handleTouchTap}
+                              style={styles.chip}
+                              key={p + Math.random()}
+                        >
+                            {p}
+                        </Chip>
+                    )
+                }
             })
         }
     }
