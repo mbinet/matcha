@@ -28,8 +28,10 @@ export class Profile extends React.Component {
                 name: "",
                 age: "",
                 mail: "",
+                sex: "",
                 photo: {},
-                bio: ""
+                bio: "",
+                tags: []
             }
         };
     }
@@ -43,6 +45,7 @@ export class Profile extends React.Component {
                 this.setState({
                     user: response.body.user,
                 });
+                console.log(this.state.user)
         });
     }
 
@@ -78,6 +81,7 @@ export class Profile extends React.Component {
         var age = this.state.user.age;
         var photo = this.state.user.photo.p1;
         var bio = this.state.user.bio;
+        var tags = this.state.user.tags;
         var style = {color: 'red'};
         var like = <FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>;
         var mail = <FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>;
@@ -123,7 +127,8 @@ export class Profile extends React.Component {
                     <div className="">
                         <Card>
                             <CardText>
-                                <Tags/>
+                                <Tags tags={tags}/>
+                                {/*<Tags tags={["coucou", "les", "amis"]}/>*/}
                             </CardText>
                         </Card>
                     </div>

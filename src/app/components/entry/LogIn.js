@@ -6,6 +6,7 @@ import Request from 'superagent';
 import sha256 from 'sha256';
 import cookie from 'react-cookie';
 import Snackbar from 'material-ui/Snackbar';
+import { browserHistory } from "react-router";
 
 export class LogIn extends React.Component {
 
@@ -72,6 +73,7 @@ export class LogIn extends React.Component {
         cookie.save('token', token, { path: '/'});
         cookie.save('user', user, { path: '/'});
         window.location.reload();
+        browserHistory.push("/home");
     }
 
     handleWrongCombination() {

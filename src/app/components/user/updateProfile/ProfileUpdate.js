@@ -9,6 +9,8 @@ import update from 'react-addons-update';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader'
 import UpdateTags from './UpdateTags';
 import cookie from 'react-cookie';
+import FontAwesome from 'react-fontawesome';
+import {Tags} from "../profile/Tags"
 
 export class ProfileUpdate extends React.Component {
 
@@ -20,6 +22,7 @@ export class ProfileUpdate extends React.Component {
                 name: "",
                 age: "",
                 mail: "",
+                sex: "",
                 photo: {
                     p1: "",
                     p2: "",
@@ -27,7 +30,8 @@ export class ProfileUpdate extends React.Component {
                     p4: "",
                     p5: "",
                 },
-                bio: ""
+                bio: "",
+                tags: []
             },
             saveDisabled: true,
             activeSnack: false,
@@ -47,6 +51,7 @@ export class ProfileUpdate extends React.Component {
                 saveDisabled: true,
                 activeSnack: false
             });
+            cookie.save('user', response.body.user, { path: '/'});
 
             // this.setState({
             //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
@@ -71,6 +76,7 @@ export class ProfileUpdate extends React.Component {
             .send({ token : cookie.load('token') })
             .send({ name: this.state.user.name })
             .send({ age: this.state.user.age })
+            .send({ sex: this.state.user.sex })
             .send({ mail: this.state.user.mail })
             .send({ photo: this.state.user.photo })
             .send({ bio: this.state.user.bio })
@@ -80,6 +86,7 @@ export class ProfileUpdate extends React.Component {
                     msgSnack: "Profile updated",
                     saveDisabled: true
                 });
+                this.componentWillMount();
                 // browserHistory.push("/home", "jdec");
             });
     }
@@ -95,8 +102,6 @@ export class ProfileUpdate extends React.Component {
 
     handleFinishedUpload(res) {
         var filename = res.filename.replace("Photos/", "");
-        console.warn('filename : \n', filename);
-        console.warn('State user : \n', this.state.user);
         // console.warn('filename : \n', filename);
         this.setState({
             activeSnack: true,
@@ -120,6 +125,13 @@ export class ProfileUpdate extends React.Component {
         var url = "http://54.93.182.167:3000/api/photo/" + previousPhoto;
         Request.delete(url)
             .set('Content-Type', 'application/json')
+    }
+
+    handleButtons(type) {
+        this.state.user.sex = type;
+        this.setState({
+            saveDisabled: false,
+        })
     }
 
     render() {
@@ -156,12 +168,12 @@ export class ProfileUpdate extends React.Component {
 
         return (
             <div>
-                <div className="row">
+                <div className="">
                     <Card>
                         <CardTitle title="Update your Profile" />
-                        <div className="text-center">
+                        <div className="text-center row">
                             <CardText>
-                                <div className="col-sm-6 row" style={{display: 'block'}}>
+                                <div className="col-sm-6" style={{display: 'block'}}>
                                     <div className="col-xs-6 col-sm-6">
                                         <DropzoneS3Uploader
                                             onFinish={this.handleFinishedUpload.bind(this)}
@@ -238,7 +250,7 @@ export class ProfileUpdate extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="col-sm-6">
                                     <br />
                                     <TextField
                                         floatingLabelText="Name"
@@ -261,6 +273,39 @@ export class ProfileUpdate extends React.Component {
                                         onChange={this._handleTextFieldChange.bind(this)}
                                     />
                                     <br />
+
+                                    {/*
+                                     ** Sexe choice
+                                     */}
+                                    <RaisedButton
+                                        primary ={true}
+                                        icon={<FontAwesome className='fa fa-mars' name=''/>}
+                                        //style={{marginLeft: '12px'}}
+                                        label={'boy'}
+                                        style={{margin: '12px'}}
+                                        onTouchTap={this.handleButtons.bind(this, 'boy')}
+                                    />
+                                    <RaisedButton
+                                        secondary ={true}
+                                        icon={<FontAwesome className='fa fa-venus' name=''/>}
+                                        //style={{marginLeft: '12px'}}
+                                        label={'girl'}
+                                        style={{margin: '12px'}}
+                                        onTouchTap={this.handleButtons.bind(this, 'girl')}
+                                    />
+                                    <RaisedButton
+                                        default ={true}
+                                        icon={<FontAwesome className='fa fa-transgender' name=''/>}
+                                        //style={{marginLeft: '12px'}}
+                                        label={'trans'}
+                                        style={{margin: '12px'}}
+                                        onTouchTap={this.handleButtons.bind(this, 'trans')}
+                                    />
+                                    <br />
+
+                                    {/*
+                                    ** Bio
+                                    */}
                                     <TextField
                                         hintText="Hi, I like stamps and cactus..."
                                         floatingLabelText="Tell us about you"
@@ -273,24 +318,26 @@ export class ProfileUpdate extends React.Component {
                                     />
                                     <br />
                                     <UpdateTags func={this.enableSaving.bind(this)} ref="autocomplete"/>
+                                    <Tags tags={this.state.user.tags} reload={this.componentWillMount.bind(this)} ref="tagComponent" />
                                     <br/>
                                 </div>
                             </CardText>
                         </div>
 
-                        <CardActions style={{textAlign: 'center'}}>
-                            <RaisedButton
-                                label="Cancel"
-                                onTouchTap={() => this.componentWillMount()} // gets data from server again
-                            />
-                            <RaisedButton
-                                label="Save"
-                                primary={true}
-                                disabled={this.state.saveDisabled}
-                                id="mdrlol"
-                                onTouchTap={() => this.handleEnd()}
-                            />
-                        </CardActions>
+                        <div className="row">
+                            <CardActions style={{textAlign: 'center'}}>
+                                <RaisedButton
+                                    label="Cancel"
+                                    onTouchTap={() => this.componentWillMount()} // gets data from server again
+                                />
+                                <RaisedButton
+                                    label="Save"
+                                    primary={true}
+                                    disabled={this.state.saveDisabled}
+                                    onTouchTap={() => this.handleEnd()}
+                                />
+                            </CardActions>
+                        </div>
                     </Card>
                 </div>
                 <Snackbar

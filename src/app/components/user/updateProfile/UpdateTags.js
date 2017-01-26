@@ -4,23 +4,9 @@ import Request from "superagent";
 import RaisedButton from 'material-ui/RaisedButton';
 import cookie from 'react-cookie';
 
-const colorslol = [
-    'Red',
-    'Orange',
-    'Yellow',
-    'Green',
-    'Blue',
-    'Purple',
-    'Black',
-    'White',
-];
-
-const colors = [
-    {textKey: 'Some Text', valueKey: 'someFirstValue'},
-    {textKey: 'Some Text', valueKey: 'someSecondValue'},
-];
-
-
+/**
+ * Adding tags to a User and to the tag pool
+ */
 export default class AutoCompleteExampleDataSource extends Component {
 
     state = {
@@ -37,7 +23,8 @@ export default class AutoCompleteExampleDataSource extends Component {
             .send({ token : cookie.load('token') })
             .then((response) => {
             this.setState({
-                searchTags: response.body.tags
+                searchTags: response.body.tags,
+                tags: []
             });
         });
     }
@@ -60,7 +47,8 @@ export default class AutoCompleteExampleDataSource extends Component {
         var url = "http://54.93.182.167:3000/api/tags";
         Request.post(url)
             .set('Content-Type', 'application/x-www-form-urlencoded')
-            .send({ token : cookie.load('token') })
+            .send({ token: cookie.load('token') })
+            .send({ user: cookie.load('user') })
             .send({ tags: this.state.tags })
             .end(function (err, res) {
                 if(err) { console.log('There was an unexpected error.') }
