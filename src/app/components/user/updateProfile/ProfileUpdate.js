@@ -12,6 +12,9 @@ import cookie from 'react-cookie';
 import FontAwesome from 'react-fontawesome';
 import {Tags} from "../profile/Tags"
 
+import Divider from 'material-ui/Divider';
+
+import Checkbox from 'material-ui/Checkbox';
 export class ProfileUpdate extends React.Component {
 
     constructor() {
@@ -23,6 +26,11 @@ export class ProfileUpdate extends React.Component {
                 age: "",
                 mail: "",
                 sex: "",
+                loves: {
+                    b: false,
+                    g: false,
+                    t: false,
+                },
                 photo: {
                     p1: "",
                     p2: "",
@@ -31,7 +39,7 @@ export class ProfileUpdate extends React.Component {
                     p5: "",
                 },
                 bio: "",
-                tags: []
+                tags: [],
             },
             saveDisabled: true,
             activeSnack: false,
@@ -46,6 +54,9 @@ export class ProfileUpdate extends React.Component {
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .send({ token : cookie.load('token') })
             .then((response) => {
+                response.body.user.loves.b = JSON.parse(response.body.user.loves.b);
+                response.body.user.loves.g = JSON.parse(response.body.user.loves.g);
+                response.body.user.loves.t = JSON.parse(response.body.user.loves.t);
             this.setState({
                 user: response.body.user,
                 saveDisabled: true,
@@ -132,6 +143,10 @@ export class ProfileUpdate extends React.Component {
         this.setState({
             saveDisabled: false,
         })
+    }
+
+    onCheck(event, isInputChecked) {
+        this.state.user.loves[event.target.value] = isInputChecked;
     }
 
     render() {
@@ -252,56 +267,95 @@ export class ProfileUpdate extends React.Component {
                                 </div>
                                 <div className="col-sm-6">
                                     <br />
-                                    <TextField
-                                        floatingLabelText="Name"
-                                        name="name"
-                                        value={this.state.user.name}
-                                        onChange={this._handleTextFieldChange.bind(this)}
-                                    />
-                                    <br />
-                                    <TextField
-                                        floatingLabelText="Age"
-                                        name="age"
-                                        value={this.state.user.age}
-                                        onChange={this._handleTextFieldChange.bind(this)}
-                                    />
-                                    <br />
-                                    <TextField
-                                        floatingLabelText="Mail"
-                                        name="mail"
-                                        value={this.state.user.mail}
-                                        onChange={this._handleTextFieldChange.bind(this)}
-                                    />
+                                    <div>
+                                        <TextField
+                                            floatingLabelText="Name"
+                                            name="name"
+                                            value={this.state.user.name}
+                                            onChange={this._handleTextFieldChange.bind(this)}
+                                        />
+                                        <br />
+                                        <TextField
+                                            floatingLabelText="Age"
+                                            name="age"
+                                            value={this.state.user.age}
+                                            onChange={this._handleTextFieldChange.bind(this)}
+                                        />
+                                        <br />
+                                        <TextField
+                                            floatingLabelText="Mail"
+                                            name="mail"
+                                            value={this.state.user.mail}
+                                            onChange={this._handleTextFieldChange.bind(this)}
+                                        />
+                                        <br />
+                                    </div>
+
+
+                                     <div id="sexChoice">
+                                        {/*
+                                         ** Sexe choice
+                                         */}
+                                        <Divider />
+                                        <br />
+                                        You are
+                                        <br />
+                                        <RaisedButton
+                                            primary ={true}
+                                            icon={<FontAwesome className='fa fa-mars' name=''/>}
+                                            //style={{marginLeft: '12px'}}
+                                            label={'boy'}
+                                            style={{margin: '12px'}}
+                                            onTouchTap={this.handleButtons.bind(this, 'boy')}
+                                        />
+                                        <RaisedButton
+                                            secondary ={true}
+                                            icon={<FontAwesome className='fa fa-venus' name=''/>}
+                                            //style={{marginLeft: '12px'}}
+                                            label={'girl'}
+                                            style={{margin: '12px'}}
+                                            onTouchTap={this.handleButtons.bind(this, 'girl')}
+                                        />
+                                        <RaisedButton
+                                            default ={true}
+                                            icon={<FontAwesome className='fa fa-transgender' name=''/>}
+                                            //style={{marginLeft: '12px'}}
+                                            label={'trans'}
+                                            style={{margin: '12px'}}
+                                            onTouchTap={this.handleButtons.bind(this, 'trans')}
+                                        />
+                                        <br />
+                                        <Divider />
+                                     </div>
                                     <br />
 
-                                    {/*
-                                     ** Sexe choice
-                                     */}
-                                    <RaisedButton
-                                        primary ={true}
-                                        icon={<FontAwesome className='fa fa-mars' name=''/>}
-                                        //style={{marginLeft: '12px'}}
-                                        label={'boy'}
-                                        style={{margin: '12px'}}
-                                        onTouchTap={this.handleButtons.bind(this, 'boy')}
-                                    />
-                                    <RaisedButton
-                                        secondary ={true}
-                                        icon={<FontAwesome className='fa fa-venus' name=''/>}
-                                        //style={{marginLeft: '12px'}}
-                                        label={'girl'}
-                                        style={{margin: '12px'}}
-                                        onTouchTap={this.handleButtons.bind(this, 'girl')}
-                                    />
-                                    <RaisedButton
-                                        default ={true}
-                                        icon={<FontAwesome className='fa fa-transgender' name=''/>}
-                                        //style={{marginLeft: '12px'}}
-                                        label={'trans'}
-                                        style={{margin: '12px'}}
-                                        onTouchTap={this.handleButtons.bind(this, 'trans')}
-                                    />
-                                    <br />
+                                    <div>
+                                        You like
+                                        <br />
+                                        <Checkbox
+                                            label="Boys"
+                                            value="b"
+                                            style={{marginBottom: 16}}
+                                            defaultChecked={this.state.user.loves.b}
+                                            onCheck={this.onCheck.bind(this)}
+                                        />
+                                        <Checkbox
+                                            label="Girls"
+                                            value="g"
+                                            style={{marginBottom: 16}}
+                                            defaultChecked={this.state.user.loves.g}
+                                            onCheck={this.onCheck.bind(this)}
+                                        />
+                                        <Checkbox
+                                            label="Trans"
+                                            value="t"
+                                            style={{marginBottom: 16}}
+                                            defaultChecked={this.state.user.loves.t}
+                                            onCheck={this.onCheck.bind(this)}
+                                        />
+                                        <br />
+                                        <Divider />
+                                    </div>
 
                                     {/*
                                     ** Bio
