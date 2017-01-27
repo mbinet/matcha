@@ -29,6 +29,11 @@ export class Profile extends React.Component {
                 age: "",
                 mail: "",
                 sex: "",
+                loves: {
+                    // b: true,
+                    // g: true,
+                    // t: true,
+                },
                 photo: {},
                 bio: "",
                 tags: []
@@ -52,9 +57,12 @@ export class Profile extends React.Component {
     getLove() {
         var maps = <FontAwesome className='fa fa-map-marker' name='' alt='mars' title='mars'/>;
         var text = "Paris | interested in";
-        var mars = <FontAwesome className='fa fa-mars' name='' alt='mars' title='men'/>;
-        var venus = <FontAwesome className='fa fa-venus' name='' alt='venus' title='women'/>;
-        var trans = <FontAwesome className='fa fa-transgender' name='' alt='transgender' title='trans'/>;
+        if(this.state.user.loves.b == 'true')
+            var mars = <FontAwesome className='fa fa-mars' name='' alt='mars' title='men' style={{color: 'rgb(0, 188, 212)'}}/>;
+        if(this.state.user.loves.g == 'true')
+            var venus = <FontAwesome className='fa fa-venus' name='' alt='venus' title='women' style={{color: 'pink'}}/>;
+        if(this.state.user.loves.t == 'true')
+            var trans = <FontAwesome className='fa fa-transgender' name='' alt='transgender' title='trans' style={{color: 'purple'}}/>;
         var res = <div>{maps} {text} {mars} {venus} {trans}</div>;
         return res;
     }

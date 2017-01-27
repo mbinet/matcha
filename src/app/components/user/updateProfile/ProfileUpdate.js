@@ -27,9 +27,9 @@ export class ProfileUpdate extends React.Component {
                 mail: "",
                 sex: "",
                 loves: {
-                    b: false,
-                    g: false,
-                    t: false,
+                    // b: true,
+                    // g: true,
+                    // t: true,
                 },
                 photo: {
                     p1: "",
@@ -57,17 +57,18 @@ export class ProfileUpdate extends React.Component {
                 response.body.user.loves.b = JSON.parse(response.body.user.loves.b);
                 response.body.user.loves.g = JSON.parse(response.body.user.loves.g);
                 response.body.user.loves.t = JSON.parse(response.body.user.loves.t);
-            this.setState({
-                user: response.body.user,
-                saveDisabled: true,
-                activeSnack: false
-            });
-            cookie.save('user', response.body.user, { path: '/'});
+                this.setState({
+                    user: response.body.user,
+                    saveDisabled: true,
+                    activeSnack: false
+                });
+
+                cookie.save('user', response.body.user, { path: '/'});
 
             // this.setState({
             //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
             // });
-        });
+            });
     }
 
     enableSaving() {
@@ -77,6 +78,7 @@ export class ProfileUpdate extends React.Component {
     }
 
     handleEnd() {
+        console.log(this.state.user.loves)
         this.refs.autocomplete.submitForm(() =>  {
             this.refs.autocomplete.componentWillMount();
         });
@@ -88,6 +90,7 @@ export class ProfileUpdate extends React.Component {
             .send({ name: this.state.user.name })
             .send({ age: this.state.user.age })
             .send({ sex: this.state.user.sex })
+            .send({ loves: this.state.user.loves })
             .send({ mail: this.state.user.mail })
             .send({ photo: this.state.user.photo })
             .send({ bio: this.state.user.bio })
@@ -146,7 +149,12 @@ export class ProfileUpdate extends React.Component {
     }
 
     onCheck(event, isInputChecked) {
-        this.state.user.loves[event.target.value] = isInputChecked;
+        console.log(isInputChecked)
+        // this.state.user.loves[event.target.value] = isInputChecked;
+        this.state.user.loves[event.target.value] = !this.state.user.loves[event.target.value];
+        this.setState({
+            saveDisabled: false
+        })
     }
 
     render() {
@@ -298,7 +306,7 @@ export class ProfileUpdate extends React.Component {
                                          */}
                                         <Divider />
                                         <br />
-                                        You are
+                                         <h4>You are</h4>
                                         <br />
                                         <RaisedButton
                                             primary ={true}
@@ -324,13 +332,14 @@ export class ProfileUpdate extends React.Component {
                                             style={{margin: '12px'}}
                                             onTouchTap={this.handleButtons.bind(this, 'trans')}
                                         />
-                                        <br />
+                                         <br />
+                                         <br />
                                         <Divider />
                                      </div>
                                     <br />
 
                                     <div>
-                                        You like
+                                        <h4>You like</h4>
                                         <br />
                                         <Checkbox
                                             label="Boys"

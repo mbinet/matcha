@@ -13,6 +13,7 @@ import {ProfileDelete} from "./components/user/deleteProfile/ProfileDelete";
 import {SignUp} from "./components/entry/SignUp";
 import {LogIn} from "./components/entry/LogIn";
 import {LogOut} from "./components/entry/LogOut";
+import {Browse} from "./components/browse/Browse";
 
 injectTapEventPlugin();
 
@@ -32,6 +33,7 @@ class App extends React.Component {
                         <Route path={"signup"} component={SignUp} />
                         <Route path={"login"} component={LogIn} />
                         <Route path={"logout"} component={LogOut} />
+                        <Route path={"browse"} component={Browse} />
                     </Route>
                 </Router>
             </MuiThemeProvider>
