@@ -3,13 +3,49 @@ import {Link} from "react-router";
 import FlatButton from 'material-ui/FlatButton';
 import cookie from 'react-cookie';
 import RaisedButton from 'material-ui/RaisedButton';
+import Request from 'superagent';
 
 export class Header extends React.Component {
+
+    showPosition(position) {
+        console.log(position);
+        console.log(position.coords.latitude);
+        console.log(position.coords.longitude);
+        var user = cookie.load('user');
+        if (position) {
+            var url = "http://54.93.182.167:3000/api/users/updateOne/" + user._id;
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({ token : cookie.load('token') })
+                .send({ user : cookie.load('user') })
+                .send({ long : position.coords.longitude })
+                .send({ lat : position.coords.latitude })
+                .then((response) => {
+                    console.log(response.body.message)
+                });
+        }
+    }
+
+    handleLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(this.showPosition);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }
 
     componentWillMount() {
         this.state = {
             user: cookie.load('user'),
             token: cookie.load('token')
+        }
+
+        if(this.state.user) {
+            for(var i = 0; i < 10; i++) {
+                setTimeout(function() {
+                    this.handleLocation()
+                }, 1000)
+            }
         }
     }
 
