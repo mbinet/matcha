@@ -5,30 +5,47 @@ import cookie from 'react-cookie';
 import RaisedButton from 'material-ui/RaisedButton';
 import Request from 'superagent';
 
+function sendPostionToDb(long, lat, city) {
+
+    console.log("long : " + long + " lat : " + lat + " City : " + city);
+    var user = cookie.load('user');
+    var url = "http://54.93.182.167:3000/api/users/updateOne/" + user._id;
+    Request.post(url)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .send({ token : cookie.load('token') })
+        .send({ name : user.name })
+        .send({ long : long })
+        .send({ lat : lat })
+        .send({ city : city || "Heaven" })
+        .then((response) => {
+            console.log(response.body.message)
+        });
+}
+
+
 export class Header extends React.Component {
 
     showPosition(position) {
-        console.log(position);
-        console.log(position.coords.latitude);
-        console.log(position.coords.longitude);
-        var user = cookie.load('user');
         if (position) {
-            var url = "http://54.93.182.167:3000/api/users/updateOne/" + user._id;
-            Request.post(url)
-                .set('Content-Type', 'application/x-www-form-urlencoded')
-                .send({ token : cookie.load('token') })
-                .send({ user : cookie.load('user') })
-                .send({ long : position.coords.longitude })
-                .send({ lat : position.coords.latitude })
-                .then((response) => {
-                    console.log(response.body.message)
-                });
+            sendPostionToDb(position.coords.longitude, position.coords.latitude);
         }
     }
 
     handleLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(this.showPosition);
+            navigator.geolocation.getCurrentPosition(this.showPosition.bind(this),
+                function (error) {
+                    // if you can't get users location (ex: user declined)
+
+                    // getting the ip
+                    Request.get('https://api.ipify.org?format=json')
+                        .then((response) => {
+                            Request.get('https://freegeoip.net/json/' + response.body.ip)
+                                .then((response) => {
+                                    sendPostionToDb(response.body.longitude, response.body.latitude, response.body.city)
+                                });
+                        });
+                });
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
@@ -41,11 +58,7 @@ export class Header extends React.Component {
         }
 
         if(this.state.user) {
-            for(var i = 0; i < 10; i++) {
-                setTimeout(function() {
-                    this.handleLocation()
-                }, 1000)
-            }
+            this.handleLocation()
         }
     }
 

@@ -58,7 +58,7 @@ export default class photoGallery extends React.Component {
                         {
                             src: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
                             thumbnail: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
-                            thumbnailWidth: newImg.width,
+                            thumbnailWidth: newImg.width || 0,
                             thumbnailHeight: newImg.height,
                             caption: this.state.user.name
                         }

@@ -71,13 +71,13 @@ export class Profile extends React.Component {
         var res;
         switch (sex) {
             case "boy":
-                res = <FontAwesome className='fa fa-mars' name='' alt='mars' title='men'/>
+                res = <FontAwesome className='fa fa-mars' name='' alt='mars' title='men' style={{color: 'rgb(0, 188, 212)'}}/>
                 break;
             case "girl":
-                res = <FontAwesome className='fa fa-venus' name='' alt='venus' title='women'/>
+                res = <FontAwesome className='fa fa-venus' name='' alt='venus' title='women' style={{color: 'pink'}}/>
                 break;
             case "trans":
-                res = <FontAwesome className='fa fa-transgender' name='' alt='transgender' title='trans'/>
+                res = <FontAwesome className='fa fa-transgender' name='' alt='transgender' title='trans' style={{color: 'purple'}}/>
                 break;
         }
         return res

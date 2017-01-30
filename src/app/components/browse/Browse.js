@@ -7,6 +7,7 @@ import sha256 from 'sha256';
 import cookie from 'react-cookie';
 import { browserHistory } from "react-router";
 import {Link} from "react-router";
+import UserCard from './UserCard';
 
 
 
@@ -36,19 +37,16 @@ export class Browse extends React.Component {
     render() {
         var users = _.map(this.state.users, (user) => {
             return (
-                <li key={user._id}>
-                    <Link to={"/profile/" + user._id} activeStyle={{color: "red"}}>{user.name}</Link>
-                    <span> | </span>
-                    <Link to={"/profile/update/" + user._id} activeStyle={{color: "red"}}>Edit</Link>
-                    <span> | </span>
-                    <Link to={"/profile/delete/" + user._id} activeStyle={{color: "red"}}>Delete</Link>
-                </li>)
+                <div className="col-sm-6" style={{marginBottom: 10, height: 300}} key={user._id}>
+                        <UserCard user={user}/>
+                </div>
+                )
         });
 
         return (
-            <div>
-                <ul>{users}</ul>
-
+            <div style={{marginBottom: 50, height: '100%'}}>
+                {/*<UserCard/>*/}
+                {users}
             </div>
         );
     }

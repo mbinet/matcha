@@ -11,10 +11,10 @@ import UpdateTags from './UpdateTags';
 import cookie from 'react-cookie';
 import FontAwesome from 'react-fontawesome';
 import {Tags} from "../profile/Tags"
-
 import Divider from 'material-ui/Divider';
-
 import Checkbox from 'material-ui/Checkbox';
+import Autocomplete from 'react-google-autocomplete';
+
 export class ProfileUpdate extends React.Component {
 
     constructor() {
@@ -40,11 +40,14 @@ export class ProfileUpdate extends React.Component {
                 },
                 bio: "",
                 tags: [],
+                city: ""
             },
             saveDisabled: true,
             activeSnack: false,
             msgSnack: "",
             photoIndex: 0,
+            long: "",
+            lat: ""
         };
     }
 
@@ -94,6 +97,9 @@ export class ProfileUpdate extends React.Component {
             .send({ mail: this.state.user.mail })
             .send({ photo: this.state.user.photo })
             .send({ bio: this.state.user.bio })
+            .send({ long: this.state.long })
+            .send({ lat: this.state.lat })
+            .send({ city: this.state.city })
             .end((response) => {
                 this.setState({
                     activeSnack: true,
@@ -299,7 +305,6 @@ export class ProfileUpdate extends React.Component {
                                         <br />
                                     </div>
 
-
                                      <div id="sexChoice">
                                         {/*
                                          ** Sexe choice
@@ -388,6 +393,25 @@ export class ProfileUpdate extends React.Component {
                                         isDeletable={true}
                                     />
                                     <br/>
+
+                                    <Autocomplete
+                                        style={{width: '90%'}}
+                                        onPlaceSelected={(place) => {
+
+                                            // check if a real city is actually selected, not just random text.
+                                            if (place.address_components) {
+                                                this.setState({
+                                                    long: place.geometry.location.lng(),
+                                                    lat: place.geometry.location.lat(),
+                                                    city: place.formatted_address,
+                                                    saveDisabled: false
+                                                })
+                                            }
+                                        }}
+                                        types={['(cities)']}
+                                        //componentRestrictions={{country: "fr"}}
+                                    />
+
                                 </div>
                             </CardText>
                         </div>
