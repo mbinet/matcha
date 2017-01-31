@@ -7,7 +7,6 @@ import Request from 'superagent';
 
 function sendPostionToDb(long, lat, city) {
 
-    console.log("long : " + long + " lat : " + lat + " City : " + city);
     var user = cookie.load('user');
     var url = "http://54.93.182.167:3000/api/users/updateOne/" + user._id;
     Request.post(url)
@@ -27,7 +26,14 @@ export class Header extends React.Component {
 
     showPosition(position) {
         if (position) {
-            sendPostionToDb(position.coords.longitude, position.coords.latitude);
+            var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='
+                + position.coords.latitude + ','
+                + position.coords.longitude + '&sensor=true';
+            Request.get(url)
+                .then((response) => {
+                    var addr = response.body.results[2].address_components[1].short_name;
+                    sendPostionToDb(position.coords.longitude, position.coords.latitude, addr);
+                });
         }
     }
 
@@ -42,7 +48,19 @@ export class Header extends React.Component {
                         .then((response) => {
                             Request.get('https://freegeoip.net/json/' + response.body.ip)
                                 .then((response) => {
-                                    sendPostionToDb(response.body.longitude, response.body.latitude, response.body.city)
+                                    if (!response.body.city) {
+                                        var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='
+                                            + response.body.latitude + ','
+                                            + response.body.longitude + '&sensor=true';
+                                        Request.get(url)
+                                            .then((response) => {
+                                                var addr = response.body.results[2].address_components[1].short_name
+                                                sendPostionToDb(response.body.longitude, response.body.latitude, addr)
+                                            });
+                                    }
+                                    else {
+                                        sendPostionToDb(response.body.longitude, response.body.latitude, response.body.city)
+                                    }
                                 });
                         });
                 });

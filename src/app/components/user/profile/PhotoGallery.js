@@ -22,7 +22,6 @@ export default class photoGallery extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("Bon user id :", nextProps.userID);
         var url = "http://54.93.182.167:3000/api/users/getOne/" + nextProps.userID;
         Request.post(url)
             .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -53,7 +52,6 @@ export default class photoGallery extends React.Component {
             _.forEach(this.state.user.photo, function (p) {
                 if (p != "") {
                     var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/Photos/" + p);
-                    console.log("width: ", newImg.height);
                     img.push(
                         {
                             src: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,

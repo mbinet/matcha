@@ -36,7 +36,7 @@ export default class UserCard extends React.Component {
         var nameSexe = <div>{user.name} {sex}</div>
         var subtitle = (
             <div>
-                {mapsIcon} Paris
+                {mapsIcon} {user.city}
             </div>
         )
         return (

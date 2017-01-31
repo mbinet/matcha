@@ -403,7 +403,7 @@ export class ProfileUpdate extends React.Component {
                                                 this.setState({
                                                     long: place.geometry.location.lng(),
                                                     lat: place.geometry.location.lat(),
-                                                    city: place.formatted_address,
+                                                    city: place.name,
                                                     saveDisabled: false
                                                 })
                                             }
