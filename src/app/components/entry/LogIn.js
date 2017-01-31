@@ -70,6 +70,16 @@ export class LogIn extends React.Component {
     }
 
     handleSignInSuccess(token, user) {
+
+        /*
+        In case of need to set an expire cookie date
+         */
+        // var now = new Date();
+        // var time = now.getTime();
+        // time += 3600 * 1000; //one hour
+        // now.setTime(time);
+        // cookie.save('token', token, { path: '/', expires: now});
+
         cookie.save('token', token, { path: '/'});
         cookie.save('user', user, { path: '/'});
         window.location.reload();

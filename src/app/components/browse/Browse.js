@@ -37,7 +37,7 @@ export class Browse extends React.Component {
     render() {
         var users = _.map(this.state.users, (user) => {
             return (
-                <div className="col-sm-6" style={{marginBottom: 10, height: 300}} key={user._id}>
+                <div className="col-sm-6 " style={{marginBottom: 10, height: 300, marginLeft: 'auto', marginRight: 'auto'}} key={user._id}>
                         <UserCard user={user}/>
                 </div>
                 )

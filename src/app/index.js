@@ -14,29 +14,39 @@ import {SignUp} from "./components/entry/SignUp";
 import {LogIn} from "./components/entry/LogIn";
 import {LogOut} from "./components/entry/LogOut";
 import {Browse} from "./components/browse/Browse";
+import { SocketProvider } from 'socket.io-react';
+import io from 'socket.io-client';
 
 injectTapEventPlugin();
+
+
+const socket = io.connect("http://54.93.182.167:3000/");
+// socket.emit('test', 'bonjour a tous')
+socket.on('test', msg => console.log(msg));
+const DOMNode = document.getElementById('renderTarget');
 
 class App extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
-                <Router history={browserHistory}>
-                    <Route path={"/"} component={Root} >
-                        <IndexRoute component={Home} />
-                        <Route path={"user"} component={User} />
-                        <Route path={"home"} component={Home} />
-                        <Route path={"profile/update/:id"} component={ProfileUpdate} />
-                        <Route path={"profile/delete/:id"} component={ProfileDelete} />
-                        <Route path={"profile/:id"} component={Profile} />
-                        <Route path={"signup"} component={SignUp} />
-                        <Route path={"login"} component={LogIn} />
-                        <Route path={"logout"} component={LogOut} />
-                        <Route path={"browse"} component={Browse} />
-                    </Route>
-                </Router>
-            </MuiThemeProvider>
+            <SocketProvider socket={socket}>
+                <MuiThemeProvider>
+                    <Router history={browserHistory}>
+                        <Route path={"/"} component={Root} >
+                            <IndexRoute component={Home} />
+                            <Route path={"user"} component={User} />
+                            <Route path={"home"} component={Home} />
+                            <Route path={"profile/update/:id"} component={ProfileUpdate} />
+                            <Route path={"profile/delete/:id"} component={ProfileDelete} />
+                            <Route path={"profile/:id"} component={Profile} />
+                            <Route path={"signup"} component={SignUp} />
+                            <Route path={"login"} component={LogIn} />
+                            <Route path={"logout"} component={LogOut} />
+                            <Route path={"browse"} component={Browse} />
+                        </Route>
+                    </Router>
+                </MuiThemeProvider>
+            </SocketProvider>
         )
     };
 }

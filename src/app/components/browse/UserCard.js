@@ -41,7 +41,7 @@ export default class UserCard extends React.Component {
         )
         return (
             <div>
-                <Card style={{maxWidth: 300}}>
+                <Card style={{maxWidth: 300 , marginLeft: 'auto', marginRight: 'auto'}}>
                     <Link to={'/profile/' + user._id}>
                         <CardHeader
                             title={nameSexe}
@@ -54,7 +54,7 @@ export default class UserCard extends React.Component {
                         >
                             <img
                                 src={'https://matcha-bucket.s3.amazonaws.com/Photos/' + user.photo.p1}
-                                //style={{height: '50px !important'}}
+                                style={{objectFit: 'cover', height: 200}}
                                 //height="100"
                             />
                         </CardMedia>

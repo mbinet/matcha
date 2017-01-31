@@ -38,7 +38,7 @@ export default class photoGallery extends React.Component {
 
         newImg.onload = function() {
             var height = newImg.height;
-            var width = newImg.width;
+            var width = newImg.width || 0;
         };
 
         newImg.src = imgSrc;
