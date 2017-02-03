@@ -51,8 +51,20 @@ export class Profile extends React.Component {
                 this.setState({
                     user: response.body.user,
                 });
-                console.log(this.state.user)
+
+                // sending a visit event
+                var url = "http://54.93.182.167:3000/api/visit/newVisit";
+                var user = cookie.load('user');
+                Request.post(url)
+                    .set('Content-Type', 'application/x-www-form-urlencoded')
+                    .send({ token: cookie.load('token') })
+                    .send({ from: user })
+                    .send({ to: this.state.user._id })
+                    .then((response) => {
+                        console.log("Cool.")
+                    });
         });
+
     }
 
     getLove() {

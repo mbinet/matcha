@@ -38,7 +38,7 @@ export default class photoGallery extends React.Component {
 
         newImg.onload = function() {
             var height = newImg.height;
-            var width = newImg.width || 0;
+            var width = newImg.width;
         };
 
         newImg.src = imgSrc;
@@ -51,12 +51,13 @@ export default class photoGallery extends React.Component {
         if(this.state.user.photo.p1 != "") {
             _.forEach(this.state.user.photo, function (p) {
                 if (p != "") {
+                    console.warn(p);
                     var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/Photos/" + p);
                     img.push(
                         {
                             src: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
                             thumbnail: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
-                            thumbnailWidth: newImg.width || 0,
+                            thumbnailWidth: newImg.width,
                             thumbnailHeight: newImg.height,
                             caption: this.state.user.name
                         }

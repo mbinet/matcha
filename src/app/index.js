@@ -14,6 +14,7 @@ import {SignUp} from "./components/entry/SignUp";
 import {LogIn} from "./components/entry/LogIn";
 import {LogOut} from "./components/entry/LogOut";
 import {Browse} from "./components/browse/Browse";
+import {Notifications} from "./components/user/Notifications";
 import { SocketProvider } from 'socket.io-react';
 import io from 'socket.io-client';
 
@@ -43,6 +44,7 @@ class App extends React.Component {
                             <Route path={"login"} component={LogIn} />
                             <Route path={"logout"} component={LogOut} />
                             <Route path={"browse"} component={Browse} />
+                            <Route path={"notifications"} component={Notifications} />
                         </Route>
                     </Router>
                 </MuiThemeProvider>
