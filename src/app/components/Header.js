@@ -1,9 +1,9 @@
 import React from "react";
 import {Link} from "react-router";
-import FlatButton from 'material-ui/FlatButton';
 import cookie from 'react-cookie';
-import RaisedButton from 'material-ui/RaisedButton';
 import Request from 'superagent';
+import FontAwesome from 'react-fontawesome';
+import io from 'socket.io-client';
 
 function sendPostionToDb(long, lat, city) {
 
@@ -23,6 +23,13 @@ function sendPostionToDb(long, lat, city) {
 
 
 export class Header extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            notifs: ""
+        }
+    }
 
     showPosition(position) {
         if (position) {
@@ -72,37 +79,61 @@ export class Header extends React.Component {
     componentWillMount() {
         this.state = {
             user: cookie.load('user'),
-            token: cookie.load('token')
+            token: cookie.load('token'),
+            notifs: "Notifications"
         }
 
         if(this.state.user) {
             this.handleLocation()
         }
+
+        // if user wasn't connected when he got new notifications
+        if(this.state.user.newNotifs == 'true') {
+            this.setState({
+                notifs: 'new'
+            })
+        }
+
+        // when user gets new visit
+        const socket = io.connect("http://54.93.182.167:3000/");
+        socket.on('newVisit', msg => {
+            if (msg.to == this.state.user._id) {
+                console.log('Nouvelle notif')
+                this.setState({
+                    notifs: 'new'
+                })
+            }
+        });
+
+        socket.on('noNewNotifs', msg => {
+            if (msg.to == this.state.user._id) {
+                this.setState({
+                    notifs: ''
+                })
+            }
+        });
     }
 
     render () {
         var rightBar;
+        var stringNotifs;
+        if (this.state.notifs == 'new') {
+            stringNotifs = <span>Notifications <FontAwesome className='fa fa-dot-circle-o' name='' alt='mars' title='men' style={{color: 'red'}}/></span>;
+        }
+        else {
+            stringNotifs = 'Notifications'
+        }
         if (this.state.user) {
             rightBar =
                 <span>
                     <ul className="nav navbar-nav">
                         <li><Link to={"/user"} activeStyle={{color: "red"}}>Users</Link></li>
                         <li><Link to={'/profile/update/' + this.state.user._id} activeStyle={{color: "red"}}>Update Profile</Link></li>
-                    </ul>
-                    <ul className="nav navbar-nav navbar-right">
-                        <Link to={'/profile/' + this.state.user._id}>
-                            <RaisedButton
-                                label={'Hi ' + this.state.user.name}
-                                primary={true}
-                            />
-                        </Link>
-                        <Link to={'/logout'}>
-                            <RaisedButton
-                                label='Logout'
-                                secondary={true}
-                                icon={<i className="glyphicon glyphicon-off"></i>}
-                            />
-                        </Link>
+                        <li>
+                            <Link to={'/notifications/'} activeStyle={{color: "red"}}>
+                                {stringNotifs}
+                            </Link>
+                        </li>
                     </ul>
                 </span>
         }

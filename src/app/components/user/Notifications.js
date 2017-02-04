@@ -34,11 +34,10 @@ export class Notifications extends React.Component {
             // var photoName = String(n.fromPhoto)
             data.push(
                 <div key={n._id} style={{marginBottom: 10}}>
-
                     <Card>
                         <CardHeader
-                            title={<Link to={'/profile/' + n.from}>{n.fromName}</Link>}
-                            subtitle="visited your profile"
+                            title={<span><Link to={'/profile/' + n.from}>{n.fromName}</Link> visited your profile</span>}
+                            subtitle={<small>{n.dateTime}</small>}
                             avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
                         />
                     </Card>
