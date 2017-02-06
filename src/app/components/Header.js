@@ -4,6 +4,7 @@ import cookie from 'react-cookie';
 import Request from 'superagent';
 import FontAwesome from 'react-fontawesome';
 import io from 'socket.io-client';
+import RaisedButton from 'material-ui/RaisedButton';
 
 function sendPostionToDb(long, lat, city) {
 
@@ -77,41 +78,69 @@ export class Header extends React.Component {
     }
 
     componentWillMount() {
-        this.state = {
-            user: cookie.load('user'),
-            token: cookie.load('token'),
-            notifs: "Notifications"
-        }
+        var user = {}
+        if (user = cookie.load('user')) {
+            this.state = {
+                user: cookie.load('user'),
+                token: cookie.load('token'),
+                notifs: "Notifications"
+            }
 
-        if(this.state.user) {
-            this.handleLocation()
-        }
+            if (this.state.user) {
+                this.handleLocation()
+            }
 
-        // if user wasn't connected when he got new notifications
-        if(this.state.user.newNotifs == 'true') {
-            this.setState({
-                notifs: 'new'
-            })
-        }
-
-        // when user gets new visit
-        const socket = io.connect("http://54.93.182.167:3000/");
-        socket.on('newVisit', msg => {
-            if (msg.to == this.state.user._id) {
-                console.log('Nouvelle notif')
+            // if user wasn't connected when he got new notifications
+            if (this.state.user.newNotifs == 'true') {
                 this.setState({
                     notifs: 'new'
                 })
             }
-        });
 
-        socket.on('noNewNotifs', msg => {
-            if (msg.to == this.state.user._id) {
-                this.setState({
-                    notifs: ''
-                })
-            }
-        });
+            // when user gets new visit
+            const socket = io.connect("http://54.93.182.167:3000/");
+            socket.on('newVisit', msg => {
+                if (msg.to == this.state.user._id) {
+                    console.log('Nouvelle notif')
+                    this.setState({
+                        notifs: 'new'
+                    })
+                    this.reloadUser()
+                }
+            });
+
+            // when user reads its notifs
+            socket.on('noNewNotifs', msg => {
+                if (msg.to == this.state.user._id) {
+                    this.setState({
+                        notifs: ''
+                    })
+                    this.reloadUser()
+                }
+            });
+
+            // when user get a new like
+            socket.on('newLike', msg => {
+                if (msg.to == this.state.user._id) {
+                    console.log('Nouvelle notif')
+                    this.setState({
+                        notifs: 'new'
+                    })
+                    this.reloadUser()
+                }
+            });
+        }
+    }
+
+    reloadUser() {
+        var user = cookie.load('user')
+        var url = "http://54.93.182.167:3000/api/users/getOne/" + user._id;
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : cookie.load('token') })
+            .then((response) => {
+                cookie.save('user', response.body.user, {path: '/'});
+            })
     }
 
     render () {
@@ -134,6 +163,21 @@ export class Header extends React.Component {
                                 {stringNotifs}
                             </Link>
                         </li>
+                    </ul>
+                    <ul className="nav navbar-nav navbar-right">
+                        <Link to={'/profile/' + this.state.user._id}>
+                            <RaisedButton
+                                label={'Hi ' + this.state.user.name}
+                                primary={true}
+                            />
+                        </Link>
+                        <Link to={'/logout'}>
+                            <RaisedButton
+                                label='Logout'
+                                secondary={true}
+                                icon={<i className="glyphicon glyphicon-off"></i>}
+                            />
+                        </Link>
                     </ul>
                 </span>
         }

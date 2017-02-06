@@ -51,7 +51,6 @@ export default class photoGallery extends React.Component {
         if(this.state.user.photo.p1 != "") {
             _.forEach(this.state.user.photo, function (p) {
                 if (p != "") {
-                    console.warn(p);
                     var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/Photos/" + p);
                     img.push(
                         {

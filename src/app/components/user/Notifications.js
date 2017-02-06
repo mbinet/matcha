@@ -32,17 +32,49 @@ export class Notifications extends React.Component {
         var data = [];
         _.forEach(this.state.notifs, function(n) {
             // var photoName = String(n.fromPhoto)
-            data.push(
-                <div key={n._id} style={{marginBottom: 10}}>
-                    <Card>
-                        <CardHeader
-                            title={<span><Link to={'/profile/' + n.from}>{n.fromName}</Link> visited your profile</span>}
-                            subtitle={<small>{n.dateTime}</small>}
-                            avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
-                        />
-                    </Card>
-                </div>
-            )
+            console.log(n.type)
+            if (n.type == "visit") {
+                data.push(
+                    <div key={n._id} style={{marginBottom: 10}}>
+                        <Card>
+                            <CardHeader
+                                title={<span><Link
+                                    to={'/profile/' + n.from}>{n.fromName}</Link> visited your profile</span>}
+                                subtitle={<small>{n.dateTime}</small>}
+                                avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
+                            />
+                        </Card>
+                    </div>
+                )
+            }
+            else if (n.type == "like") {
+                data.push(
+                    <div key={n._id} style={{marginBottom: 10}}>
+                        <Card>
+                            <CardHeader
+                                title={<span style={{color: 'red'}}><Link
+                                    to={'/profile/' + n.from}>{n.fromName}</Link> liked your profile</span>}
+                                subtitle={<small>{n.dateTime}</small>}
+                                avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
+                            />
+                        </Card>
+                    </div>
+                )
+            }
+            else if (n.type == "unlike") {
+                data.push(
+                    <div key={n._id} style={{marginBottom: 10}}>
+                        <Card>
+                            <CardHeader
+                                title={<span style={{color: 'blue'}}><Link
+                                    to={'/profile/' + n.from}>{n.fromName}</Link> unliked your profile</span>}
+                                subtitle={<small>{n.dateTime}</small>}
+                                avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
+                            />
+                        </Card>
+                    </div>
+                )
+            }
         })
         return (
             <div>

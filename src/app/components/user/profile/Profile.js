@@ -7,6 +7,7 @@ import {Tags} from "./Tags"
 import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
 import PhotoGallery from './PhotoGallery';
 import cookie from 'react-cookie';
+import Dialog from 'material-ui/Dialog';
 
 const styles = {
     chip: {
@@ -38,33 +39,88 @@ export class Profile extends React.Component {
                 bio: "",
                 tags: [],
                 city: ""
-            }
+            },
+            canLike: true
         };
     }
 
     componentWillMount() {
         var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : cookie.load('token') })
+            .then((response) => {
+            this.setState({
+                user: response.body.user,
+            });
+
+            // sending a visit event
+            var url = "http://54.93.182.167:3000/api/visit/newVisit";
+            var user = cookie.load('user');
+            console.warn(this.state.user._id)
             Request.post(url)
                 .set('Content-Type', 'application/x-www-form-urlencoded')
-                .send({ token : cookie.load('token') })
+                .send({ token: cookie.load('token') })
+                .send({ from: user })
+                .send({ to: this.state.user._id })
                 .then((response) => {
-                this.setState({
-                    user: response.body.user,
+                    console.log("Notif sent.")
                 });
 
-                // sending a visit event
-                var url = "http://54.93.182.167:3000/api/visit/newVisit";
-                var user = cookie.load('user');
-                Request.post(url)
-                    .set('Content-Type', 'application/x-www-form-urlencoded')
-                    .send({ token: cookie.load('token') })
-                    .send({ from: user })
-                    .send({ to: this.state.user._id })
-                    .then((response) => {
-                        console.log("Cool.")
-                    });
+            // asking if user can like or not
+            var url = "http://54.93.182.167:3000/api/like/canILike";
+            var user = cookie.load('user');
+            console.warn(this.state.user._id)
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({ token: cookie.load('token') })
+                .send({ from: user })
+                .send({ to: this.state.user._id })
+                .then((response) => {
+
+                    this.setState({
+                        canLike: (response.body.result == 'true')
+                    })
+                    // this.state.canLike = (response.body.result == 'true');
+                    console.log(this.state.canLike)
+                });
         });
 
+    }
+
+    sendLike() {
+        var user = cookie.load('user');
+        if (user.photo.p1 == '400.jpeg') {
+            alert(this.state.user.name + 'won\'t be interested in this kitten, add a photo of you ;)')
+        }
+        else {
+            // sending a like event
+            var url = "http://54.93.182.167:3000/api/like/newLike";
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({ token: cookie.load('token') })
+                .send({ from: user })
+                .send({ to: this.state.user._id })
+                .then((response) => {
+                    console.log("Like sent.")
+                    this.componentWillMount()
+                });
+        }
+    }
+
+    sendUnlike() {
+        // deleting the like
+        var url = "http://54.93.182.167:3000/api/like/deleteLike";
+        var user = cookie.load('user');
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token: cookie.load('token') })
+            .send({ from: user })
+            .send({ to: this.state.user._id })
+            .then((response) => {
+                console.log("Like deleted.")
+                this.componentWillMount()
+            });
     }
 
     getLove() {
@@ -94,6 +150,18 @@ export class Profile extends React.Component {
                 res = <FontAwesome className='fa fa-transgender' name='' alt='transgender' title='trans' style={{color: 'purple'}}/>
                 break;
         }
+        return res
+    }
+
+    getLikeOrNot() {
+        if (this.state.canLike == true) {
+            var likeBtn = <FlatButton label={<FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>} onTouchTap={() => this.sendLike()}/>
+        }
+        else {
+            var likeBtn = <div><small>You like {this.state.user.name}</small><FlatButton label='Unlike' onTouchTap={() => this.sendUnlike()}/></div>
+        }
+        // var res3 = <FlatButton label={<FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>} />
+        var res = <div>{likeBtn}</div>
         return res
     }
 
@@ -128,8 +196,7 @@ export class Profile extends React.Component {
                             <PhotoGallery userID={this.state.user._id}/>
                         </CardText>
                         <CardActions style={{textAlign: 'center'}}>
-                            <FlatButton label={like} />
-                            <FlatButton label={<FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>} />
+                            {this.getLikeOrNot()}
                         </CardActions>
                     </Card>
                 </div>
