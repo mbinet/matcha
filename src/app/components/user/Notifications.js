@@ -52,8 +52,22 @@ export class Notifications extends React.Component {
                     <div key={n._id} style={{marginBottom: 10}}>
                         <Card>
                             <CardHeader
-                                title={<span style={{color: 'red'}}><Link
+                                title={<span style={{color: 'pink'}}><Link
                                     to={'/profile/' + n.from}>{n.fromName}</Link> liked your profile</span>}
+                                subtitle={<small>{n.dateTime}</small>}
+                                avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
+                            />
+                        </Card>
+                    </div>
+                )
+            }
+            else if (n.type == "likeBack") {
+                data.push(
+                    <div key={n._id} style={{marginBottom: 10}}>
+                        <Card>
+                            <CardHeader
+                                title={<span style={{color: 'red'}}><Link
+                                    to={'/profile/' + n.from}>{n.fromName}</Link> liked your profile back !</span>}
                                 subtitle={<small>{n.dateTime}</small>}
                                 avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
                             />

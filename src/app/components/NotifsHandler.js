@@ -38,6 +38,15 @@ export class Notifs extends React.Component {
                 });
             }
         });
+
+        socket.on('newLikeBack', msg => {
+            var user = cookie.load('user');
+            if (msg.to == user._id) {
+                Notification.requestPermission( function(status) {
+                    var n = new Notification('Hello ' + user.name + ' :)', {body: msg.from.name + ' liked you back !'});
+                });
+            }
+        });
     }
     render() {return(<span></span>)}
 }

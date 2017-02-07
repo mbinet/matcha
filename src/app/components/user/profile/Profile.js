@@ -38,9 +38,11 @@ export class Profile extends React.Component {
                 photo: {},
                 bio: "",
                 tags: [],
-                city: ""
+                city: "",
+                popu: ""
             },
-            canLike: true
+            canLike: true,
+            doesLikeVisitor: ""
         };
     }
 
@@ -70,19 +72,29 @@ export class Profile extends React.Component {
             // asking if user can like or not
             var url = "http://54.93.182.167:3000/api/like/canILike";
             var user = cookie.load('user');
-            console.warn(this.state.user._id)
             Request.post(url)
                 .set('Content-Type', 'application/x-www-form-urlencoded')
                 .send({ token: cookie.load('token') })
                 .send({ from: user })
                 .send({ to: this.state.user._id })
                 .then((response) => {
-
                     this.setState({
                         canLike: (response.body.result == 'true')
                     })
-                    // this.state.canLike = (response.body.result == 'true');
-                    console.log(this.state.canLike)
+                });
+
+            // checking if presented user likes visitor or not
+            var url = "http://54.93.182.167:3000/api/like/doesLikeVisitor";
+            var user = cookie.load('user');
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({ token: cookie.load('token') })
+                .send({ visitor: user._id })
+                .send({ liker: this.state.user._id })
+                .then((response) => {
+                    this.setState({
+                        doesLikeVisitor: (response.body.result == 'true')
+                    })
                 });
         });
 
@@ -225,7 +237,7 @@ export class Profile extends React.Component {
                     <div className="">
                         <Card>
                             <CardText>
-                                <Table>
+                                <Table selectable={false}>
                                     <TableBody displayRowCheckbox={false}>
                                         <TableRow>
                                             <TableRowColumn>Height</TableRowColumn>
@@ -238,6 +250,28 @@ export class Profile extends React.Component {
                                         <TableRow>
                                             <TableRowColumn>Eyes</TableRowColumn>
                                             <TableRowColumn>Blue</TableRowColumn>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+
+                            </CardText>
+                        </Card>
+                    </div>
+                </div>
+                <br />
+                <div className="row">
+                    <div className="">
+                        <Card>
+                            <CardText>
+                                <Table selectable={false}>
+                                    <TableBody displayRowCheckbox={false}>
+                                        <TableRow>
+                                            <TableRowColumn>Popularity</TableRowColumn>
+                                            <TableRowColumn>{this.state.user.popu || 0}</TableRowColumn>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableRowColumn>Likes you</TableRowColumn>
+                                            <TableRowColumn>{String(this.state.doesLikeVisitor)}</TableRowColumn>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
