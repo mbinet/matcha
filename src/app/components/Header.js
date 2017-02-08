@@ -157,6 +157,7 @@ export class Header extends React.Component {
                 <span>
                     <ul className="nav navbar-nav">
                         <li><Link to={"/user"} activeStyle={{color: "red"}}>Users</Link></li>
+                        <li><Link to={"/chat"} activeStyle={{color: "red"}}>Chat</Link></li>
                         <li><Link to={'/profile/update/' + this.state.user._id} activeStyle={{color: "red"}}>Update Profile</Link></li>
                         <li>
                             <Link to={'/notifications/'} activeStyle={{color: "red"}}>

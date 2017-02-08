@@ -12,7 +12,6 @@ export class Notifs extends React.Component {
         socket.on('newVisit', msg => {
             var user = cookie.load('user');
             if (msg.to == user._id) {
-                console.log('coucou', msg)
                 Notification.requestPermission( function(status) {
                     var n = new Notification('Hello ' + user.name + ' :)', {body: msg.from.name + ' visited your profile'});
                 });
@@ -22,7 +21,6 @@ export class Notifs extends React.Component {
         socket.on('newLike', msg => {
             var user = cookie.load('user');
             if (msg.to == user._id) {
-                console.log('coucou', msg)
                 Notification.requestPermission( function(status) {
                     var n = new Notification('Hello ' + user.name + ' :)', {body: msg.from.name + ' liked you profile'});
                 });
@@ -32,7 +30,6 @@ export class Notifs extends React.Component {
         socket.on('deleteLike', msg => {
             var user = cookie.load('user');
             if (msg.to == user._id) {
-                console.log('coucou', msg)
                 Notification.requestPermission( function(status) {
                     var n = new Notification('Hello ' + user.name + ' :)', {body: msg.from.name + ' disliked you profile'});
                 });

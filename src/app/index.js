@@ -15,6 +15,8 @@ import {LogIn} from "./components/entry/LogIn";
 import {LogOut} from "./components/entry/LogOut";
 import {Browse} from "./components/browse/Browse";
 import {Notifications} from "./components/user/Notifications";
+import {BrowseChat} from "./components/chat/BrowseChat";
+import {Chat} from "./components/chat/Chat";
 import { SocketProvider } from 'socket.io-react';
 import io from 'socket.io-client';
 
@@ -44,6 +46,8 @@ class App extends React.Component {
                             <Route path={"login"} component={LogIn} />
                             <Route path={"logout"} component={LogOut} />
                             <Route path={"browse"} component={Browse} />
+                            <Route path={"chat"} component={BrowseChat} />
+                            <Route path={"chat/:id"} component={Chat} />
                             <Route path={"notifications"} component={Notifications} />
                         </Route>
                     </Router>

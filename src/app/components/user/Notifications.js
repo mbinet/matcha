@@ -32,7 +32,6 @@ export class Notifications extends React.Component {
         var data = [];
         _.forEach(this.state.notifs, function(n) {
             // var photoName = String(n.fromPhoto)
-            console.log(n.type)
             if (n.type == "visit") {
                 data.push(
                     <div key={n._id} style={{marginBottom: 10}}>
