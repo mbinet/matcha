@@ -39,10 +39,15 @@ export default class UserCard extends React.Component {
                 {mapsIcon} {user.city}
             </div>
         )
+        if(this.props.chatLink)
+            var link = '/chat/' + this.props.chatLink;
+        else
+            var link = '/profile/' + user._id;
         return (
             <div>
                 <Card style={{maxWidth: 300 , marginLeft: 'auto', marginRight: 'auto'}}>
-                    <Link to={'/profile/' + user._id}>
+                    {/*<Link to={'/profile/' + user._id}>*/}
+                    <Link to={link}>
                         <CardHeader
                             title={nameSexe}
                             subtitle={subtitle}

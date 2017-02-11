@@ -4,8 +4,17 @@ import cookie from 'react-cookie';
 import RaisedButton from 'material-ui/RaisedButton';
 import Request from 'superagent';
 import io from 'socket.io-client';
+import TextField from 'material-ui/TextField';
 
 export class Chat extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            message: "",
+            allMessages: []
+        }
+    }
 
     componentWillMount() {
         var user = cookie.load('user')
@@ -18,5 +27,39 @@ export class Chat extends React.Component {
                 console.log('cool')
             })
     }
-    render() {return(<span></span>)}
+
+    _handleTextFieldChange(e) {
+        this.setState({
+            message: e.target.value
+        });
+    }
+
+    sendMessage() {
+        console.log(this.state.message)
+        this.state.allMessages.push(<div key={this.state.message}>{this.state.message}<hr/></div>)
+        this.setState({
+            message: ""
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <div style={{
+                    border: '1px solid black',
+                    height: 400,
+                    width: 600
+                }}>
+                    {this.state.allMessages}
+                </div>
+                <TextField
+                    floatingLabelText="Type a message..."
+                    name="message"
+                    value={this.state.message}
+                    onChange={this._handleTextFieldChange.bind(this)}
+                />
+                <RaisedButton label='Send' primary={true} onTouchTap={() => this.sendMessage()}/>
+            </div>
+        )
+    }
 }
