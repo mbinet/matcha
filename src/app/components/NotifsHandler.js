@@ -4,6 +4,7 @@ import cookie from 'react-cookie';
 import RaisedButton from 'material-ui/RaisedButton';
 import Request from 'superagent';
 import io from 'socket.io-client';
+import DB from '../other/db';
 
 export class Notifs extends React.Component {
 
@@ -43,6 +44,18 @@ export class Notifs extends React.Component {
                     var n = new Notification('Hello ' + user.name + ' :)', {body: msg.from.name + ' liked you back !'});
                 });
             }
+        });
+
+        socket.on('newMsg', msg => {
+            var user = cookie.load('user');
+            DB.getNameFromId(msg.from, function (res) {
+                var nameFrom = res;
+                if (msg.to == user._id) {
+                    Notification.requestPermission( function(status) {
+                        var n = new Notification('Hello ' + user.name + ' :)', {body: nameFrom + ' sent you a message !'});
+                    });
+                }
+            })
         });
     }
     render() {return(<span></span>)}

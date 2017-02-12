@@ -4,13 +4,14 @@ import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Ca
 import cookie from 'react-cookie';
 import _ from 'lodash';
 import {Link} from "react-router";
+import DB from '../../other/db'
 
 export class Notifications extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            notifs: []
+            notifs: [],
         }
     }
 
@@ -83,6 +84,19 @@ export class Notifications extends React.Component {
                                     to={'/profile/' + n.from}>{n.fromName}</Link> unliked your profile</span>}
                                 subtitle={<small>{n.dateTime}</small>}
                                 avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
+                            />
+                        </Card>
+                    </div>
+                )
+            }
+            else if (n.type == "msg") {
+                data.push(
+                    <div key={n._id} style={{marginBottom: 10}}>
+                        <Card>
+                            <CardHeader
+                                title={<span style={{color: 'blue'}}>
+                                    <Link to={'/chat/' + n.from}> You got a new message</Link></span>}
+                                subtitle={<small>{n.dateTime}</small>}
                             />
                         </Card>
                     </div>
