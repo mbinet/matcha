@@ -31,6 +31,7 @@ export class Notifications extends React.Component {
     render() {
 
         var data = [];
+        var that = this
         _.forEach(this.state.notifs, function(n) {
             // var photoName = String(n.fromPhoto)
             if (n.type == "visit") {
@@ -94,9 +95,10 @@ export class Notifications extends React.Component {
                     <div key={n._id} style={{marginBottom: 10}}>
                         <Card>
                             <CardHeader
-                                title={<span style={{color: 'blue'}}>
-                                    <Link to={'/chat/' + n.from}> You got a new message</Link></span>}
+                                title={<span style={{}}>
+                                    {n.fromName} sent you a new <Link to={'/chat/' + n.from}>message</Link></span>}
                                 subtitle={<small>{n.dateTime}</small>}
+                                avatar={'https://matcha-bucket.s3.amazonaws.com/Photos/' + n.fromPhoto}
                             />
                         </Card>
                     </div>
