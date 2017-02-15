@@ -57,6 +57,13 @@ export class Notifs extends React.Component {
                 }
             })
         });
+
+        socket.on('reloadUserCookie', msg => {
+            var user = cookie.load('user');
+            if (msg.to == user._id) {
+                DB.updateUserToken()
+            }
+        });
     }
     render() {return(<span></span>)}
 }

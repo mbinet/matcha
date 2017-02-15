@@ -7,7 +7,12 @@ import {Tags} from "./Tags"
 import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
 import PhotoGallery from './PhotoGallery';
 import cookie from 'react-cookie';
-import Dialog from 'material-ui/Dialog';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import DB from '../../../other/db'
+import { browserHistory } from "react-router";
 
 const styles = {
     chip: {
@@ -47,6 +52,7 @@ export class Profile extends React.Component {
     }
 
     componentWillMount() {
+        var user = cookie.load('user');
         var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
         Request.post(url)
             .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -56,46 +62,52 @@ export class Profile extends React.Component {
                 user: response.body.user,
             });
 
-            // sending a visit event
-            var url = "http://54.93.182.167:3000/api/visit/newVisit";
-            var user = cookie.load('user');
-            console.warn(this.state.user._id)
-            Request.post(url)
-                .set('Content-Type', 'application/x-www-form-urlencoded')
-                .send({ token: cookie.load('token') })
-                .send({ from: user })
-                .send({ to: this.state.user._id })
-                .then((response) => {
-                    console.log("Notif sent.")
-                });
+            // in case user is blocked by watcher
+            if (!user.blocked) { user.blocked = "" }
+            if (user.blocked.indexOf(this.state.user._id) >= 0) {
+                setTimeout(function () {
+                    browserHistory.push("/home");
+                }, 100)
+            }
+            else {
 
-            // asking if user can like or not
-            var url = "http://54.93.182.167:3000/api/like/canILike";
-            var user = cookie.load('user');
-            Request.post(url)
-                .set('Content-Type', 'application/x-www-form-urlencoded')
-                .send({ token: cookie.load('token') })
-                .send({ from: user })
-                .send({ to: this.state.user._id })
-                .then((response) => {
-                    this.setState({
-                        canLike: (response.body.result == 'true')
-                    })
-                });
+                // sending a visit event
+                var url = "http://54.93.182.167:3000/api/visit/newVisit";
+                Request.post(url)
+                    .set('Content-Type', 'application/x-www-form-urlencoded')
+                    .send({token: cookie.load('token')})
+                    .send({from: user})
+                    .send({to: this.state.user._id})
+                    .then((response) => {
+                        console.log("Notif sent.")
+                    });
 
-            // checking if presented user likes visitor or not
-            var url = "http://54.93.182.167:3000/api/like/doesLikeVisitor";
-            var user = cookie.load('user');
-            Request.post(url)
-                .set('Content-Type', 'application/x-www-form-urlencoded')
-                .send({ token: cookie.load('token') })
-                .send({ visitor: user._id })
-                .send({ liker: this.state.user._id })
-                .then((response) => {
-                    this.setState({
-                        doesLikeVisitor: (response.body.result == 'true')
-                    })
-                });
+                // asking if user can like or not
+                var url = "http://54.93.182.167:3000/api/like/canILike";
+                Request.post(url)
+                    .set('Content-Type', 'application/x-www-form-urlencoded')
+                    .send({token: cookie.load('token')})
+                    .send({from: user})
+                    .send({to: this.state.user._id})
+                    .then((response) => {
+                        this.setState({
+                            canLike: (response.body.result == 'true')
+                        })
+                    });
+
+                // checking if presented user likes visitor or not
+                var url = "http://54.93.182.167:3000/api/like/doesLikeVisitor";
+                Request.post(url)
+                    .set('Content-Type', 'application/x-www-form-urlencoded')
+                    .send({token: cookie.load('token')})
+                    .send({visitor: user._id})
+                    .send({liker: this.state.user._id})
+                    .then((response) => {
+                        this.setState({
+                            doesLikeVisitor: (response.body.result == 'true')
+                        })
+                    });
+            }
         });
 
     }
@@ -177,6 +189,19 @@ export class Profile extends React.Component {
         return res
     }
 
+    reportBlockUser() {
+        var user = cookie.load('user');
+        var url = "http://54.93.182.167:3000/api/users/reportBlock";
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token: cookie.load('token') })
+            .send({ from: user._id })
+            .send({ to: this.state.user._id })
+            .then((response) => {
+                DB.updateUserToken()
+            });
+    }
+
     render() {
         var sex = this.getSex(this.state.user.sex);
         var name = this.state.user.name;
@@ -191,6 +216,16 @@ export class Profile extends React.Component {
         return (
             <div className="">
                 <div className="row text-center center-block">
+                    <div className="pull-right">
+                        <IconMenu
+                            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                            anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                        >
+                            <MenuItem primaryText="Report user" onTouchTap={this.reportBlockUser.bind(this)}/>
+                            <MenuItem primaryText="Block user" onTouchTap={this.reportBlockUser.bind(this)}/>
+                        </IconMenu>
+                    </div>
                     <div className="col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered">
                         <h3 className="text-center text-uppercase">
                             {name} <small className="text-capitalize">{age}</small> <small>{sex}</small>

@@ -21,3 +21,14 @@ exports.getPhotoFromId = function (id, callback) {
             callback(response.body.user.photo.p1)
         })
 }
+
+exports.updateUserToken = function () {
+    var user = cookie.load('user')
+    var url = "http://54.93.182.167:3000/api/users/getOne/" + user._id
+    Request.post(url)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .send({ token : cookie.load('token') })
+        .then((response) => {
+            cookie.save('user', response.body.user, { path: '/'});
+        })
+}
