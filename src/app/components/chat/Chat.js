@@ -9,6 +9,7 @@ import Request from 'superagent';
 import io from 'socket.io-client';
 import TextField from 'material-ui/TextField';
 import ReactDOM from 'react-dom';
+import {Router, Route, browserHistory, IndexRoute} from "react-router";
 import DB from '../../other/db'
 
 export class Chat extends React.Component {
@@ -27,8 +28,28 @@ export class Chat extends React.Component {
     }
 
     componentWillMount() {
+		var user = cookie.load('user')
 
-        var user = cookie.load('user')
+		// this is in case a custom ID is passed to url
+		var url = "http://54.93.182.167:3000/api/chat/getConvs/" + user._id;
+		Request.post(url)
+			.set('Content-Type', 'application/x-www-form-urlencoded')
+			.send({ token : cookie.load('token') })
+			.then((response) => {
+				let users = response.body.message
+				let bool = false
+				for (let o of users) {
+					if(o._id == this.props.params.id) {
+						bool = true
+					}
+				}
+				if (bool == false) {
+					setTimeout(function () {
+						browserHistory.push('/')
+					}, 1000)
+				}
+			})
+
         // getting photos for both users
         var that = this
         DB.getPhotoFromId(user._id, function (res) {
