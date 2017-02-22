@@ -14,9 +14,17 @@ export class LogOut extends React.Component {
         super();
 
         if (cookie.load('user')) {
-            cookie.remove('user', { path: '/' });
-            cookie.remove('token', { path: '/' });
-            window.location.reload();
+            var user = cookie.load('user')
+            var url = "http://54.93.182.167:3000/api/users/disconnect/";
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({ token : cookie.load('token') })
+                .send({ id : user._id })
+                .then((response) => {
+                    cookie.remove('user', { path: '/' });
+                    cookie.remove('token', { path: '/' });
+                    window.location.reload();
+                })
         }
     }
 

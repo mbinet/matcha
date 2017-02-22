@@ -3,6 +3,8 @@ import {render} from "react-dom";
 import {Router, Route, browserHistory, IndexRoute} from "react-router";
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Request from 'superagent';
+import cookie from 'react-cookie';
 
 import {Root} from "./components/Root";
 import {Home} from "./components/Home";
@@ -24,8 +26,17 @@ injectTapEventPlugin();
 
 
 const socket = io.connect("http://54.93.182.167:3000/");
-// socket.emit('test', 'bonjour a tous')
-socket.on('test', msg => console.log(msg));
+window.socket = socket
+socket.on('which_user', msg => {
+    var user = cookie.load('user');
+    if (user) {
+        window.socket.emit('which_user_response', user._id)
+    }
+});
+var user = cookie.load('user');
+if (user) {
+    window.socket.emit('manualConnect', user._id)
+}
 const DOMNode = document.getElementById('renderTarget');
 
 class App extends React.Component {

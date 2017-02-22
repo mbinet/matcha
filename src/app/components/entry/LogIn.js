@@ -82,6 +82,7 @@ export class LogIn extends React.Component {
 
         cookie.save('token', token, { path: '/'});
         cookie.save('user', user, { path: '/'});
+        window.socket.emit('connection')
         window.location.reload();
         browserHistory.push("/home");
     }

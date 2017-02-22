@@ -61,6 +61,7 @@ export class Profile extends React.Component {
             this.setState({
                 user: response.body.user,
             });
+            console.log(response.body.user)
 
             // in case user is blocked by watcher
             if (!user.blocked) { user.blocked = "" }
@@ -189,6 +190,21 @@ export class Profile extends React.Component {
         return res
     }
 
+    getConnected() {
+        if (this.state.user.connected) {
+            return(<FontAwesome className='fa fa-dot-circle-o' name='' alt='Connected' title='Connected' style={{color: 'green'}}/>)
+        }
+        else {
+            if(this.state.user.last_date) {
+                var text = 'Last connected : ' + this.state.user.last_date
+                return(<FontAwesome className='fa fa-dot-circle-o' name='' alt='Not connected' title={text} style={{color: 'grey'}}/>)
+            }
+            else {
+                return(<FontAwesome className='fa fa-dot-circle-o' name='' alt='Not connected' title='Not connected' style={{color: 'grey'}}/>)
+            }
+        }
+    }
+
     reportBlockUser() {
         var user = cookie.load('user');
         var url = "http://54.93.182.167:3000/api/users/reportBlock";
@@ -210,6 +226,7 @@ export class Profile extends React.Component {
         var bio = this.state.user.bio;
         var tags = this.state.user.tags;
         var style = {color: 'red'};
+        var connected = this.getConnected();
         var like = <FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>;
         var mail = <FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>;
         var icon = <FontAwesome className='fa fa-mars' name=''/>;
@@ -228,7 +245,7 @@ export class Profile extends React.Component {
                     </div>
                     <div className="col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered">
                         <h3 className="text-center text-uppercase">
-                            {name} <small className="text-capitalize">{age}</small> <small>{sex}</small>
+                            <small>{connected}</small> {name} <small className="text-capitalize">{age}</small> <small>{sex}</small>
                         </h3>
                         <hr />
                         <p className="text-center"><small> ID: {this.props.params.id}</small></p>
