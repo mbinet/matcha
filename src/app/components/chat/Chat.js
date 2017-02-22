@@ -18,12 +18,32 @@ export class Chat extends React.Component {
         this.state = {
             message: "",
             allMessages: [],
-            messages: []
+            messages: [],
+            photoFrom: "",
+            idFrom: "",
+            photoTo: "",
+            idTo: ""
         }
     }
 
     componentWillMount() {
-        this.getAllMessages()
+
+        var user = cookie.load('user')
+        // getting photos for both users
+        var that = this
+        DB.getPhotoFromId(user._id, function (res) {
+            that.setState({
+                photoFrom: res,
+                idFrom: user._id
+            })
+            DB.getPhotoFromId(that.props.params.id, function (res) {
+                that.setState({
+                    photoTo: res,
+                    idTo: that.props.params.id
+                })
+                that.getAllMessages()
+            })
+        })
 
         // watcher when getting a new MSG
         const socket = io.connect("http://54.93.182.167:3000/");
@@ -52,19 +72,14 @@ export class Chat extends React.Component {
                 var messages = that.state.messages.slice()
 
                 const msg = array[array.length - 1]
+
                 DB.getPhotoFromId(msg.from, function (res) {
                     messages.push(
                         <ListItem
                             key={msg._id}
                             leftAvatar={<Avatar src={"https://matcha-bucket.s3.amazonaws.com/Photos/" + res}
                                                 style={{objectFit: 'cover'}}/>}
-                            secondaryText={
-                                <p>
-                                    {msg.message}
-                                </p>
-                            }
-                            secondaryTextLines={2}
-                        />
+                        >{msg.message}</ListItem>
                     )
                     that.setState({
                         messages: messages
@@ -87,32 +102,25 @@ export class Chat extends React.Component {
                 })
                 var array = response.body.message
                 var that = this
-                var messages = []
+                let messages = []
 
-                function iteratePhoto() {
-                    const msg = array.shift()
-                    DB.getPhotoFromId(msg.from, function (res) {
-                        messages.push(
-                            <ListItem
-                                key={msg._id}
-                                leftAvatar={<Avatar src={"https://matcha-bucket.s3.amazonaws.com/Photos/" + res} style={{objectFit: 'cover'}}/>}
-                                secondaryText={
-                                    <p>
-                                        {msg.message}
-                                    </p>
-                                }
-                                secondaryTextLines={2}
-                            />
-                        )
-                        if (array.length) {
-                            iteratePhoto()
-                        }
-                        else {
-                            that.updateState(messages);
-                        }
-                    })
+                let photo;
+
+                for (var msg of array) {
+                    if (msg.from == that.state.idFrom)
+                        photo = that.state.photoFrom
+                    else
+                        photo = that.state.photoTo
+                    messages.push(
+                        <ListItem
+                            key={msg._id}
+                            leftAvatar={<Avatar src={"https://matcha-bucket.s3.amazonaws.com/Photos/" + photo}
+                                                style={{objectFit: 'cover'}}/>}
+                        > {msg.message}</ListItem>
+                    )
                 }
-                iteratePhoto()
+                that.updateState(messages)
+
                 this.scrollToBottom()
             })
     }

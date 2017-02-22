@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Request from 'superagent';
 import cookie from 'react-cookie';
 
+import NotFound from './components/NotFound';
 import {Root} from "./components/Root";
 import {Home} from "./components/Home";
 import {User} from "./components/User";
@@ -34,8 +35,41 @@ socket.on('which_user', msg => {
     }
 });
 var user = cookie.load('user');
+var finalRoutes;
 if (user) {
     window.socket.emit('manualConnect', user._id)
+    finalRoutes = (
+        <Router history={browserHistory}>
+            <Route path={"/"} component={Root} >
+                <IndexRoute component={Home} />
+                <Route path={"user"} component={User} />
+                <Route path={"home"} component={Home} />
+                <Route path={"profile/update/:id"} component={ProfileUpdate} />
+                <Route path={"profile/delete/:id"} component={ProfileDelete} />
+                <Route path={"profile/:id"} component={Profile} />
+                <Route path={"signup"} component={SignUp} />
+                <Route path={"login"} component={LogIn} />
+                <Route path={"logout"} component={LogOut} />
+                <Route path={"browse"} component={Browse} />
+                <Route path={"chat"} component={BrowseChat} />
+                <Route path={"chat/:id"} component={Chat} />
+                <Route path={"notifications"} component={Notifications} />
+                <Route path="*" component={NotFound} />
+            </Route>
+        </Router>
+    )
+}
+else {
+    finalRoutes = (
+    <Router history={browserHistory}>
+        <Route path={"/"} component={Root} >
+            <IndexRoute component={LogIn} />
+            <Route path={"signup"} component={SignUp} />
+            <Route path={"login"} component={LogIn} />
+            <Route path="*" component={NotFound} />
+        </Route>
+    </Router>
+)
 }
 const DOMNode = document.getElementById('renderTarget');
 
@@ -45,23 +79,7 @@ class App extends React.Component {
         return (
             <SocketProvider socket={socket}>
                 <MuiThemeProvider>
-                    <Router history={browserHistory}>
-                        <Route path={"/"} component={Root} >
-                            <IndexRoute component={Home} />
-                            <Route path={"user"} component={User} />
-                            <Route path={"home"} component={Home} />
-                            <Route path={"profile/update/:id"} component={ProfileUpdate} />
-                            <Route path={"profile/delete/:id"} component={ProfileDelete} />
-                            <Route path={"profile/:id"} component={Profile} />
-                            <Route path={"signup"} component={SignUp} />
-                            <Route path={"login"} component={LogIn} />
-                            <Route path={"logout"} component={LogOut} />
-                            <Route path={"browse"} component={Browse} />
-                            <Route path={"chat"} component={BrowseChat} />
-                            <Route path={"chat/:id"} component={Chat} />
-                            <Route path={"notifications"} component={Notifications} />
-                        </Route>
-                    </Router>
+                    {finalRoutes}
                 </MuiThemeProvider>
             </SocketProvider>
         )
