@@ -37,27 +37,51 @@ socket.on('which_user', msg => {
 var user = cookie.load('user');
 var finalRoutes;
 if (user) {
-    window.socket.emit('manualConnect', user._id)
-    finalRoutes = (
-        <Router history={browserHistory}>
-            <Route path={"/"} component={Root} >
-                <IndexRoute component={Home} />
-                <Route path={"user"} component={User} />
-                <Route path={"home"} component={Home} />
-                <Route path={"profile/update/:id"} component={ProfileUpdate} />
-                <Route path={"profile/delete/:id"} component={ProfileDelete} />
-                <Route path={"profile/:id"} component={Profile} />
-                <Route path={"signup"} component={SignUp} />
-                <Route path={"login"} component={LogIn} />
-                <Route path={"logout"} component={LogOut} />
-                <Route path={"browse"} component={Browse} />
-                <Route path={"chat"} component={BrowseChat} />
-                <Route path={"chat/:id"} component={Chat} />
-                <Route path={"notifications"} component={Notifications} />
-                <Route path="*" component={NotFound} />
-            </Route>
-        </Router>
-    )
+    if (!user.admin) {
+		window.socket.emit('manualConnect', user._id)
+		finalRoutes = (
+            <Router history={browserHistory}>
+                <Route path={"/"} component={Root}>
+                    <IndexRoute component={Home}/>
+                    <Route path={"home"} component={Home}/>
+                    <Route path={"profile/update/:id"} component={ProfileUpdate}/>
+                    <Route path={"profile/delete/:id"} component={ProfileDelete}/>
+                    <Route path={"profile/:id"} component={Profile}/>
+                    <Route path={"signup"} component={SignUp}/>
+                    <Route path={"login"} component={LogIn}/>
+                    <Route path={"logout"} component={LogOut}/>
+                    <Route path={"browse"} component={Browse}/>
+                    <Route path={"chat"} component={BrowseChat}/>
+                    <Route path={"chat/:id"} component={Chat}/>
+                    <Route path={"notifications"} component={Notifications}/>
+                    <Route path="*" component={NotFound}/>
+                </Route>
+            </Router>
+		)
+	}
+	else {
+		window.socket.emit('manualConnect', user._id)
+		finalRoutes = (
+            <Router history={browserHistory}>
+                <Route path={"/"} component={Root} >
+                    <IndexRoute component={Home} />
+                    <Route path={"user"} component={User} />
+                    <Route path={"home"} component={Home} />
+                    <Route path={"profile/update/:id"} component={ProfileUpdate} />
+                    <Route path={"profile/delete/:id"} component={ProfileDelete} />
+                    <Route path={"profile/:id"} component={Profile} />
+                    <Route path={"signup"} component={SignUp} />
+                    <Route path={"login"} component={LogIn} />
+                    <Route path={"logout"} component={LogOut} />
+                    <Route path={"browse"} component={Browse} />
+                    <Route path={"chat"} component={BrowseChat} />
+                    <Route path={"chat/:id"} component={Chat} />
+                    <Route path={"notifications"} component={Notifications} />
+                    <Route path="*" component={NotFound} />
+                </Route>
+            </Router>
+        )
+    }
 }
 else {
     finalRoutes = (

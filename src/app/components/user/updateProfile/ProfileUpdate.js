@@ -14,6 +14,7 @@ import {Tags} from "../profile/Tags"
 import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
 import Autocomplete from 'react-google-autocomplete';
+import {Router, Route, browserHistory, IndexRoute} from "react-router";
 
 export class ProfileUpdate extends React.Component {
 
@@ -52,26 +53,30 @@ export class ProfileUpdate extends React.Component {
     }
 
     componentWillMount() {
-        var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
-        Request.post(url)
-            .set('Content-Type', 'application/x-www-form-urlencoded')
-            .send({ token : cookie.load('token') })
-            .then((response) => {
-                response.body.user.loves.b = JSON.parse(response.body.user.loves.b);
-                response.body.user.loves.g = JSON.parse(response.body.user.loves.g);
-                response.body.user.loves.t = JSON.parse(response.body.user.loves.t);
-                this.setState({
-                    user: response.body.user,
-                    saveDisabled: true,
-                    activeSnack: false
+		var user = cookie.load('user')
+        if (user._id != this.props.params.id && !user.admin) {
+			setTimeout(function () {
+				browserHistory.push('/')
+			}, 500)
+        }
+        else {
+            var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({ token : cookie.load('token') })
+                .then((response) => {
+                    response.body.user.loves.b = JSON.parse(response.body.user.loves.b);
+                    response.body.user.loves.g = JSON.parse(response.body.user.loves.g);
+                    response.body.user.loves.t = JSON.parse(response.body.user.loves.t);
+                    this.setState({
+                        user: response.body.user,
+                        saveDisabled: true,
+                        activeSnack: false
+                    });
+                    cookie.save('user', response.body.user, { path: '/'});
+
                 });
-
-                cookie.save('user', response.body.user, { path: '/'});
-
-            // this.setState({
-            //     user: update(this.state.user, {photo: {$set: "https://matcha-bucket.s3.amazonaws.com/" + this.state.user.photo}})
-            // });
-            });
+        }
     }
 
     enableSaving() {

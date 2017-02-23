@@ -30,41 +30,43 @@ export class Chat extends React.Component {
     componentWillMount() {
 		var user = cookie.load('user')
 
-		// this is in case a custom ID is passed to url
-		var url = "http://54.93.182.167:3000/api/chat/getConvs/" + user._id;
-		Request.post(url)
-			.set('Content-Type', 'application/x-www-form-urlencoded')
-			.send({ token : cookie.load('token') })
-			.then((response) => {
-				let users = response.body.message
-				let bool = false
-				for (let o of users) {
-					if(o._id == this.props.params.id) {
-						bool = true
-					}
-				}
-				if (bool == false) {
-					setTimeout(function () {
-						browserHistory.push('/')
-					}, 1000)
-				}
-			})
 
-        // getting photos for both users
-        var that = this
-        DB.getPhotoFromId(user._id, function (res) {
-            that.setState({
-                photoFrom: res,
-                idFrom: user._id
+		// this is in case a custom ID is passed to url
+        var url = "http://54.93.182.167:3000/api/chat/getConvs/" + user._id;
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : cookie.load('token') })
+            .then((response) => {
+                let users = response.body.message
+                let bool = false
+                for (let o of users) {
+                    if(o._id == this.props.params.id) {
+                        bool = true
+                    }
+                }
+                if (bool == false) {
+                    // setTimeout(function () {
+                        browserHistory.push('/')
+                    // }, 1000)
+                }
+                else {
+                    // getting photos for both users
+                    var that = this
+                    DB.getPhotoFromId(user._id, function (res) {
+                        that.setState({
+                            photoFrom: res,
+                            idFrom: user._id
+                        })
+                        DB.getPhotoFromId(that.props.params.id, function (res) {
+                            that.setState({
+                                photoTo: res,
+                                idTo: that.props.params.id
+                            })
+                            that.getAllMessages()
+                        })
+                    })
+                }
             })
-            DB.getPhotoFromId(that.props.params.id, function (res) {
-                that.setState({
-                    photoTo: res,
-                    idTo: that.props.params.id
-                })
-                that.getAllMessages()
-            })
-        })
 
         // watcher when getting a new MSG
         const socket = io.connect("http://54.93.182.167:3000/");
