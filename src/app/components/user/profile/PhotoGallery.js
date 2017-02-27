@@ -17,7 +17,9 @@ export default class photoGallery extends React.Component {
                 mail: "",
                 photo: {},
                 bio: ""
-            }
+            },
+            finalIMG: [],
+            renderFull: false
         };
     }
 
@@ -29,46 +31,81 @@ export default class photoGallery extends React.Component {
             .then((response) => {
             this.setState({
                 user: response.body.user,
+            }, function() {
+                this.goImg()
             });
         });
     }
 
-    getImgSize(imgSrc) {
+    getImgSize(imgSrc, callback) {
         var newImg = new Image();
 
         newImg.onload = function() {
-            var height = newImg.height;
-            var width = newImg.width;
+            this.setState({
+                height: newImg.height,
+                width: newImg.width
+
+            })
+            // var height = newImg.height;
+            // var width = newImg.width;
         };
 
         newImg.src = imgSrc;
-        return(newImg);
+        callback(newImg);
     }
 
-    render() {
-
-        var img = [];
+    goImg() {
         if(this.state.user.photo.p1 != "") {
+            var that = this
+            var i = 1
+            var final = []
             _.forEach(this.state.user.photo, function (p) {
                 if (p != "") {
-                    var newImg = this.getImgSize("https://matcha-bucket.s3.amazonaws.com/Photos/" + p);
-                    img.push(
-                        {
+                    var src = "https://matcha-bucket.s3.amazonaws.com/Photos/" + p
+                    var newImg = new Image()
+                    newImg.onload = function () {
+                        final.push({
                             src: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
                             thumbnail: "https://matcha-bucket.s3.amazonaws.com/Photos/" + p,
                             thumbnailWidth: newImg.width,
                             thumbnailHeight: newImg.height,
-                            caption: this.state.user.name
-                        }
-                    );
+                            caption: that.state.user.name
+                        })
+                        that.updateFinal(final)
+                    }
+                    newImg.src = src
                 }
-            }.bind(this));
-        }
+                if (i == 5) {
+                    setTimeout(function () {
+                        that.setState({
+                            renderFull: true
+                        })
 
-        return (
-            <div style={{overflow: 'hidden'}}>
-                <Gallery images={img} backdropClosesModal={true} enableImageSelection={false}/>
-            </div>
-        )
+                    }, 200)
+                }
+                i++
+            })
+        }
+    }
+    updateFinal(final) {
+        this.setState({
+            finalIMG: final
+        })
+    }
+
+
+    render() {
+        if (this.state.renderFull == false) {
+            return (
+                <div></div>
+            )
+        }
+        else {
+            return (
+                <div style={{overflow: 'hidden'}}>
+                    <Gallery images={this.state.finalIMG} backdropClosesModal={true} enableImageSelection={false}/>
+                </div>
+            )
+        }
     }
 }

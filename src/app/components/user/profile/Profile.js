@@ -53,7 +53,6 @@ export class Profile extends React.Component {
     }
 
     componentWillMount() {
-        console.log("HELLO", this.props.params.id)
         if (!this.props.params.id.match(/^[0-9a-fA-F]{24}$/)) {
             browserHistory.push("/home");
         }
@@ -76,7 +75,6 @@ export class Profile extends React.Component {
                         this.setState({
                             user: response.body.user,
                         });
-                        console.log(response.body.user)
 
                         // in case user is blocked by watcher
                         if (!user.blocked) {
@@ -276,10 +274,7 @@ export class Profile extends React.Component {
                         </div>
                         <div className="col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered">
                             <h3 className="text-center text-uppercase">
-                                <small>{connected}</small>
-                                {name}
-                                <small className="text-capitalize">{age}</small>
-                                <small>{sex}</small>
+                                <small>{connected}</small> {name} <small className="text-capitalize">{age}</small> <small>{sex}</small>
                             </h3>
                             <hr />
                             <p className="text-center">
