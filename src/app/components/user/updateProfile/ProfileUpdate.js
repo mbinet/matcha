@@ -48,7 +48,8 @@ export class ProfileUpdate extends React.Component {
             msgSnack: "",
             photoIndex: 0,
             long: "",
-            lat: ""
+            lat: "",
+            renderFull: false
         };
     }
 
@@ -65,15 +66,18 @@ export class ProfileUpdate extends React.Component {
                 .set('Content-Type', 'application/x-www-form-urlencoded')
                 .send({ token : cookie.load('token') })
                 .then((response) => {
-                    response.body.user.loves.b = JSON.parse(response.body.user.loves.b);
-                    response.body.user.loves.g = JSON.parse(response.body.user.loves.g);
-                    response.body.user.loves.t = JSON.parse(response.body.user.loves.t);
-                    this.setState({
-                        user: response.body.user,
-                        saveDisabled: true,
-                        activeSnack: false
-                    });
-                    cookie.save('user', response.body.user, { path: '/'});
+                    if (response.body.user) {
+                        response.body.user.loves.b = JSON.parse(response.body.user.loves.b);
+                        response.body.user.loves.g = JSON.parse(response.body.user.loves.g);
+                        response.body.user.loves.t = JSON.parse(response.body.user.loves.t);
+                        this.setState({
+                            user: response.body.user,
+                            saveDisabled: true,
+                            activeSnack: false,
+                            renderFull: true
+                        });
+                        cookie.save('user', response.body.user, {path: '/'});
+                    }
 
                 });
         }
@@ -169,281 +173,294 @@ export class ProfileUpdate extends React.Component {
     }
 
     render() {
-        const uploaderProps = {
-            maxFileSize: 1024 * 1024 * 50,
-            server: 'http://54.93.182.167:3000',
-            s3Url: 'https://matcha-bucket.s3.amazonaws.com',
-            signingUrlQueryParams: {uploadType: 'avatar'},
-            headers: {'Access-Control-Allow-Origin': '*'}
-        };
 
-        const styles = {
-            dropzoneStyle: {
-                width: '200px', height: '200px',
-                margin: '10px',
-                padding: '5px',
-                border: '2px dashed rgb(153, 153, 153)', borderRadius: '5px',
-                cursor: 'pointer',
-                display: 'inline-block',
-                position: 'relative'
-            }
-        };
+        if (!this.state.renderFull) {
+            return (<div></div>)
+        }
+        else {
+            const uploaderProps = {
+                maxFileSize: 1024 * 1024 * 50,
+                server: 'http://54.93.182.167:3000',
+                s3Url: 'https://matcha-bucket.s3.amazonaws.com',
+                signingUrlQueryParams: {uploadType: 'avatar'},
+                headers: {'Access-Control-Allow-Origin': '*'}
+            };
 
-        // displays the current pic.
-        var img = [];
-        _.forEach(this.state.user.photo, function (p) {
-            if(p != "") {
-                img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/Photos/" + p} alt="" style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
-            }
-            else {
-                img.push(<img src={""} alt="" style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
-            }
-        });
+            const styles = {
+                dropzoneStyle: {
+                    width: '200px', height: '200px',
+                    margin: '10px',
+                    padding: '5px',
+                    border: '2px dashed rgb(153, 153, 153)', borderRadius: '5px',
+                    cursor: 'pointer',
+                    display: 'inline-block',
+                    position: 'relative'
+                }
+            };
 
-        return (
-            <div>
-                <div className="">
-                    <Card>
-                        <CardTitle title="Update your Profile" />
-                        <div className="text-center row">
-                            <CardText>
-                                <div className="col-sm-6" style={{display: 'block'}}>
-                                    <div className="col-xs-6 col-sm-6">
-                                        <DropzoneS3Uploader
-                                            onFinish={this.handleFinishedUpload.bind(this)}
-                                            onDrop={() => this.setState({photoIndex: 'p1'})}
-                                            accept="image/*"
-                                            {...uploaderProps}
-                                            className={"col-xs-6"}
-                                            style={styles.dropzoneStyle}
-                                        >
-                                            {img[0]}
-                                        </DropzoneS3Uploader>
-                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
-                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p1')}/>
+            // displays the current pic.
+            var img = [];
+            _.forEach(this.state.user.photo, function (p) {
+                if (p != "") {
+                    img.push(<img src={"https://matcha-bucket.s3.amazonaws.com/Photos/" + p} alt=""
+                                  style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
+                }
+                else {
+                    img.push(<img src={""} alt=""
+                                  style={{maxWidth: '100%', maxHeight: '100%', position: 'relative'}}/>);
+                }
+            });
+
+            return (
+                <div>
+                    <div className="">
+                        <Card>
+                            <CardTitle title="Update your Profile"/>
+                            <div className="text-center row">
+                                <CardText>
+                                    <div className="col-sm-6" style={{display: 'block'}}>
+                                        <div className="col-xs-6 col-sm-6">
+                                            <DropzoneS3Uploader
+                                                onFinish={this.handleFinishedUpload.bind(this)}
+                                                onDrop={() => this.setState({photoIndex: 'p1'})}
+                                                accept="image/*"
+                                                {...uploaderProps}
+                                                className={"col-xs-6"}
+                                                style={styles.dropzoneStyle}
+                                            >
+                                                {img[0]}
+                                            </DropzoneS3Uploader>
+                                            <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                                <RaisedButton label="Delete" secondary={true}
+                                                              onTouchTap={() => this.handleDeletePicture('p1')}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-xs-6 col-sm-6">
+                                            <DropzoneS3Uploader
+                                                onFinish={this.handleFinishedUpload.bind(this)}
+                                                onDrop={() => this.setState({photoIndex: 'p2'})}
+                                                accept="image/*"
+                                                {...uploaderProps}
+                                                className={"col-xs-6"}
+                                                style={styles.dropzoneStyle}
+                                            >
+                                                {img[1]}
+                                            </DropzoneS3Uploader>
+                                            <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                                <RaisedButton label="Delete" secondary={true}
+                                                              onTouchTap={() => this.handleDeletePicture('p2')}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-xs-6">
+                                            <DropzoneS3Uploader
+                                                onFinish={this.handleFinishedUpload.bind(this)}
+                                                onDrop={() => this.setState({photoIndex: 'p3'})}
+                                                accept="image/*"
+                                                {...uploaderProps}
+                                                className={"col-xs-6"}
+                                                style={styles.dropzoneStyle}
+                                            >
+                                                {img[2]}
+                                            </DropzoneS3Uploader>
+                                            <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                                <RaisedButton label="Delete" secondary={true}
+                                                              onTouchTap={() => this.handleDeletePicture('p3')}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-xs-6">
+                                            <DropzoneS3Uploader
+                                                onFinish={this.handleFinishedUpload.bind(this)}
+                                                onDrop={() => this.setState({photoIndex: 'p4'})}
+                                                accept="image/*"
+                                                {...uploaderProps}
+                                                className={"col-xs-6"}
+                                                style={styles.dropzoneStyle}
+                                            >
+                                                {img[3]}
+                                            </DropzoneS3Uploader>
+                                            <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                                <RaisedButton label="Delete" secondary={true}
+                                                              onTouchTap={() => this.handleDeletePicture('p4')}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-xs-6">
+                                            <DropzoneS3Uploader
+                                                onFinish={this.handleFinishedUpload.bind(this)}
+                                                onDrop={() => this.setState({photoIndex: 'p5'})}
+                                                accept="image/*"
+                                                {...uploaderProps}
+                                                className={"col-xs-6"}
+                                                style={styles.dropzoneStyle}
+                                            >
+                                                {img[4]}
+                                            </DropzoneS3Uploader>
+                                            <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
+                                                <RaisedButton label="Delete" secondary={true}
+                                                              onTouchTap={() => this.handleDeletePicture('p5')}/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col-xs-6 col-sm-6">
-                                        <DropzoneS3Uploader
-                                            onFinish={this.handleFinishedUpload.bind(this)}
-                                            onDrop={() => this.setState({photoIndex: 'p2'})}
-                                            accept="image/*"
-                                            {...uploaderProps}
-                                            className={"col-xs-6"}
-                                            style={styles.dropzoneStyle}
-                                        >
-                                            {img[1]}
-                                        </DropzoneS3Uploader>
-                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
-                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p2')}/>
-                                        </div>
-                                    </div>
-                                    <div className="col-xs-6">
-                                        <DropzoneS3Uploader
-                                            onFinish={this.handleFinishedUpload.bind(this)}
-                                            onDrop={() => this.setState({photoIndex: 'p3'})}
-                                            accept="image/*"
-                                            {...uploaderProps}
-                                            className={"col-xs-6"}
-                                            style={styles.dropzoneStyle}
-                                        >
-                                            {img[2]}
-                                        </DropzoneS3Uploader>
-                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
-                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p3')}/>
-                                        </div>
-                                    </div>
-                                    <div className="col-xs-6">
-                                        <DropzoneS3Uploader
-                                            onFinish={this.handleFinishedUpload.bind(this)}
-                                            onDrop={() => this.setState({photoIndex: 'p4'})}
-                                            accept="image/*"
-                                            {...uploaderProps}
-                                            className={"col-xs-6"}
-                                            style={styles.dropzoneStyle}
-                                        >
-                                            {img[3]}
-                                        </DropzoneS3Uploader>
-                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
-                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p4')}/>
-                                        </div>
-                                    </div>
-                                    <div className="col-xs-6">
-                                        <DropzoneS3Uploader
-                                            onFinish={this.handleFinishedUpload.bind(this)}
-                                            onDrop={() => this.setState({photoIndex: 'p5'})}
-                                            accept="image/*"
-                                            {...uploaderProps}
-                                            className={"col-xs-6"}
-                                            style={styles.dropzoneStyle}
-                                        >
-                                            {img[4]}
-                                        </DropzoneS3Uploader>
-                                        <div className="col-xs-6 col-centered" style={{display: 'inline-block'}}>
-                                            <RaisedButton label="Delete" secondary={true} onTouchTap={() => this.handleDeletePicture('p5')}/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6">
-                                    <br />
-                                    <div>
-                                        <TextField
-                                            floatingLabelText="Name"
-                                            name="name"
-                                            value={this.state.user.name}
-                                            onChange={this._handleTextFieldChange.bind(this)}
-                                        />
+                                    <div className="col-sm-6">
                                         <br />
-                                        <TextField
-                                            floatingLabelText="Age"
-                                            name="age"
-                                            value={this.state.user.age}
-                                            onChange={this._handleTextFieldChange.bind(this)}
-                                        />
-                                        <br />
-                                        <TextField
-                                            floatingLabelText="Mail"
-                                            name="mail"
-                                            value={this.state.user.mail}
-                                            onChange={this._handleTextFieldChange.bind(this)}
-                                        />
-                                        <br />
-                                    </div>
+                                        <div>
+                                            <TextField
+                                                floatingLabelText="Name"
+                                                name="name"
+                                                value={this.state.user.name}
+                                                onChange={this._handleTextFieldChange.bind(this)}
+                                            />
+                                            <br />
+                                            <TextField
+                                                floatingLabelText="Age"
+                                                name="age"
+                                                value={this.state.user.age}
+                                                onChange={this._handleTextFieldChange.bind(this)}
+                                            />
+                                            <br />
+                                            <TextField
+                                                floatingLabelText="Mail"
+                                                name="mail"
+                                                value={this.state.user.mail}
+                                                onChange={this._handleTextFieldChange.bind(this)}
+                                            />
+                                            <br />
+                                        </div>
 
-                                     <div id="sexChoice">
+                                        <div id="sexChoice">
+                                            {/*
+                                             ** Sexe choice
+                                             */}
+                                            <Divider />
+                                            <br />
+                                            <h4>You are</h4>
+                                            <br />
+                                            <RaisedButton
+                                                primary={true}
+                                                icon={<FontAwesome className='fa fa-mars' name=''/>}
+                                                //style={{marginLeft: '12px'}}
+                                                label={'boy'}
+                                                style={{margin: '12px'}}
+                                                onTouchTap={this.handleButtons.bind(this, 'boy')}
+                                            />
+                                            <RaisedButton
+                                                secondary={true}
+                                                icon={<FontAwesome className='fa fa-venus' name=''/>}
+                                                //style={{marginLeft: '12px'}}
+                                                label={'girl'}
+                                                style={{margin: '12px'}}
+                                                onTouchTap={this.handleButtons.bind(this, 'girl')}
+                                            />
+                                            <RaisedButton
+                                                default={true}
+                                                icon={<FontAwesome className='fa fa-transgender' name=''/>}
+                                                //style={{marginLeft: '12px'}}
+                                                label={'trans'}
+                                                style={{margin: '12px'}}
+                                                onTouchTap={this.handleButtons.bind(this, 'trans')}
+                                            />
+                                            <br />
+                                            <br />
+                                            <Divider />
+                                        </div>
+                                        <br />
+
+                                        <div>
+                                            <h4>You like</h4>
+                                            <br />
+                                            <Checkbox
+                                                label="Boys"
+                                                value="b"
+                                                style={{marginBottom: 16}}
+                                                defaultChecked={this.state.user.loves.b}
+                                                onCheck={this.onCheck.bind(this)}
+                                            />
+                                            <Checkbox
+                                                label="Girls"
+                                                value="g"
+                                                style={{marginBottom: 16}}
+                                                defaultChecked={this.state.user.loves.g}
+                                                onCheck={this.onCheck.bind(this)}
+                                            />
+                                            <Checkbox
+                                                label="Trans"
+                                                value="t"
+                                                style={{marginBottom: 16}}
+                                                defaultChecked={this.state.user.loves.t}
+                                                onCheck={this.onCheck.bind(this)}
+                                            />
+                                            <br />
+                                            <Divider />
+                                        </div>
+
                                         {/*
-                                         ** Sexe choice
+                                         ** Bio
                                          */}
-                                        <Divider />
+                                        <TextField
+                                            hintText="Hi, I like stamps and cactus..."
+                                            floatingLabelText="Tell us about you"
+                                            multiLine={true}
+                                            rows={2}
+                                            name="bio"
+                                            value={this.state.user.bio}
+                                            onChange={this._handleTextFieldChange.bind(this)}
+                                            style={{textAlign: "left"}} // so the FloatingLabelText doesn't stay centered
+                                        />
                                         <br />
-                                         <h4>You are</h4>
-                                        <br />
-                                        <RaisedButton
-                                            primary ={true}
-                                            icon={<FontAwesome className='fa fa-mars' name=''/>}
-                                            //style={{marginLeft: '12px'}}
-                                            label={'boy'}
-                                            style={{margin: '12px'}}
-                                            onTouchTap={this.handleButtons.bind(this, 'boy')}
+                                        <UpdateTags func={this.enableSaving.bind(this)} ref="autocomplete"/>
+                                        <Tags
+                                            tags={this.state.user.tags}
+                                            reload={this.componentWillMount.bind(this)}
+                                            ref="tagComponent"
+                                            isDeletable={true}
                                         />
-                                        <RaisedButton
-                                            secondary ={true}
-                                            icon={<FontAwesome className='fa fa-venus' name=''/>}
-                                            //style={{marginLeft: '12px'}}
-                                            label={'girl'}
-                                            style={{margin: '12px'}}
-                                            onTouchTap={this.handleButtons.bind(this, 'girl')}
-                                        />
-                                        <RaisedButton
-                                            default ={true}
-                                            icon={<FontAwesome className='fa fa-transgender' name=''/>}
-                                            //style={{marginLeft: '12px'}}
-                                            label={'trans'}
-                                            style={{margin: '12px'}}
-                                            onTouchTap={this.handleButtons.bind(this, 'trans')}
-                                        />
-                                         <br />
-                                         <br />
-                                        <Divider />
-                                     </div>
-                                    <br />
+                                        <br/>
 
-                                    <div>
-                                        <h4>You like</h4>
-                                        <br />
-                                        <Checkbox
-                                            label="Boys"
-                                            value="b"
-                                            style={{marginBottom: 16}}
-                                            defaultChecked={this.state.user.loves.b}
-                                            onCheck={this.onCheck.bind(this)}
+                                        <Autocomplete
+                                            style={{width: '90%'}}
+                                            onPlaceSelected={(place) => {
+
+                                                // check if a real city is actually selected, not just random text.
+                                                if (place.address_components) {
+                                                    this.setState({
+                                                        long: place.geometry.location.lng(),
+                                                        lat: place.geometry.location.lat(),
+                                                        city: place.name,
+                                                        saveDisabled: false
+                                                    })
+                                                }
+                                            }}
+                                            types={['(cities)']}
+                                            //componentRestrictions={{country: "fr"}}
                                         />
-                                        <Checkbox
-                                            label="Girls"
-                                            value="g"
-                                            style={{marginBottom: 16}}
-                                            defaultChecked={this.state.user.loves.g}
-                                            onCheck={this.onCheck.bind(this)}
-                                        />
-                                        <Checkbox
-                                            label="Trans"
-                                            value="t"
-                                            style={{marginBottom: 16}}
-                                            defaultChecked={this.state.user.loves.t}
-                                            onCheck={this.onCheck.bind(this)}
-                                        />
-                                        <br />
-                                        <Divider />
+
                                     </div>
+                                </CardText>
+                            </div>
 
-                                    {/*
-                                    ** Bio
-                                    */}
-                                    <TextField
-                                        hintText="Hi, I like stamps and cactus..."
-                                        floatingLabelText="Tell us about you"
-                                        multiLine={true}
-                                        rows={2}
-                                        name="bio"
-                                        value={this.state.user.bio}
-                                        onChange={this._handleTextFieldChange.bind(this)}
-                                        style={{textAlign: "left"}} // so the FloatingLabelText doesn't stay centered
+                            <div className="row">
+                                <CardActions style={{textAlign: 'center'}}>
+                                    <RaisedButton
+                                        label="Cancel"
+                                        onTouchTap={() => this.componentWillMount()} // gets data from server again
                                     />
-                                    <br />
-                                    <UpdateTags func={this.enableSaving.bind(this)} ref="autocomplete"/>
-                                    <Tags
-                                        tags={this.state.user.tags}
-                                        reload={this.componentWillMount.bind(this)}
-                                        ref="tagComponent"
-                                        isDeletable={true}
+                                    <RaisedButton
+                                        label="Save"
+                                        primary={true}
+                                        disabled={this.state.saveDisabled}
+                                        onTouchTap={() => this.handleEnd()}
                                     />
-                                    <br/>
-
-                                    <Autocomplete
-                                        style={{width: '90%'}}
-                                        onPlaceSelected={(place) => {
-
-                                            // check if a real city is actually selected, not just random text.
-                                            if (place.address_components) {
-                                                this.setState({
-                                                    long: place.geometry.location.lng(),
-                                                    lat: place.geometry.location.lat(),
-                                                    city: place.name,
-                                                    saveDisabled: false
-                                                })
-                                            }
-                                        }}
-                                        types={['(cities)']}
-                                        //componentRestrictions={{country: "fr"}}
-                                    />
-
-                                </div>
-                            </CardText>
-                        </div>
-
-                        <div className="row">
-                            <CardActions style={{textAlign: 'center'}}>
-                                <RaisedButton
-                                    label="Cancel"
-                                    onTouchTap={() => this.componentWillMount()} // gets data from server again
-                                />
-                                <RaisedButton
-                                    label="Save"
-                                    primary={true}
-                                    disabled={this.state.saveDisabled}
-                                    onTouchTap={() => this.handleEnd()}
-                                />
-                            </CardActions>
-                        </div>
-                    </Card>
+                                </CardActions>
+                            </div>
+                        </Card>
+                    </div>
+                    <Snackbar
+                        open={this.state.activeSnack}
+                        message={this.state.msgSnack}
+                        autoHideDuration={4000}
+                        className="text-center"
+                    />
                 </div>
-                <Snackbar
-                    open={this.state.activeSnack}
-                    message={this.state.msgSnack}
-                    autoHideDuration={4000}
-                    className="text-center"
-                />
-            </div>
-        )
+            )
+        }
     };
 }

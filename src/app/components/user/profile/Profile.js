@@ -47,70 +47,97 @@ export class Profile extends React.Component {
                 popu: ""
             },
             canLike: true,
-            doesLikeVisitor: ""
+            doesLikeVisitor: "",
+            renderFull: false
         };
     }
 
     componentWillMount() {
-        var user = cookie.load('user');
-        var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
-        Request.post(url)
-            .set('Content-Type', 'application/x-www-form-urlencoded')
-            .send({ token : cookie.load('token') })
-            .then((response) => {
-            this.setState({
-                user: response.body.user,
-            });
-            console.log(response.body.user)
+        console.log("HELLO", this.props.params.id)
+        if (!this.props.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            browserHistory.push("/home");
+        }
+        else {
+            var user = cookie.load('user');
+            var url = "http://54.93.182.167:3000/api/users/getOne/" + this.props.params.id;
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({token: cookie.load('token')})
+                .then((response) => {
 
-            // in case user is blocked by watcher
-            if (!user.blocked) { user.blocked = "" }
-            if (user.blocked.indexOf(this.state.user._id) >= 0) {
-                setTimeout(function () {
-                    browserHistory.push("/home");
-                }, 100)
-            }
-            else {
-
-                // sending a visit event
-                var url = "http://54.93.182.167:3000/api/visit/newVisit";
-                Request.post(url)
-                    .set('Content-Type', 'application/x-www-form-urlencoded')
-                    .send({token: cookie.load('token')})
-                    .send({from: user})
-                    .send({to: this.state.user._id})
-                    .then((response) => {
-                        console.log("Notif sent.")
-                    });
-
-                // asking if user can like or not
-                var url = "http://54.93.182.167:3000/api/like/canILike";
-                Request.post(url)
-                    .set('Content-Type', 'application/x-www-form-urlencoded')
-                    .send({token: cookie.load('token')})
-                    .send({from: user})
-                    .send({to: this.state.user._id})
-                    .then((response) => {
+                    if (!response.body.user) {
+                        browserHistory.push("/home");
+                    }
+                    else {
                         this.setState({
-                            canLike: (response.body.result == 'true')
+                            renderFull: true
                         })
-                    });
 
-                // checking if presented user likes visitor or not
-                var url = "http://54.93.182.167:3000/api/like/doesLikeVisitor";
-                Request.post(url)
-                    .set('Content-Type', 'application/x-www-form-urlencoded')
-                    .send({token: cookie.load('token')})
-                    .send({visitor: user._id})
-                    .send({liker: this.state.user._id})
-                    .then((response) => {
                         this.setState({
-                            doesLikeVisitor: (response.body.result == 'true')
-                        })
-                    });
-            }
-        });
+                            user: response.body.user,
+                        });
+                        console.log(response.body.user)
 
+                        // in case user is blocked by watcher
+                        if (!user.blocked) {
+                            user.blocked = ""
+                        }
+                        if (user.blocked.indexOf(this.state.user._id) >= 0) {
+                            setTimeout(function () {
+                                browserHistory.push("/home");
+                            }, 100)
+                        }
+                        else {
+
+                            // sending a visit event
+                            var url = "http://54.93.182.167:3000/api/visit/newVisit";
+                            Request.post(url)
+                                .set('Content-Type', 'application/x-www-form-urlencoded')
+                                .send({token: cookie.load('token')})
+                                .send({from: user})
+                                .send({to: this.state.user._id})
+                                .then((response) => {
+                                    console.log("Notif sent.")
+                                });
+
+                            // asking if user can like or not
+                            var url = "http://54.93.182.167:3000/api/like/canILike";
+                            Request.post(url)
+                                .set('Content-Type', 'application/x-www-form-urlencoded')
+                                .send({token: cookie.load('token')})
+                                .send({from: user})
+                                .send({to: this.state.user._id})
+                                .then((response) => {
+                                    this.setState({
+                                        canLike: (response.body.result == 'true')
+                                    })
+                                });
+
+                            // checking if presented user likes visitor or not
+                            var url = "http://54.93.182.167:3000/api/like/doesLikeVisitor";
+                            Request.post(url)
+                                .set('Content-Type', 'application/x-www-form-urlencoded')
+                                .send({token: cookie.load('token')})
+                                .send({visitor: user._id})
+                                .send({liker: this.state.user._id})
+                                .then((response) => {
+                                    this.setState({
+                                        doesLikeVisitor: (response.body.result == 'true')
+                                    })
+                                });
+                        }
+                    }
+                });
+        }
+
+    }
+
+    // this is in case user clicks on another profile (like his). componentWillMount is not called.
+    componentWillReceiveProps(prevProps, prevState) {
+        var that = this
+        setTimeout(function () {
+            that.componentWillMount()
+        }, 100)
     }
 
     sendLike() {
@@ -219,119 +246,129 @@ export class Profile extends React.Component {
     }
 
     render() {
-        var sex = this.getSex(this.state.user.sex);
-        var name = this.state.user.name;
-        var age = this.state.user.age;
-        var photo = this.state.user.photo.p1;
-        var bio = this.state.user.bio;
-        var tags = this.state.user.tags;
-        var style = {color: 'red'};
-        var connected = this.getConnected();
-        var like = <FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>;
-        var mail = <FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>;
-        var icon = <FontAwesome className='fa fa-mars' name=''/>;
-        return (
-            <div className="">
-                <div className="row text-center center-block">
-                    <div className="pull-right">
-                        <IconMenu
-                            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                            anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-                            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                        >
-                            <MenuItem primaryText="Report user" onTouchTap={this.reportBlockUser.bind(this)}/>
-                            <MenuItem primaryText="Block user" onTouchTap={this.reportBlockUser.bind(this)}/>
-                        </IconMenu>
+        if (this.state.renderFull == false) {
+            return (<div></div>)
+        }
+        else if (this.state.renderFull == true) {
+            var sex = this.getSex(this.state.user.sex);
+            var name = this.state.user.name;
+            var age = this.state.user.age;
+            var photo = this.state.user.photo.p1;
+            var bio = this.state.user.bio;
+            var tags = this.state.user.tags;
+            var style = {color: 'red'};
+            var connected = this.getConnected();
+            var like = <FontAwesome className="fa fa-heartbeat" name="" style={{color: 'red'}}/>;
+            var mail = <FontAwesome className="fa fa-envelope-o" name="" style={{color: 'red'}}/>;
+            var icon = <FontAwesome className='fa fa-mars' name=''/>;
+            return (
+                <div className="">
+                    <div className="row text-center center-block">
+                        <div className="pull-right">
+                            <IconMenu
+                                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                            >
+                                <MenuItem primaryText="Report user" onTouchTap={this.reportBlockUser.bind(this)}/>
+                                <MenuItem primaryText="Block user" onTouchTap={this.reportBlockUser.bind(this)}/>
+                            </IconMenu>
+                        </div>
+                        <div className="col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered">
+                            <h3 className="text-center text-uppercase">
+                                <small>{connected}</small>
+                                {name}
+                                <small className="text-capitalize">{age}</small>
+                                <small>{sex}</small>
+                            </h3>
+                            <hr />
+                            <p className="text-center">
+                                <small> ID: {this.props.params.id}</small>
+                            </p>
+                        </div>
                     </div>
-                    <div className="col-xs-6 col-md-4 col-md-offset-4 text-center center-block col-centered">
-                        <h3 className="text-center text-uppercase">
-                            <small>{connected}</small> {name} <small className="text-capitalize">{age}</small> <small>{sex}</small>
-                        </h3>
-                        <hr />
-                        <p className="text-center"><small> ID: {this.props.params.id}</small></p>
+                    <div className="row">
+                        <Card>
+                            <CardHeader
+                                subtitle={this.getLove()}
+                            />
+                            <CardText>
+                                <PhotoGallery userID={this.state.user._id}/>
+                            </CardText>
+                            <CardActions style={{textAlign: 'center'}}>
+                                {this.getLikeOrNot()}
+                            </CardActions>
+                        </Card>
                     </div>
-                </div>
-                <div className="row">
-                    <Card>
-                        <CardHeader
-                            subtitle={this.getLove()}
-                        />
-                        <CardText>
-                            <PhotoGallery userID={this.state.user._id}/>
-                        </CardText>
-                        <CardActions style={{textAlign: 'center'}}>
-                            {this.getLikeOrNot()}
-                        </CardActions>
-                    </Card>
-                </div>
-                <br/>
-                <div className="row">
-                    <Card>
-                        <CardText>
-                            <h4>A few words</h4>
-                            {bio}
-                        </CardText>
-                    </Card>
-                </div>
-                <br />
-                <div className="row">
-                    <div className="">
+                    <br/>
+                    <div className="row">
                         <Card>
                             <CardText>
-                                <Tags tags={tags}/>
-                                {/*<Tags tags={["coucou", "les", "amis"]}/>*/}
+                                <h4>A few words</h4>
+                                {bio}
                             </CardText>
                         </Card>
                     </div>
-                </div>
-                <br/>
-                <div className="row">
-                    <div className="">
-                        <Card>
-                            <CardText>
-                                <Table selectable={false}>
-                                    <TableBody displayRowCheckbox={false}>
-                                        <TableRow>
-                                            <TableRowColumn>Height</TableRowColumn>
-                                            <TableRowColumn>180 cm</TableRowColumn>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableRowColumn>Weight</TableRowColumn>
-                                            <TableRowColumn>79 kg</TableRowColumn>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableRowColumn>Eyes</TableRowColumn>
-                                            <TableRowColumn>Blue</TableRowColumn>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
+                    <br />
+                    <div className="row">
+                        <div className="">
+                            <Card>
+                                <CardText>
+                                    <Tags tags={tags}/>
+                                    {/*<Tags tags={["coucou", "les", "amis"]}/>*/}
+                                </CardText>
+                            </Card>
+                        </div>
+                    </div>
+                    <br/>
+                    <div className="row">
+                        <div className="">
+                            <Card>
+                                <CardText>
+                                    <Table selectable={false}>
+                                        <TableBody displayRowCheckbox={false}>
+                                            <TableRow>
+                                                <TableRowColumn>Height</TableRowColumn>
+                                                <TableRowColumn>180 cm</TableRowColumn>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableRowColumn>Weight</TableRowColumn>
+                                                <TableRowColumn>79 kg</TableRowColumn>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableRowColumn>Eyes</TableRowColumn>
+                                                <TableRowColumn>Blue</TableRowColumn>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
 
-                            </CardText>
-                        </Card>
+                                </CardText>
+                            </Card>
+                        </div>
+                    </div>
+                    <br />
+                    <div className="row">
+                        <div className="">
+                            <Card>
+                                <CardText>
+                                    <Table selectable={false}>
+                                        <TableBody displayRowCheckbox={false}>
+                                            <TableRow>
+                                                <TableRowColumn>Popularity</TableRowColumn>
+                                                <TableRowColumn>{this.state.user.popu || 0}</TableRowColumn>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableRowColumn>Likes you</TableRowColumn>
+                                                <TableRowColumn>{String(this.state.doesLikeVisitor)}</TableRowColumn>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                </CardText>
+                            </Card>
+                        </div>
                     </div>
                 </div>
-                <br />
-                <div className="row">
-                    <div className="">
-                        <Card>
-                            <CardText>
-                                <Table selectable={false}>
-                                    <TableBody displayRowCheckbox={false}>
-                                        <TableRow>
-                                            <TableRowColumn>Popularity</TableRowColumn>
-                                            <TableRowColumn>{this.state.user.popu || 0}</TableRowColumn>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableRowColumn>Likes you</TableRowColumn>
-                                            <TableRowColumn>{String(this.state.doesLikeVisitor)}</TableRowColumn>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </CardText>
-                        </Card>
-                    </div>
-                </div>
-            </div>
-        )
+            )
+        }
     };
 }
