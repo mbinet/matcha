@@ -8,7 +8,11 @@ import cookie from 'react-cookie';
 import { browserHistory } from "react-router";
 import {Link} from "react-router";
 import UserCard from './UserCard';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import _ from 'lodash';
+import AutocompleteGoogle from 'react-google-autocomplete';
+import AutoComplete from 'material-ui/AutoComplete';
+import {Tags} from "../user/profile/Tags"
 
 
 
@@ -21,8 +25,13 @@ export class Browse extends React.Component {
             initialUsers: [],
             filters: {
                 age1: "",
-                age2: ""
-            }
+                age2: "",
+                pop1: "",
+                pop2: "",
+                city: ""
+            },
+            searchTags: [],
+            tags: []
         };
     }
 
@@ -39,6 +48,16 @@ export class Browse extends React.Component {
                     initialUsers: response.body.users
                 })
             });
+        var url = "http://54.93.182.167:3000/api/tags/getAll";
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : cookie.load('token') })
+            .then((response) => {
+                this.setState({
+                    searchTags: response.body.tags,
+                    tags: []
+                });
+            });
     }
 
     sortBy(what) {
@@ -54,7 +73,6 @@ export class Browse extends React.Component {
                 var tab = []
                 _.forEach(copy, function (o) {
                     o.cpt = 0
-                    console.log(o.name + " " + o.tags)
                     if (o.tags) {
                         console.log(typeof o.tags[0])
                         for (var i = 0; i < o.tags.length; i++) {
@@ -81,32 +99,100 @@ export class Browse extends React.Component {
                 users: sorted
             })
         }
-        console.log(this.state.users)
     }
 
-    rangeAge() {
-        // var ranged = _.filter(this.state.initialUsers, (user) => (user.age >= this.state.filters.age1 && user.age <= this.state.filters.age2));
-        var ranged = this.state.initialUsers.filter(u => u.age >= this.state.filters.age1 && u.age <= this.state.filters.age2)
+    // var ranged = _.filter(this.state.initialUsers, (user) => (user.age >= this.state.filters.age1 && user.age <= this.state.filters.age2));
+    filterUsers() {
+        var ranged = this.state.initialUsers
+        console.log(this.state.filters)
+        if (this.state.filters.age1 != "" && this.state.filters.age2 != "") {
+            if (this.state.filters.age1 < this.state.filters.age2)
+                ranged = ranged.filter(u => u.age >= this.state.filters.age1 && u.age <= this.state.filters.age2)
+            else
+                ranged = ranged.filter(u => u.age <= this.state.filters.age1 && u.age >= this.state.filters.age2)
+        }
+
+        if (this.state.filters.pop1 != "" && this.state.filters.pop2 != "") {
+            if (this.state.filters.pop1 < this.state.filters.pop2)
+                ranged = ranged.filter(u => u.popu >= this.state.filters.pop1 && u.popu <= this.state.filters.pop2)
+            else
+                ranged = ranged.filter(u => u.popu <= this.state.filters.pop1 && u.popu >= this.state.filters.pop2)
+        }
+        if (this.state.filters.city != "")
+            ranged = ranged.filter(u => u.city == this.state.filters.city)
+
+        if (this.state.tags[0]) {
+            var res = []
+            for (var i = 0; i < this.state.tags.length; i++) {
+                for (var j = 0; j < ranged.length; j++) {
+                    if (ranged[j].tags) {
+                        if (ranged[j].tags.indexOf(this.state.tags[i]) && res.indexOf(ranged[j]) == -1) {
+                            res.push(ranged[j])
+                        }
+                    }
+                }
+            }
+            ranged = res
+        }
+
         this.setState({
             users: ranged
+        }, () => {
+
+        console.log(this.state.users)
         })
-        console.log(this.state.filters)
-        console.log(this.state.initialUsers)
     }
 
     _handleTextFieldChange(e) {
         this.setState({
             filters: update(this.state.filters, {[e.target.name]: {$set: e.target.value}}),
         }, () => {
-            this.rangeAge()
+            this.filterUsers()
         });
     }
 
+    // about tags
+    handleUpdateInput = (searchText) => {
+        this.setState({
+            searchText: searchText,
+        });
+    };
+    handleNewRequest = (chosenRequest) => {
+        this.state.tags.push(chosenRequest);
+        this.setState({
+            searchText: '',
+        }, () => {
+            this.filterUsers()
+        });
+    };
+
+    getAllUsers() {
+        var url = "http://54.93.182.167:3000/api/users/";
+        Request.post(url)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token : cookie.load('token') })
+            .then((response) => {
+                this.setState({
+                    users: response.body.users,
+                    initialUsers: response.body.users
+                })
+            });
+    }
+
     cancelFilters() {
-        var empty = { age1: "", age2: "" }
+        var empty = {
+            age1: "",
+            age2: "",
+            pop1: "",
+            pop2: "",
+            city: "",
+            tag: "",
+            tags: []
+        }
         this.setState({
             filters : empty,
-            users: this.state.initialUsers
+            users: this.state.initialUsers,
+            tags: []
         })
     }
 
@@ -124,60 +210,152 @@ export class Browse extends React.Component {
         return (
             <div style={{marginBottom: 50, height: '100%'}}>
 
-                <p>Sort by</p>
-                <div className="row" style={{marginBottom: 50}}>
-                    <RaisedButton
-                        label="Age"
-                        primary={true}
-                        style={btnStyle}
-                        disabled={this.state.saveDisabled}
-                        onTouchTap={() => this.sortBy('age')}
+
+                <RaisedButton
+                    label="Around Me"
+                    style={btnStyle}
+                    onTouchTap={() => this.componentWillMount()}
+                />
+                <RaisedButton
+                    label="Advanced search"
+                    style={btnStyle}
+                    onTouchTap={() => this.getAllUsers()}
+                />
+                <Card>
+                    <CardHeader
+                        title="Filters"
+                        actAsExpander={true}
+                        showExpandableButton={true}
                     />
-                    <RaisedButton
-                        label="Location"
-                        primary={true}
-                        style={btnStyle}
-                        disabled={this.state.saveDisabled}
-                        onTouchTap={() => this.sortBy('location')}
+                    <CardText expandable={true} style={{ paddingTop: 0}}>
+                        {/***********/}
+                        {/* FILTERS */}
+                        {/***********/}
+
+                        {/* AGE */}
+                        <TextField
+                            floatingLabelText="Age"
+                            name="age1"
+                            value={this.state.filters.age1}
+                            onChange={this._handleTextFieldChange.bind(this)}
+                            style={{width: 40, marginRight: 10}}
+                        />
+                        -
+                        <TextField
+                            floatingLabelText="Age"
+                            name="age2"
+                            value={this.state.filters.age2}
+                            onChange={this._handleTextFieldChange.bind(this)}
+                            style={{width: 40, marginLeft: 10}}
+                        />
+
+                        {/* LOCATION */}
+                        <div style={{ display: 'inline-block', marginLeft: 10 }}>
+                            <AutocompleteGoogle
+                                style={{ width: 150 }}
+                                onPlaceSelected={(place) => {
+
+                                    // check if a real city is actually selected, not just random text.
+                                    if (place.address_components) {
+                                        var filters = {
+                                            age1: this.state.filters.age1,
+                                            age2: this.state.filters.age2,
+                                            pop1: this.state.filters.pop1,
+                                            pop2: this.state.filters.pop2,
+                                            city: place.name
+                                        }
+                                        this.setState({
+                                            filters: filters
+                                        }, () => {
+                                            this.filterUsers()
+                                        })
+                                    }
+                                }}
+                                types={['(cities)']}
+                            />
+                        </div>
+
+                        {/*/!* POPU *!/*/}
+                        <div style={{ display: 'inline-block', marginLeft: 10 }}>
+                            <TextField
+                                floatingLabelText="Popularity"
+                                name="pop1"
+                                value={this.state.filters.pop1}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                                style={{width: 80, marginRight: 10}}
+                            />
+                            -
+                            <TextField
+                                floatingLabelText="Popularity"
+                                name="pop2"
+                                value={this.state.filters.pop2}
+                                onChange={this._handleTextFieldChange.bind(this)}
+                                style={{width: 80, marginLeft: 10}}
+                            />
+                        </div>
+
+                        <div style={{ display: 'inline-block', marginLeft: 10 }}>
+                            <AutoComplete
+                                hintText="#Geek"
+                                floatingLabelText="Tags"
+                                searchText={this.state.searchText}
+                                onUpdateInput={this.handleUpdateInput}
+                                onNewRequest={this.handleNewRequest}
+                                dataSource={this.state.searchTags}
+                                dataSourceConfig={{text: 'textKey', value: 'valueKey'}}
+                                //filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
+                                filter={AutoComplete.fuzzyFilter}
+                                openOnFocus={true}
+                            />
+                        </div>
+                        <Tags tags={this.state.tags}/>
+
+                        <RaisedButton
+                            label="Reset"
+                            style={btnStyle}
+                            onTouchTap={() => this.cancelFilters()}
+                        />
+                    </CardText>
+                </Card>
+                <br />
+                <Card>
+                    <CardHeader
+                        title="Sorting Tools"
+                        actAsExpander={true}
+                        showExpandableButton={true}
                     />
-                    <RaisedButton
-                        label="Popularity"
-                        primary={true}
-                        style={btnStyle}
-                        disabled={this.state.saveDisabled}
-                        onTouchTap={() => this.sortBy('popu')}
-                    />
-                    <RaisedButton
-                        label="Commun tags"
-                        primary={true}
-                        style={btnStyle}
-                        disabled={this.state.saveDisabled}
-                        onTouchTap={() => this.sortBy('tags')}
-                    />
-                    <hr />
-                    <p>Filter by</p>
-                    <TextField
-                        floatingLabelText="Age"
-                        name="age1"
-                        value={this.state.filters.age1}
-                        onChange={this._handleTextFieldChange.bind(this)}
-                        style={{width: 40, marginRight: 10}}
-                    />
-                    -
-                    <TextField
-                        floatingLabelText="Age"
-                        name="age2"
-                        value={this.state.filters.age2}
-                        onChange={this._handleTextFieldChange.bind(this)}
-                        style={{width: 40, marginLeft: 10}}
-                    />
-                    <RaisedButton
-                        label="Cancel"
-                        style={btnStyle}
-                        onTouchTap={() => this.cancelFilters()}
-                    />
-                </div>
-                {/*<UserCard/>*/}
+                    <CardText expandable={true} style={{ paddingTop: 0 }}>
+                            <RaisedButton
+                                label="Age"
+                                primary={true}
+                                style={btnStyle}
+                                disabled={this.state.saveDisabled}
+                                onTouchTap={() => this.sortBy('age')}
+                            />
+                            <RaisedButton
+                                label="Location"
+                                primary={true}
+                                style={btnStyle}
+                                disabled={this.state.saveDisabled}
+                                onTouchTap={() => this.sortBy('location')}
+                            />
+                            <RaisedButton
+                                label="Popularity"
+                                primary={true}
+                                style={btnStyle}
+                                disabled={this.state.saveDisabled}
+                                onTouchTap={() => this.sortBy('popu')}
+                            />
+                            <RaisedButton
+                                label="Commun tags"
+                                primary={true}
+                                style={btnStyle}
+                                disabled={this.state.saveDisabled}
+                                onTouchTap={() => this.sortBy('tags')}
+                            />
+                    </CardText>
+                </Card>
+                <hr />
                 {users}
             </div>
         );
