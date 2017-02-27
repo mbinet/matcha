@@ -28,6 +28,9 @@ export class SignUp extends React.Component {
             p5: "",
         },
         bio: "",
+		passwdHint: "",
+		mailHint: "",
+		finalHint: ""
     };
 
     setDefaultPicture() {
@@ -39,24 +42,34 @@ export class SignUp extends React.Component {
     handleEnd(state) {
         // this.setDefaultPicture();
         this.state.photo.p1 = "400.jpeg";
-        console.log(this.state.photo)
-        var url = "http://54.93.182.167:3000/api/createUser/";
-        var shaPass = sha256(this.state.passwd);
-        Request.post(url)
-            .set('Content-Type', 'application/x-www-form-urlencoded')
-            // .set('Content-Type', 'application/json')
-            .send({ name: this.state.name })
-            .send({ age: this.state.age })
-            .send({ mail: this.state.mail })
-            .send({ photo: this.state.photo })
-            .send({ passwd: shaPass })
-            .send({ sex: this.state.sex })
-            .send({ bio: this.state.bio })
-            .end((response) => {
-                console.log('inserted');
-                console.log(response);
-                // browserHistory.push("/home", "jdec");
-            });
+
+		if (!this.state.passwd.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/) || !this.state.mail.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+            this.setState({
+                finalHint: "You should check your email and password"
+            })
+        }
+        else {
+            var url = "http://54.93.182.167:3000/api/createUser/";
+            var shaPass = sha256(this.state.passwd);
+            Request.post(url)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                // .set('Content-Type', 'application/json')
+                .send({ name: this.state.name })
+                .send({ age: this.state.age })
+                .send({ mail: this.state.mail })
+                .send({ photo: this.state.photo })
+                .send({ passwd: shaPass })
+                .send({ sex: this.state.sex })
+                .send({ bio: this.state.bio })
+                .end((response) => {
+                    console.log('inserted');
+                    console.log(response);
+                    browserHistory.push("/home", "jdec");
+                });
+        }
+
+
+
     }
 
     handleNext = () => {
@@ -64,8 +77,6 @@ export class SignUp extends React.Component {
         const {mail} = this.state;
         if (stepIndex < 2) {
             this.setState({stepIndex: stepIndex + 1});
-            console.log(this.state.mail);
-            console.log(this.state.passwd);
         }
         switch (stepIndex) {
             case 0 : {
@@ -122,9 +133,36 @@ export class SignUp extends React.Component {
     }
 
     _handleTextFieldChange(e) {
+        var name = e.target.name
         this.setState({
             [e.target.name]: e.target.value
-        });
+        }, function () {
+            if (name == 'passwd') {
+                if (this.state.passwd.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)) {
+                    this.setState({
+                        passwdHint: 'OK'
+                    })
+                }
+                else {
+                    this.setState({
+                        passwdHint: "Password souhld be at least 8 chars, have a number, a lower case char and a upper case char."
+                    })
+                }
+            }
+            if (name == 'mail') {
+                if (this.state.mail.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+                    this.setState({
+                        mailHint: 'Ok'
+                    })
+                }
+                else {
+                    this.setState({
+                        mailHint: "Please provide a valid email adress"
+                    })
+                }
+            }
+
+		});
     }
 
     _handleKeyDown(event) {
@@ -181,6 +219,7 @@ export class SignUp extends React.Component {
                                 name="age"
                                 value={this.state.age}
                                 onChange={this._handleTextFieldChange.bind(this)}
+                                type="number"
                             />
                             <TextField
                                 hintText="john@doe.com"
@@ -189,6 +228,7 @@ export class SignUp extends React.Component {
                                 value={this.state.mail}
                                 onChange={this._handleTextFieldChange.bind(this)}
                             />
+                            <div style={{marginTop: 12}}>{this.state.mailHint}</div>
                             <TextField
                                 type="password"
                                 hintText="••••••••"
@@ -198,6 +238,7 @@ export class SignUp extends React.Component {
                                 onChange={this._handleTextFieldChange.bind(this)}
                                 onKeyDown={this._handleKeyDown.bind(this)}
                             />
+                            <div style={{marginTop: 12}}>{this.state.passwdHint}</div>
                             {this.renderStepActions(0)}
                         </StepContent>
                     </Step>
@@ -248,6 +289,7 @@ export class SignUp extends React.Component {
                                 onKeyDown={this._handleKeyDown.bind(this)}
                             />
                             {this.renderStepActions(2)}
+                            <div style={{marginTop: 12}}>{this.state.finalHint}</div>
                         </StepContent>
                     </Step>
                 </Stepper>
