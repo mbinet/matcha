@@ -22,6 +22,9 @@ var config = {
                 }
             }
         ]
+    },
+    devServer: {
+        stats: 'errors-only',
     }
 };
 
