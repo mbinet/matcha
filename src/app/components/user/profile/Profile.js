@@ -354,7 +354,7 @@ export class Profile extends React.Component {
                                             </TableRow>
                                             <TableRow>
                                                 <TableRowColumn>Likes you</TableRowColumn>
-                                                <TableRowColumn>{String(this.state.doesLikeVisitor)}</TableRowColumn>
+                                                <TableRowColumn>{String(this.state.doesLikeVisitor) == 'true' ? '✓' : '✗'}</TableRowColumn>
                                             </TableRow>
                                         </TableBody>
                                     </Table>

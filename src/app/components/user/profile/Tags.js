@@ -20,7 +20,7 @@ const styles = {
     },
     wrapper: {
         display: 'flex',
-        // flexWrap: 'wrap',
+        flexWrap: 'wrap',
     },
 };
 
@@ -59,6 +59,10 @@ export class Tags extends React.Component {
                 // reloads parent component (ProfileUpdate)
                 that.props.reload();
             })
+    }
+
+    componentWillMount() {
+        this.componentWillReceiveProps(this.props)
     }
 
     componentWillReceiveProps(nextProps) {

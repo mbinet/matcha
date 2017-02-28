@@ -90,7 +90,7 @@ export class Notifications extends React.Component {
                     </div>
                 )
             }
-            else if (n.type == "msg") {
+            else if (n.type == "msg" && n.fromName && n.fromPhoto.length > 4) {
                 data.push(
                     <div key={n._id} style={{marginBottom: 10}}>
                         <Card>

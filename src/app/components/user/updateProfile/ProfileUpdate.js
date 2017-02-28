@@ -315,6 +315,7 @@ export class ProfileUpdate extends React.Component {
                                                 name="age"
                                                 value={this.state.user.age}
                                                 onChange={this._handleTextFieldChange.bind(this)}
+                                                type="number"
                                             />
                                             <br />
                                             <TextField

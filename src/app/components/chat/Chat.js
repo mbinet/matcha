@@ -167,6 +167,8 @@ export class Chat extends React.Component {
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .send({ token : cookie.load('token') })
             .send({ from : user._id })
+            .send({ fromName : user.name })
+            .send({ fromPhoto : user.photo.p1 })
             .send({ to : this.props.params.id })
             .send({ message: this.state.message })
             .then((response) => {
